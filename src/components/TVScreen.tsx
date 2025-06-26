@@ -54,15 +54,20 @@ export default function TVScreen() {
       {tvState.channelEditorOpen && (
         <div style={{
           position: 'absolute',
-          left: 40,
-          top: 40,
+          left: 80,
+          top: 80,
           zIndex: 10,
           background: 'rgba(10,20,40,0.98)',
-          borderRadius: 10,
+          borderRadius: 12,
           border: '2px solid #fff',
           boxShadow: '0 4px 24px #000a',
-          minWidth: 180,
-          padding: '18px 0 18px 0',
+          minWidth: 160,
+          maxWidth: 200,
+          width: 170,
+          padding: '6px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
         }}>
           {CHANNEL_EDITOR_ITEMS_LIST.map((item, idx) => (
             <div
@@ -71,13 +76,15 @@ export default function TVScreen() {
                 background: idx === tvState.channelEditorIndex ? '#e048b1' : 'transparent',
                 color: idx === tvState.channelEditorIndex ? '#fff' : '#fff',
                 fontWeight: idx === tvState.channelEditorIndex ? 700 : 400,
-                fontSize: 18,
-                padding: '8px 24px',
-                borderRadius: 6,
-                margin: '2px 0',
+                fontSize: 14,
+                padding: '7px 16px',
+                borderRadius: 7,
+                margin: '2px 7px',
                 transition: 'background 0.2s',
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
+                letterSpacing: 0.2,
               }}
             >
               {item}
