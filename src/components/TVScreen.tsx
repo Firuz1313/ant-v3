@@ -1,6 +1,7 @@
 import React from "react";
 import { FaYoutube, FaCog, FaWifi, FaCloud, FaTv, FaAppStore, FaInfoCircle, FaMagic, FaSatelliteDish, FaCogs } from "react-icons/fa";
 import { MdSettings, MdApps, MdUpdate, MdInfo, MdNetworkWifi } from "react-icons/md";
+import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST } from '../context/TVControlContext';
 
 const IOSSettingsIcon = (
   <span style={{
@@ -30,6 +31,8 @@ const apps = [
 ];
 
 export default function TVScreen() {
+  const { tvState } = useTVControl();
+
   return (
     <div
       style={{
@@ -47,6 +50,41 @@ export default function TVScreen() {
         justifyContent: "center",
       }}
     >
+      {/* Модалка редактора каналов */}
+      {tvState.channelEditorOpen && (
+        <div style={{
+          position: 'absolute',
+          left: 40,
+          top: 40,
+          zIndex: 10,
+          background: 'rgba(10,20,40,0.98)',
+          borderRadius: 10,
+          border: '2px solid #fff',
+          boxShadow: '0 4px 24px #000a',
+          minWidth: 180,
+          padding: '18px 0 18px 0',
+        }}>
+          {CHANNEL_EDITOR_ITEMS_LIST.map((item, idx) => (
+            <div
+              key={item}
+              style={{
+                background: idx === tvState.channelEditorIndex ? '#e048b1' : 'transparent',
+                color: idx === tvState.channelEditorIndex ? '#fff' : '#fff',
+                fontWeight: idx === tvState.channelEditorIndex ? 700 : 400,
+                fontSize: 18,
+                padding: '8px 24px',
+                borderRadius: 6,
+                margin: '2px 0',
+                transition: 'background 0.2s',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              {item}
+            </div>
+          ))}
+        </div>
+      )}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
@@ -59,7 +97,22 @@ export default function TVScreen() {
         boxShadow: "0 2px 12px #0004 inset",
       }}>
         {apps.map((app, i) => (
-          <div key={i} style={{ display: "flex", flexDirection: "column", alignItems: "center", color: "#fff" }}>
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              color: "#fff",
+              position: 'relative',
+              boxShadow: tvState.selectedIcon === i ? '0 0 0 3px #e048b1, 0 0 16px 2px #e048b1aa' : undefined,
+              border: tvState.selectedIcon === i ? '2px solid #fff' : '2px solid transparent',
+              borderRadius: 12,
+              transition: 'box-shadow 0.2s, border 0.2s',
+              zIndex: tvState.selectedIcon === i ? 2 : 1,
+              background: tvState.selectedIcon === i ? 'rgba(255,255,255,0.06)' : undefined,
+            }}
+          >
             {React.cloneElement(app.icon, { size: 36 })}
             <span style={{ fontSize: 13, marginTop: 4, textAlign: "center", textShadow: "0 1px 2px #000a" }}>{app.name}</span>
           </div>
