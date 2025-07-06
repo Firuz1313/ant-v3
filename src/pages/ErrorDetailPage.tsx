@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { errorList } from '../data/errors';
-import { errorSteps } from '../data/errorSteps';
 import TVScreen from '../components/TVScreen';
 import RemoteControl from '../components/RemoteControl';
 import { useTVControl } from '../context/TVControlContext';
@@ -11,46 +10,35 @@ export default function ErrorDetailPage() {
   const navigate = useNavigate();
   const error = errorList.find(e => e.key === errorKey);
   const subError = error?.subErrors?.find(s => s.key === subKey);
-  const steps = errorSteps?.[errorKey]?.[subKey] || [];
-  const [step, setStep] = React.useState(0);
-  const [downCount, setDownCount] = React.useState(0);
-  const [showSecondHint, setShowSecondHint] = React.useState(false);
   const { tvState } = useTVControl();
+  const [scale, setScale] = useState(1);
 
-  React.useEffect(() => {
-    if (errorKey === 'channel-editor' && subKey === 'delete' && step === 1 && !showSecondHint) {
-      const handler = (e: any) => {
-        if (e?.detail?.key === 'down') {
-          setDownCount(prev => {
-            if (prev < 1) return prev + 1;
-            setShowSecondHint(true);
-            return 2;
-          });
-        }
-      };
-      window.addEventListener('virtual-remote-press', handler);
-      return () => window.removeEventListener('virtual-remote-press', handler);
-    }
-  }, [errorKey, subKey, step, showSecondHint]);
+  // Адаптивное масштабирование для больших экранов
+  useEffect(() => {
+    const updateScale = () => {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      
+      // Базовые размеры компонентов
+      const tvWidth = 900;
+      const remoteWidth = 200;
+      const totalWidth = tvWidth + remoteWidth + 100; // 100px для отступов
+      
+      // Вычисляем масштаб для больших экранов
+      if (screenWidth > 1400) {
+        const scaleX = (screenWidth * 0.8) / totalWidth;
+        const scaleY = (screenHeight * 0.7) / 600; // 600px примерная высота
+        const newScale = Math.min(scaleX, scaleY, 1.4); // Максимальный масштаб 1.4
+        setScale(Math.max(newScale, 0.8)); // Минимальный масштаб 0.8
+      } else {
+        setScale(1);
+      }
+    };
 
-  React.useEffect(() => {
-    if (step !== 1) {
-      setDownCount(0);
-      setShowSecondHint(false);
-    }
-  }, [step]);
-
-  // Автоматический переход на шаг 2 после открытия модалки редактора каналов
-  React.useEffect(() => {
-    if (
-      errorKey === 'channel-editor' &&
-      subKey === 'delete' &&
-      step === 0 &&
-      tvState.channelEditorOpen
-    ) {
-      setStep(1);
-    }
-  }, [errorKey, subKey, step, tvState.channelEditorOpen]);
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   if (!error) {
     return (
@@ -61,11 +49,69 @@ export default function ErrorDetailPage() {
     );
   }
 
-  const currentStep = steps[step];
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-[#23272e] to-[#181c20] py-10 px-4">
-      <div className="relative w-full max-w-3xl mx-auto mb-6 mt-2 flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center justify-start py-2 px-4" style={{ position: 'relative', overflow: 'hidden' }}>
+      {/* Неоновый, мягкий, технологичный фон */}
+      <div style={{
+        position: 'fixed',
+        zIndex: 0,
+        left: 0,
+        top: 0,
+        width: '100vw',
+        height: '100vh',
+        background: 'linear-gradient(120deg, #1e293b 0%, #23272e 60%, #2563eb 100%)',
+        opacity: 0.98,
+        pointerEvents: 'none',
+        transition: 'background 1.2s',
+      }} />
+      {/* Геометрические и неоновые элементы */}
+      <svg width="100vw" height="100vh" style={{ position: 'fixed', left: 0, top: 0, zIndex: 1, pointerEvents: 'none', opacity: 0.22 }}>
+        <defs>
+          <radialGradient id="neon1" cx="50%" cy="50%" r="80%">
+            <stop offset="0%" stopColor="#00eaff" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+          <radialGradient id="neon2" cx="80%" cy="20%" r="60%">
+            <stop offset="0%" stopColor="#3386ff" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="transparent" />
+          </radialGradient>
+        </defs>
+        <circle cx="30%" cy="20%" r="320" fill="url(#neon1)" />
+        <ellipse cx="80%" cy="80%" rx="260" ry="120" fill="url(#neon2)" />
+        <rect x="60%" y="10%" width="180" height="180" rx="60" fill="#2563eb" opacity="0.12" />
+      </svg>
+      {/* Анимация неонового свечения */}
+      <style>{`
+        @keyframes neon-fade {
+          0% { filter: blur(32px) brightness(1.1); opacity: 0.7; }
+          50% { filter: blur(48px) brightness(1.3); opacity: 1; }
+          100% { filter: blur(32px) brightness(1.1); opacity: 0.7; }
+        }
+        .neon-anim {
+          animation: neon-fade 4.5s ease-in-out infinite alternate;
+        }
+        .tv-remote-container {
+          transform: scale(${scale});
+          transform-origin: center center;
+          transition: transform 0.3s ease-in-out;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 32px;
+          margin-top: 60px;
+        }
+        @media (max-width: 768px) {
+          .tv-remote-container {
+            flex-direction: column;
+            gap: 16px;
+            transform: scale(1);
+          }
+        }
+      `}</style>
+      <div
+        className="relative w-full max-w-3xl mx-auto flex flex-col items-center"
+        style={{ marginTop: 24 }}
+      >
         <button
           className="px-5 py-2 rounded bg-[#23272e] hover:bg-[#2b3a67] text-white font-medium whitespace-nowrap self-start absolute left-0 top-0"
           style={{ left: '-24px' }}
@@ -80,177 +126,18 @@ export default function ErrorDetailPage() {
           }
         `}</style>
       </div>
-      <div className="flex flex-col md:flex-row gap-10 w-full max-w-5xl items-start justify-center">
-        <div className="flex-1 flex flex-col items-center">
-          <div className="w-full max-w-md">
-            <TVScreen highlight={{
-              ...currentStep?.tvHighlight,
-              step,
-              errorKey,
-              subKey,
-              key: (errorKey === 'channel-editor' && subKey === 'delete' && step === 1) ? 'delete-all' : undefined
-            }} />
+      
+      {/* Адаптивный контейнер для ТВ и пульта */}
+      <div className="w-full flex justify-center items-center">
+        <div className="tv-remote-container">
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <TVScreen />
           </div>
-          {/* Подсказка под ТВ */}
-          {errorKey === 'channel-editor' && subKey === 'delete' && step === 0 && (
-            <div style={{
-              marginTop: 15,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              marginLeft: 40,
-            }}>
-              <div style={{
-                background: '#fff9c4',
-                color: '#23272e',
-                borderRadius: 7,
-                boxShadow: '0 0 16px 2px #ffe066, 0 2px 8px #ffe06655',
-                padding: '5px 12px',
-                fontSize: 13.5,
-                fontWeight: 500,
-                border: '1px solid #ffe066',
-                minWidth: 170,
-                maxWidth: 320,
-                textAlign: 'center',
-                letterSpacing: 0.05,
-                lineHeight: 1.25,
-                whiteSpace: 'pre-line',
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-                Выберите 'Редактор каналов'.\nДля выбора нажмите OK на пульте.
-              </div>
-              <img
-                src="/robi.png"
-                alt="Робот-подсказчик"
-                style={{
-                  width: 110,
-                  height: 110,
-                  marginLeft: 32,
-                  objectFit: 'contain',
-                  flexShrink: 0,
-                  filter: 'drop-shadow(0 0 36px #40cfff) drop-shadow(0 0 64px #a259ff)',
-                  animation: 'robo-pulse 1.6s cubic-bezier(0.4,0,0.2,1) infinite',
-                  transition: 'filter 0.3s, transform 0.3s',
-                  cursor: 'pointer',
-                }}
-                onClick={() => {
-                  const audio = new Audio('/src/data/audio/delete chanels.mp3');
-                  audio.play();
-                }}
-                onMouseDown={e => e.currentTarget.style.transform = 'scale(0.93)'}
-                onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-              />
-              <style>{`
-                @keyframes robo-pulse {
-                  0% {
-                    transform: scale(1);
-                    filter: drop-shadow(0 0 36px #40cfff) drop-shadow(0 0 64px #a259ff);
-                  }
-                  30% {
-                    transform: scale(1.08);
-                    filter: drop-shadow(0 0 60px #40cfff) drop-shadow(0 0 96px #a259ff);
-                  }
-                  50% {
-                    transform: scale(1.13);
-                    filter: drop-shadow(0 0 80px #40cfff) drop-shadow(0 0 120px #a259ff);
-                  }
-                  70% {
-                    transform: scale(1.08);
-                    filter: drop-shadow(0 0 60px #40cfff) drop-shadow(0 0 96px #a259ff);
-                  }
-                  100% {
-                    transform: scale(1);
-                    filter: drop-shadow(0 0 36px #40cfff) drop-shadow(0 0 64px #a259ff);
-                  }
-                }
-              `}</style>
-            </div>
-          )}
-          {errorKey === 'channel-editor' && subKey === 'delete' && step === 1 && tvState.channelEditorIndex !== 2 && (
-            <div style={{
-              marginTop: 15,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              marginLeft: 40,
-            }}>
-              <div style={{
-                background: '#fff9c4',
-                color: '#23272e',
-                borderRadius: 7,
-                boxShadow: '0 0 16px 2px #ffe066, 0 2px 8px #ffe06655',
-                padding: '5px 12px',
-                fontSize: 13.5,
-                fontWeight: 500,
-                border: '1px solid #ffe066',
-                minWidth: 170,
-                maxWidth: 320,
-                textAlign: 'center',
-                letterSpacing: 0.05,
-                lineHeight: 1.25,
-                whiteSpace: 'pre-line',
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-                Перейдите в раздел 'Удалить все'.\nДважды нажмите стрелку вниз.
-              </div>
-            </div>
-          )}
-          {errorKey === 'channel-editor' && subKey === 'delete' && step === 1 && tvState.channelEditorIndex === 2 && (
-            <div style={{
-              marginTop: 15,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              marginLeft: 40,
-            }}>
-              <div style={{
-                background: '#fff9c4',
-                color: '#23272e',
-                borderRadius: 7,
-                boxShadow: '0 0 16px 2px #ffe066, 0 2px 8px #ffe06655',
-                padding: '5px 12px',
-                fontSize: 13.5,
-                fontWeight: 500,
-                border: '1px solid #ffe066',
-                minWidth: 170,
-                maxWidth: 320,
-                textAlign: 'center',
-                letterSpacing: 0.05,
-                lineHeight: 1.25,
-                whiteSpace: 'pre-line',
-                display: 'flex',
-                alignItems: 'center',
-              }}>
-                Выберите пункт. Для выбора нажмите OK.
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="flex-1 flex justify-center">
-          <div className="w-full max-w-[120px]">
-            <RemoteControl highlight={(() => {
-              if (errorKey === 'channel-editor' && subKey === 'delete' && step === 1 && tvState.channelEditorIndex === 2) {
-                return { key: 'ok' };
-              }
-              if (errorKey === 'channel-editor' && subKey === 'delete' && step === 1) {
-                return { key: 'down' };
-              }
-              return currentStep?.remoteHighlight;
-            })()} />
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+            <RemoteControl />
           </div>
         </div>
       </div>
-      {currentStep && step === 0 && (
-        <div className="w-full flex justify-center mt-8">
-          {/* Подсказка теперь будет встроена в TVScreen, здесь не нужна */}
-        </div>
-      )}
     </div>
   );
 } 
