@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { FaYoutube, FaCog, FaWifi, FaCloud, FaTv, FaAppStore, FaInfoCircle, FaMagic, FaSatelliteDish, FaCogs } from "react-icons/fa";
 import { MdSettings, MdApps, MdUpdate, MdInfo, MdNetworkWifi } from "react-icons/md";
-import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST } from '../context/TVControlContext';
+import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST, SETTINGS_MENU_ITEMS, INSTALL_MENU_ITEMS } from '../context/TVControlContext';
+import RealisticTVFrame from './RealisticTVFrame';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Stars } from '@react-three/drei';
 
 const IOSSettingsIcon = (
   <span style={{
@@ -16,50 +19,67 @@ const IOSSettingsIcon = (
 );
 
 const apps = [
-  { name: "Редактор каналов", icon: <div style={{display: "flex", alignItems: "center", gap: "2px"}}><FaTv color="#2196f3" size={20} /><FaMagic color="#9c27b0" size={16} /></div> },
-  { name: "Настройки", icon: IOSSettingsIcon },
-  { name: "Установка", icon: <FaSatelliteDish color="#4caf50" size={28} /> },
-  { name: "Media Center", icon: <FaAppStore color="#00bcd4" size={28} /> },
-  { name: "YouTube", icon: <FaYoutube color="#e53935" size={28} /> },
-  { name: "IPTV", icon: <FaTv color="#2196f3" size={28} /> },
-  { name: "Обновление HTTP", icon: <MdUpdate color="#ff9800" size={28} /> },
-  { name: "APP", icon: <MdApps color="#9c27b0" size={28} /> },
-  { name: "Поиск", icon: <FaInfoCircle color="#fff" size={28} /> },
-  { name: "Сеть Wi-Fi", icon: <MdNetworkWifi color="#2196f3" size={28} /> },
-  { name: "Оператор", icon: <FaWifi color="#00e676" size={28} /> },
-  { name: "Информация", icon: <MdInfo color="#fff" size={28} /> },
+  { name: "Редактор каналов", icon: <div style={{display: "flex", alignItems: "center", gap: "6px", height: 70}}><FaTv color="#2196f3" size={70} /><FaMagic color="#9c27b0" size={54} /></div> },
+  { name: "Настройки", icon: <span style={{display: "flex", background: "linear-gradient(135deg, #e0e0e0 60%, #b0b0b0 100%)", borderRadius: "50%", boxShadow: "0 2px 8px #0002", width: 70, height: 70, alignItems: 'center', justifyContent: 'center'}}><FaCog color="#666" size={54} style={{ filter: "drop-shadow(0 1px 1px #fff8)" }} /></span> },
+  { name: "Установка", icon: <FaSatelliteDish color="#4caf50" size={70} /> },
+  { name: "Media Center", icon: <FaAppStore color="#00bcd4" size={70} /> },
+  { name: "YouTube", icon: <FaYoutube color="#e53935" size={70} /> },
+  { name: "IPTV", icon: <FaTv color="#2196f3" size={70} /> },
+  { name: "Обновление HTTP", icon: <MdUpdate color="#ff9800" size={70} /> },
+  { name: "APP", icon: <MdApps color="#9c27b0" size={70} /> },
+  { name: "Поиск", icon: <FaInfoCircle color="#fff" size={70} /> },
+  { name: "Сеть Wi-Fi", icon: <MdNetworkWifi color="#2196f3" size={70} /> },
+  { name: "Оператор", icon: <FaWifi color="#00e676" size={70} /> },
+  { name: "Информация", icon: <MdInfo color="#fff" size={70} /> },
 ];
 
-export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFromRemote?: number | null, highlight?: any }) {
+function AIGlobe3D() {
+  return (
+    <Canvas camera={{ position: [0, 0, 4], fov: 50 }} style={{ width: '100%', height: '100%', background: 'transparent', borderRadius: 7 }}>
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[5, 5, 5]} intensity={1.2} />
+      <mesh>
+        <sphereGeometry args={[0.95, 64, 64]} />
+        <meshStandardMaterial color="#00eaff" wireframe opacity={0.7} transparent />
+      </mesh>
+      <mesh>
+        <sphereGeometry args={[1.05, 32, 32]} />
+        <meshStandardMaterial color="#fff" wireframe opacity={0.15} transparent />
+      </mesh>
+      <Stars radius={2.5} depth={30} count={1200} factor={0.08} saturation={0.8} fade speed={2} />
+      <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={1.5} />
+    </Canvas>
+  );
+}
+
+export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, height = 480 }: { panelBtnFromRemote?: number | null, highlight?: any, width?: number, height?: number }) {
   const { tvState, sendCommand } = useTVControl();
-  const [activePanelBtn, setActivePanelBtn] = useState<number | null>(null);
-  const [channelsToDelete, setChannelsToDelete] = useState<Set<number>>(new Set());
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   React.useEffect(() => {
     if (panelBtnFromRemote && tvState.channelListOpen) {
-      setActivePanelBtn(panelBtnFromRemote);
+      // Отправляем команду для активации кнопки панели
+      sendCommand(panelBtnFromRemote.toString() as '1' | '2' | '3' | '4' | '5');
     }
-  }, [panelBtnFromRemote, tvState.channelListOpen]);
+  }, [panelBtnFromRemote, tvState.channelListOpen, sendCommand]);
 
-  // Сброс выбранных каналов при выходе из режима удаления
-  React.useEffect(() => {
-    if (activePanelBtn !== 1) setChannelsToDelete(new Set());
-  }, [activePanelBtn]);
-
-  // Обработчик выбора канала для удаления
+  // Обработчик выбора канала для различных операций
   function handleChannelClick(idx: number) {
-    if (activePanelBtn === 1) {
-      setChannelsToDelete(prev => {
-        const next = new Set(prev);
-        if (next.has(idx)) next.delete(idx); else next.add(idx);
-        return next;
-      });
+    // Устанавливаем выбранный канал и отправляем команду OK
+    if (tvState.selectedChannelIndex !== idx) {
+      // Сначала переходим к нужному каналу
+      const steps = idx - tvState.selectedChannelIndex;
+      for (let i = 0; i < Math.abs(steps); i++) {
+        sendCommand(steps > 0 ? 'down' : 'up');
+      }
     }
+    // Затем отправляем OK для выбора канала
+    sendCommand('ok');
   }
 
   function handlePanelBtnClick(idx: number) {
-    setActivePanelBtn(idx + 1);
+    // Отправляем команду для активации кнопки панели
+    sendCommand((idx + 1).toString() as '1' | '2' | '3' | '4' | '5');
   }
 
   const now = new Date();
@@ -73,25 +93,23 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
         handleDeleteCancel();
         return;
       }
-      if (activePanelBtn === 1 && channelsToDelete.size > 0) {
+      if (tvState.activePanelBtn === 1 && tvState.channelsToDelete.size > 0) {
         setShowDeleteModal(true);
       }
     }
     window.addEventListener('virtual-remote-exit', onVirtualExit);
     return () => window.removeEventListener('virtual-remote-exit', onVirtualExit);
-  }, [activePanelBtn, channelsToDelete, showDeleteModal]);
+  }, [tvState.activePanelBtn, tvState.channelsToDelete, showDeleteModal]);
 
   function handleDeleteConfirm() {
     // Здесь будет логика удаления каналов
     setShowDeleteModal(false);
-    setChannelsToDelete(new Set());
     // После удаления — выход на главный экран
     sendCommand('exit'); // Закрыть список каналов
     setTimeout(() => sendCommand('exit'), 100); // Закрыть редактор, если нужно
   }
   function handleDeleteCancel() {
     setShowDeleteModal(false);
-    setChannelsToDelete(new Set());
     // После отмены — выход на главный экран
     sendCommand('exit'); // Закрыть список каналов
     setTimeout(() => sendCommand('exit'), 100); // Закрыть редактор, если нужно
@@ -101,22 +119,8 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
   const showChannelEditorHint = highlight && highlight.step === 0 && highlight.errorKey === 'channel-editor' && highlight.subKey === 'delete';
 
   return (
-    <div
-      style={{
-        width: 520,
-        height: 340,
-        background: "#181c20",
-        borderRadius: 18,
-        border: "12px solid #23272e",
-        boxShadow: "0 12px 48px #000b, 0 2px 16px #222a",
-        position: "relative",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
+    <RealisticTVFrame width={width} height={height}>
+      <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       {/* Channel List Modal */}
       {tvState.channelListOpen && (
         <>
@@ -138,9 +142,9 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
               borderRadius: 16,
               border: '2px solid #fff',
               boxShadow: '0 4px 24px #000a',
-              width: 480,
-              minHeight: 260,
-              padding: '0',
+              width: 820,
+              minHeight: 380,
+              padding: '18px 0',
               display: 'flex',
               flexDirection: 'column',
               position: 'relative',
@@ -148,72 +152,61 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
             }}>
               {/* Верхняя панель */}
               <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontSize: 18, fontWeight: 700, color: '#fff', marginRight: 8 }}>📝</span>
-                  <span style={{ fontSize: 16, fontWeight: 700, color: '#fff' }}>Редактировать канал</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span style={{ fontSize: 22, fontWeight: 800, color: '#fff', marginRight: 12, textShadow: '0 2px 12px #3386ff88' }}>📝</span>
+                  <span style={{ fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Редактировать канал</span>
                 </div>
                 <span style={{ color: '#fff', fontSize: 13 }}>{dateStr} {timeStr}</span>
               </div>
               {/* Основной flex-контейнер модалки */}
               <div style={{ display: 'flex', flexDirection: 'row', flex: 1, minHeight: 120, background: '#102040' }}>
                 {/* Левая колонка: панель 1-5 и список */}
-                <div style={{ flex: 2, minWidth: 240, display: 'flex', flexDirection: 'column', alignItems: 'stretch', padding: '10px 0 10px 12px', background: 'rgba(0,0,0,0.04)', borderRight: '1.5px solid #174080' }}>
+                <div style={{ flex: 2, minWidth: 320, width: 320, display: 'flex', flexDirection: 'column', alignItems: 'stretch', padding: '10px 0 10px 18px', background: 'rgba(0,0,0,0.04)' }}>
                   {/* Панель 1-5 */}
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    background: '#001a3a',
-                    borderRadius: 6,
-                    padding: '1.5px 2.5px',
-                    justifyContent: 'center',
-                    fontSize: 9,
-                    color: '#fff',
-                    margin: '0 0 5px 0',
-                    gap: 3,
-                    border: '1px solid #174080',
-                    maxWidth: 220,
-                    width: '94%',
-                    alignSelf: 'flex-start',
-                  }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '0 0 10px 0' }}>
                     {[1,2,3,4,5].map((num, idx) => (
-                      <button
-                        key={num}
-                        type="button"
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: 0.5,
-                          background: 'none',
-                          border: activePanelBtn === num ? '2px solid #ffd600' : 'none',
-                          color: '#fff',
-                          fontWeight: 700,
-                          fontSize: 9,
-                          padding: '2px 4px',
-                          borderRadius: 4,
-                          cursor: 'pointer',
-                          transition: 'background 0.15s, border 0.15s',
-                          boxShadow: activePanelBtn === num ? '0 0 0 2px #ffd60088' : undefined,
-                        }}
-                        onClick={() => handlePanelBtnClick(idx)}
-                      >
-                        <span>{num}</span>
-                        <span style={{ fontSize: 10 }}>{["🗑️","↔️","⏭️","🔒","★"][idx]}</span>
-                        <span style={{ fontSize: 8, fontWeight: 400 }}>{["Del","Move","Skip","Lock","Fav"][idx]}</span>
-                      </button>
+                      <div key={num} style={{ background: '#23272e', borderRadius: 8, padding: '2px 8px', border: '1.5px solid #174080', boxShadow: tvState.activePanelBtn === num ? '0 0 0 2px #ffd60088' : undefined, display: 'flex', alignItems: 'center', minWidth: 80, height: 36, marginBottom: 0 }}>
+                        <button
+                          type="button"
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 5,
+                            background: 'none',
+                            border: 'none',
+                            color: '#fff',
+                            fontWeight: 700,
+                            fontSize: 15,
+                            padding: 0,
+                            borderRadius: 4,
+                            cursor: 'pointer',
+                            transition: 'background 0.15s, border 0.15s',
+                            outline: 'none',
+                            width: '100%',
+                            height: '100%',
+                            justifyContent: 'flex-start',
+                          }}
+                          onClick={() => handlePanelBtnClick(idx)}
+                        >
+                          <span style={{ fontSize: 15, fontWeight: 700, marginRight: 3 }}>{num}</span>
+                          <span style={{ fontSize: 15, marginRight: 3 }}>{["🗑️","↔️","⏭️","🔒","★"][idx]}</span>
+                          <span style={{ fontSize: 11, fontWeight: 500, color: '#fff' }}>{["Del","Move","Skip","Lock","Fav"][idx]}</span>
+                        </button>
+                      </div>
                     ))}
                   </div>
-                  <div style={{ color: '#fff', fontSize: 13, marginBottom: 4, fontWeight: 500, marginTop: 2 }}>Все</div>
+                  <div style={{ color: '#fff', fontSize: 15, marginBottom: 4, marginLeft:220, fontWeight: 500, marginTop: 2 }}>Все</div>
                   <div style={{
-                    background: '#001a3a',
+                    
                     borderRadius: 7,
                     padding: 3,
-                    minHeight: 80,
-                    maxHeight: 120,
+                    minHeight: 120,
+                    maxHeight: 220,
                     overflowY: 'auto',
-                    border: '1px solid #174080',
-                    width: 210,
+                    width: 450,
                     transition: 'width 0.2s',
                     scrollbarWidth: 'thin',
+                    paddingLeft: 40,
                   }}>
                     {tvState.channelList.map((ch, idx) => (
                       <div
@@ -232,17 +225,26 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          width: 180,
+                          width: 'calc(100% - 30px)',
+                          minWidth: 0,
                           transition: 'background 0.15s',
-                          cursor: activePanelBtn === 1 ? 'pointer' : 'default',
+                          cursor: tvState.activePanelBtn >= 1 && tvState.activePanelBtn <= 5 ? 'pointer' : 'default',
                           position: 'relative',
                         }}
                         onClick={() => handleChannelClick(idx)}
                       >
-                        <span style={{ width: 18, display: 'inline-block', textAlign: 'right', marginRight: 6 }}>{idx + 1}</span>
-                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: 140, display: 'inline-block' }}>{ch.name}</span>
-                        {/* Красный глянцевый крестик для выбранных каналов */}
-                        {activePanelBtn === 1 && channelsToDelete.has(idx) && (
+                        <span style={{ 
+                          width: (idx + 1) >= 100 ? 30 : 18, 
+                          display: 'inline-block', 
+                          textAlign: 'right', 
+                          marginRight: 6, 
+                          fontSize: 17, 
+                          fontWeight: 700, 
+                          color: '#fff' 
+                        }}>{idx + 1}</span>
+                        <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', width: 140, display: 'inline-block', fontSize: 17, fontWeight: 700, color: '#fff' }}>{ch.name}</span>
+                        {/* Индикаторы для различных операций */}
+                        {tvState.activePanelBtn === 1 && tvState.channelsToDelete.has(idx) && (
                           <span style={{
                             position: 'absolute',
                             right: 8,
@@ -260,6 +262,97 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
                             </svg>
                           </span>
                         )}
+                        {/* Индикатор для перемещения (кнопка 2) */}
+                        {tvState.activePanelBtn === 2 && tvState.channelsToMove.has(idx) && (
+                          <span style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: 12,
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#4caf50',
+                            fontSize: 12,
+                          }}>
+                            ↔️
+                          </span>
+                        )}
+                        {/* Индикатор для пропуска (кнопка 3) */}
+                        {tvState.activePanelBtn === 3 && tvState.channelsToSkip.has(idx) && (
+                          <span style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: 12,
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ff9800',
+                            fontSize: 12,
+                          }}>
+                            ⏭️
+                          </span>
+                        )}
+                        {/* Индикатор для блокировки (кнопка 4) */}
+                        {tvState.activePanelBtn === 4 && tvState.channelsToLock.has(idx) && (
+                          <span style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: 12,
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#9c27b0',
+                            fontSize: 12,
+                          }}>
+                            🔒
+                          </span>
+                        )}
+                        {/* Индикатор для избранного (кнопка 5) */}
+                        {tvState.activePanelBtn === 5 && (
+                          <span style={{
+                            position: 'absolute',
+                            right: 8,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: 12,
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ffd600',
+                            fontSize: 12,
+                          }}>
+                            ★
+                          </span>
+                        )}
+                        {/* Индикатор уже избранных каналов */}
+                        {tvState.favoriteChannels.has(idx) && (
+                          <span style={{
+                            position: 'absolute',
+                            right: tvState.activePanelBtn === 5 ? 24 : 8,
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            width: 12,
+                            height: 12,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#ffd600',
+                            fontSize: 12,
+                            opacity: 0.7,
+                          }}>
+                            ★
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -267,14 +360,14 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
                 {/* Правая колонка: мини-экран и инфо */}
                 <div style={{ flex: 3, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '10px 8px 0 8px', background: 'rgba(0,0,0,0.02)' }}>
                   {/* Мини-экран */}
-                  <div style={{ width: 160, height: 80, background: '#222', borderRadius: 7, marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '2px solid #333' }}>
-                    {/* Заглушка: фото ведущего */}
-                    <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #e048b1 0%, #222 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 700, fontSize: 28 }}>
-                      <span>🎤</span>
+                  <div style={{ width: 300, height: 180, background: '#222', borderRadius: 7, marginBottom: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '2px solid #333', marginLeft: 140 }}>
+                    {/* Заглушка: анимированный gif ведущего/кино */}
+                    <div style={{ width: '100%', height: '100%', background: 'linear-gradient(90deg, #e048b1 0%, #222 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <AIGlobe3D />
                     </div>
                   </div>
                   {/* Инфо о канале */}
-                  <div style={{ color: '#fff', fontSize: 12, background: '#001a3a', borderRadius: 5, padding: '8px 12px', minHeight: 40, width: 155, whiteSpace: 'pre-line', marginTop: 6, border: '1px solid #174080' }}>
+                  <div style={{ color: '#fff', fontSize: 14, borderRadius: 5, padding: '8px 12px', minHeight: 40, width: 300, whiteSpace: 'pre-line', marginTop: 6, marginLeft: 140 }}>
                     {tvState.channelList[tvState.selectedChannelIndex]?.info || 'Нет информации'}
                   </div>
                 </div>
@@ -296,20 +389,63 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
             pointerEvents: 'none',
             background: '#0a1a2a',
             borderRadius: 12,
-            width: 440,
+            width: 800,
             margin: '0 auto',
             boxSizing: 'border-box',
             boxShadow: '0 2px 16px #0006',
             marginTop: 0,
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 18 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ color: '#ff3d00', fontSize: 14 }}>●</span><span style={{ color: '#fff', fontSize: 12 }}>Сортировка</span></span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ color: '#4caf50', fontSize: 14 }}>●</span><span style={{ color: '#fff', fontSize: 12 }}>Новое имя</span></span>
-              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}><span style={{ color: '#ffd600', fontSize: 14 }}>●</span><span style={{ color: '#fff', fontSize: 12 }}>PID</span></span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: tvState.activePanelBtn === 1 ? 0 : 152 }}>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ color: '#ff3d00', fontSize: 13 }}>●</span>
+                <span style={{ color: '#fff', fontSize: 15 }}>
+                  {tvState.activePanelBtn === 1 ? 'Все' : 'Сортировка'}
+                </span>
+              </span>
+              {tvState.activePanelBtn === 1 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 32 }}>
+                  <span style={{ color: '#fff', background: '#174080', borderRadius: 4, padding: '1.5px 6px', fontWeight: 600, fontSize: 13}}>ОК</span>
+                  <span style={{ color: '#fff', fontSize: 13 }}>Выбрать</span>
+                </div>
+              )}
+              {tvState.activePanelBtn === 2 && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 32 }}>
+                  <span style={{ color: '#fff', background: '#174080', borderRadius: 4, padding: '1.5px 6px', fontWeight: 600, fontSize: 13}}>ОК</span>
+                  <span style={{ color: '#fff', fontSize: 13 }}>Выбрать</span>
+                </div>
+              )}
+              {tvState.activePanelBtn !== 1 && tvState.activePanelBtn !== 2 && (
+                <>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ color: '#4caf50', fontSize: 13 }}>●</span>
+                    <span style={{ color: '#fff', fontSize: 15 }}>Новое имя</span>
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ color: '#ffd600', fontSize: 13 }}>●</span>
+                    <span style={{ color: '#fff', fontSize: 15 }}>PID</span>
+                  </span>
+                </>
+              )}
+              {tvState.activePanelBtn === 2 && (
+                <>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ color: '#4caf50', fontSize: 13 }}>●</span>
+                    <span style={{ color: '#fff', fontSize: 15 }}>Переместить канал</span>
+                  </span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <span style={{ color: '#ffd600', fontSize: 13 }}>●</span>
+                    <span style={{ color: '#fff', fontSize: 15 }}>Переместить на номер</span>
+                  </span>
+                </>
+              )}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ color: '#fff', background: '#174080', borderRadius: 4, padding: '1.5px 6px', fontWeight: 600, fontSize: 12 }}>1-5</span>
-              <span style={{ color: '#fff', fontSize: 12 }}>Режим</span>
+              {tvState.activePanelBtn !== 1 && tvState.activePanelBtn !== 2 && (
+                <>
+                  <span style={{ color: '#fff', background: '#174080', borderRadius: 4, padding: '1.5px 6px', fontWeight: 600, fontSize: 13}}>1-5</span>
+                  <span style={{ color: '#fff', fontSize: 13 }}>Режим</span>
+                </>
+              )}
             </div>
           </div>
         </>
@@ -325,10 +461,10 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
           borderRadius: 12,
           border: '2px solid #fff',
           boxShadow: '0 4px 24px #000a',
-          minWidth: 160,
-          maxWidth: 200,
-          width: 170,
-          padding: '6px 0',
+          minWidth: 260,
+          maxWidth: 340,
+          width: 300,
+          padding: '16px 0',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'stretch',
@@ -370,6 +506,112 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
           `}</style>
         </div>
       )}
+      {tvState.settingsModalOpen && (
+        <div style={{
+          position: 'absolute',
+          left: 80,
+          top: 80,
+          zIndex: 10,
+          background: 'rgba(10,20,40,0.98)',
+          borderRadius: 12,
+          border: '2px solid #fff',
+          boxShadow: '0 4px 24px #000a',
+          minWidth: 260,
+          maxWidth: 340,
+          width: 300,
+          padding: '16px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          marginLeft: '240px',
+        }}>
+          {/* Стрелка вверх */}
+          {tvState.settingsModalIndex > 0 && (
+            <div style={{textAlign:'center',color:'#fff',fontSize:18,marginBottom:2}}>&uarr;</div>
+          )}
+          {/* Показываем 5 пунктов вокруг выбранного */}
+          {SETTINGS_MENU_ITEMS.slice(
+            Math.max(0, Math.min(tvState.settingsModalIndex - 2, SETTINGS_MENU_ITEMS.length - 5)),
+            Math.max(0, Math.min(tvState.settingsModalIndex - 2, SETTINGS_MENU_ITEMS.length - 5)) + 5
+          ).map((item, idx, arr) => {
+            const globalIdx = Math.max(0, Math.min(tvState.settingsModalIndex - 2, SETTINGS_MENU_ITEMS.length - 5)) + idx;
+            return (
+              <div
+                key={item}
+                style={{
+                  background: globalIdx === tvState.settingsModalIndex ? '#e048b1' : 'transparent',
+                  color: globalIdx === tvState.settingsModalIndex ? '#fff' : '#fff',
+                  fontWeight: globalIdx === tvState.settingsModalIndex ? 700 : 400,
+                  fontSize: 14,
+                  padding: '7px 16px',
+                  borderRadius: 7,
+                  margin: '2px 7px',
+                  transition: 'background 0.2s, box-shadow 0.2s, border 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  letterSpacing: 0.2,
+                }}
+              >
+                {item}
+              </div>
+            );
+          })}
+          {/* Стрелка вниз */}
+          {tvState.settingsModalIndex < SETTINGS_MENU_ITEMS.length - 1 && (
+            <div style={{textAlign:'center',color:'#fff',fontSize:18,marginTop:2}}>&darr;</div>
+          )}
+        </div>
+      )}
+      {tvState.installModalOpen && (
+        <div style={{
+          position: 'absolute',
+          left: 80,
+          top: 80,
+          zIndex: 10,
+          background: 'rgba(10,20,40,0.98)',
+          borderRadius: 12,
+          border: '2px solid #fff',
+          boxShadow: '0 4px 24px #000a',
+          minWidth: 260,
+          maxWidth: 340,
+          width: 300,
+          padding: '16px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          marginLeft: '440px',
+        }}>
+          {/* Без стрелок вверх/вниз */}
+          {INSTALL_MENU_ITEMS.slice(
+            Math.max(0, Math.min(tvState.installModalIndex - 2, INSTALL_MENU_ITEMS.length - 5)),
+            Math.max(0, Math.min(tvState.installModalIndex - 2, INSTALL_MENU_ITEMS.length - 5)) + 5
+          ).map((item, idx, arr) => {
+            const globalIdx = Math.max(0, Math.min(tvState.installModalIndex - 2, INSTALL_MENU_ITEMS.length - 5)) + idx;
+            return (
+              <div
+                key={item}
+                style={{
+                  background: globalIdx === tvState.installModalIndex ? '#e048b1' : 'transparent',
+                  color: globalIdx === tvState.installModalIndex ? '#fff' : '#fff',
+                  fontWeight: globalIdx === tvState.installModalIndex ? 700 : 400,
+                  fontSize: 14,
+                  padding: '7px 16px',
+                  borderRadius: 7,
+                  margin: '2px 7px',
+                  transition: 'background 0.2s, box-shadow 0.2s, border 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  letterSpacing: 0.2,
+                }}
+              >
+                {item}
+              </div>
+            );
+          })}
+        </div>
+      )}
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
@@ -402,7 +644,7 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
               ) || undefined,
             }}
           >
-            {React.cloneElement(app.icon, { size: 36 })}
+            {React.cloneElement(app.icon, { size: 70 })}
             <span style={{ fontSize: 13, marginTop: 4, textAlign: "center", textShadow: "0 1px 2px #000a" }}>{app.name}</span>
           </div>
         ))}
@@ -416,41 +658,70 @@ export default function TVScreen({ panelBtnFromRemote, highlight }: { panelBtnFr
           left: 0, right: 0, top: 0, bottom: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           zIndex: 100,
-          background: 'rgba(10,20,40,0.32)',
+          background: 'radial-gradient(ellipse at 60% 40%, #2563eb55 0%, #181c20cc 100%)',
+          boxShadow: '0 0 0 9999px rgba(10,20,40,0.45)',
+          animation: 'fade-in-modal 0.5s cubic-bezier(.4,0,.2,1)',
         }}>
           <div style={{
             background: 'linear-gradient(135deg, #23272e 60%, #181c20 100%)',
-            border: '2px solid #fff',
-            borderRadius: 14,
-            boxShadow: '0 8px 32px #000b, 0 2px 8px #2227',
-            minWidth: 320,
-            maxWidth: 380,
-            padding: '28px 32px 22px 32px',
+            border: '2.5px solid #00eaff',
+            borderRadius: 22,
+            boxShadow: '0 12px 48px #00eaff55, 0 2px 8px #2227',
+            minWidth: 420,
+            maxWidth: 540,
+            padding: '44px 48px 36px 48px',
             display: 'flex', flexDirection: 'column', alignItems: 'center',
+            position: 'relative',
+            animation: 'modal-pop 0.6s cubic-bezier(.4,0,.2,1)',
           }}>
-            <div style={{ color: '#fff', fontWeight: 700, fontSize: 20, marginBottom: 10, letterSpacing: 0.5 }}>Подтверждение</div>
-            <div style={{ color: '#fff', fontSize: 15, marginBottom: 18, textAlign: 'center', lineHeight: 1.5 }}>
+            <div style={{ color: '#fff', fontWeight: 800, fontSize: 28, marginBottom: 18, letterSpacing: 0.5, textShadow: '0 2px 12px #00eaff88', marginTop: 18 }}>Подтверждение</div>
+            <div style={{ color: '#fff', fontSize: 19, marginBottom: 28, textAlign: 'center', lineHeight: 1.6, fontWeight: 500 }}>
               Удалить выбранные каналы?<br />Это действие нельзя отменить.
             </div>
-            <div style={{ display: 'flex', gap: 18, marginTop: 8 }}>
+            <div style={{ display: 'flex', gap: 28, marginTop: 12 }}>
               <button onClick={handleDeleteCancel} style={{
                 background: 'linear-gradient(135deg, #222 60%, #444 100%)',
-                color: '#fff', border: '1.5px solid #888', borderRadius: 7,
-                fontWeight: 600, fontSize: 15, padding: '7px 22px', cursor: 'pointer',
-                boxShadow: '0 2px 8px #0004',
-                transition: 'background 0.15s',
+                color: '#fff', border: '2px solid #00eaff', borderRadius: 9,
+                fontWeight: 700, fontSize: 18, padding: '11px 32px', cursor: 'pointer',
+                boxShadow: '0 2px 12px #00eaff44',
+                transition: 'background 0.18s',
               }}>Отмена</button>
               <button onClick={handleDeleteConfirm} style={{
                 background: 'linear-gradient(135deg, #ff1744 60%, #b71c1c 100%)',
-                color: '#fff', border: '1.5px solid #ff1744', borderRadius: 7,
-                fontWeight: 700, fontSize: 15, padding: '7px 22px', cursor: 'pointer',
-                boxShadow: '0 2px 12px #ff174488',
-                transition: 'background 0.15s',
+                color: '#fff', border: '2px solid #ff1744', borderRadius: 9,
+                fontWeight: 800, fontSize: 18, padding: '11px 32px', cursor: 'pointer',
+                boxShadow: '0 2px 18px #ff174488',
+                transition: 'background 0.18s',
               }}>Удалить</button>
             </div>
+            {/* Неоновое свечение */}
+            <div style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: 420,
+              height: 180,
+              zIndex: -1,
+              pointerEvents: 'none',
+              filter: 'blur(48px)',
+              opacity: 0.35,
+              background: 'radial-gradient(ellipse at center, #00eaff 0%, #2563eb 60%, transparent 100%)',
+            }} />
           </div>
+          <style>{`
+            @keyframes fade-in-modal {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes modal-pop {
+              0% { transform: scale(0.85); opacity: 0; }
+              100% { transform: scale(1); opacity: 1; }
+            }
+          `}</style>
         </div>
       )}
     </div>
+    </RealisticTVFrame>
   );
 } 

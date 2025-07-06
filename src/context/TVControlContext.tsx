@@ -9,7 +9,12 @@ export type TVCommand =
   | 'down'
   | 'left'
   | 'right'
-  | 'open_channel_editor';
+  | 'open_channel_editor'
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5';
 
 // Количество иконок в сетке главного экрана (3 ряда по 4 иконки)
 const ICONS_GRID_ROWS = 3;
@@ -25,6 +30,16 @@ interface TVState {
   channelListOpen: boolean;
   selectedChannelIndex: number;
   channelList: { name: string; info: string }[];
+  activePanelBtn: number | null; // активная кнопка панели 1-5
+  favoriteChannels: Set<number>; // избранные каналы
+  channelsToDelete: Set<number>; // каналы для удаления
+  channelsToMove: Set<number>; // каналы для перемещения
+  channelsToSkip: Set<number>; // каналы для пропуска
+  channelsToLock: Set<number>; // каналы для блокировки
+  settingsModalOpen: boolean;
+  settingsModalIndex: number;
+  installModalOpen: boolean;
+  installModalIndex: number;
 }
 
 interface TVControlContextType {
@@ -226,6 +241,31 @@ const DEFAULT_CHANNEL_LIST = [
   { name: 'Ю ТВ', info: '' },
 ];
 
+export const SETTINGS_MENU_ITEMS = [
+  'Настройки языка',
+  'Заводские настройки',
+  'Сбросить настройки',
+  'Установка времени',
+  'Установка таймера',
+  'Настройки AB',
+  'Управления блокировкой',
+  'Настройки меню',
+  'Настройки цвета',
+  'Режим питания вкл/выкл',
+  'Настройки дисплея',
+  'Каналы Спутник+IPTV',
+  'Настройка сети',
+  'Сервер',
+  'Карта доступа',
+];
+
+export const INSTALL_MENU_ITEMS = [
+  'Установка антенны',
+  'Установка позиционера',
+  'Список спутника',
+  'Список транспондеров',
+];
+
 export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tvState, setTvState] = useState<TVState>({
     power: true,
@@ -235,18 +275,85 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     channelListOpen: false,
     selectedChannelIndex: 0,
     channelList: DEFAULT_CHANNEL_LIST,
+    activePanelBtn: null,
+    favoriteChannels: new Set(),
+    channelsToDelete: new Set(),
+    channelsToMove: new Set(),
+    channelsToSkip: new Set(),
+    channelsToLock: new Set(),
+    settingsModalOpen: false,
+    settingsModalIndex: 0,
+    installModalOpen: false,
+    installModalIndex: 0,
   });
 
   function sendCommand(cmd: TVCommand) {
     setTvState(prev => {
       if (!prev.power) return prev;
+      
+      // Обработка цифровых кнопок 1-5
+      if (['1', '2', '3', '4', '5'].includes(cmd)) {
+        const btnNumber = parseInt(cmd);
+        if (prev.channelListOpen) {
+          // Если открыт список каналов, активируем соответствующую кнопку панели
+          return { ...prev, activePanelBtn: btnNumber };
+        }
+        return prev;
+      }
+      
       // Channel List Modal
       if (prev.channelListOpen) {
         switch (cmd) {
           case 'exit':
-            return { ...prev, channelListOpen: false };
+            return { ...prev, channelListOpen: false, activePanelBtn: null };
           case 'ok':
-            // Здесь можно добавить действие выбора канала
+            // Обработка выбора канала в зависимости от активной панели
+            if (prev.activePanelBtn === 1) {
+              // Удаление каналов
+              const newChannelsToDelete = new Set(prev.channelsToDelete);
+              if (newChannelsToDelete.has(prev.selectedChannelIndex)) {
+                newChannelsToDelete.delete(prev.selectedChannelIndex);
+              } else {
+                newChannelsToDelete.add(prev.selectedChannelIndex);
+              }
+              return { ...prev, channelsToDelete: newChannelsToDelete };
+            } else if (prev.activePanelBtn === 2) {
+              // Перемещение каналов
+              const newChannelsToMove = new Set(prev.channelsToMove);
+              if (newChannelsToMove.has(prev.selectedChannelIndex)) {
+                newChannelsToMove.delete(prev.selectedChannelIndex);
+              } else {
+                newChannelsToMove.add(prev.selectedChannelIndex);
+              }
+              return { ...prev, channelsToMove: newChannelsToMove };
+            } else if (prev.activePanelBtn === 3) {
+              // Пропуск каналов
+              const newChannelsToSkip = new Set(prev.channelsToSkip);
+              if (newChannelsToSkip.has(prev.selectedChannelIndex)) {
+                newChannelsToSkip.delete(prev.selectedChannelIndex);
+              } else {
+                newChannelsToSkip.add(prev.selectedChannelIndex);
+              }
+              return { ...prev, channelsToSkip: newChannelsToSkip };
+            } else if (prev.activePanelBtn === 4) {
+              // Блокировка каналов
+              const newChannelsToLock = new Set(prev.channelsToLock);
+              if (newChannelsToLock.has(prev.selectedChannelIndex)) {
+                newChannelsToLock.delete(prev.selectedChannelIndex);
+              } else {
+                newChannelsToLock.add(prev.selectedChannelIndex);
+              }
+              return { ...prev, channelsToLock: newChannelsToLock };
+            } else if (prev.activePanelBtn === 5) {
+              // Добавление в избранное
+              const newFavorites = new Set(prev.favoriteChannels);
+              if (newFavorites.has(prev.selectedChannelIndex)) {
+                newFavorites.delete(prev.selectedChannelIndex);
+              } else {
+                newFavorites.add(prev.selectedChannelIndex);
+              }
+              return { ...prev, favoriteChannels: newFavorites };
+            }
             return prev;
           case 'up':
             return {
@@ -291,6 +398,50 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             return prev;
         }
       }
+      // Settings Modal
+      if (prev.settingsModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, settingsModalOpen: false };
+          case 'ok':
+            // Здесь можно добавить обработку выбора пункта настроек
+            return { ...prev, settingsModalOpen: false };
+          case 'up':
+            return {
+              ...prev,
+              settingsModalIndex: (prev.settingsModalIndex + SETTINGS_MENU_ITEMS.length - 1) % SETTINGS_MENU_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              settingsModalIndex: (prev.settingsModalIndex + 1) % SETTINGS_MENU_ITEMS.length,
+            };
+          default:
+            return prev;
+        }
+      }
+      // Install Modal
+      if (prev.installModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, installModalOpen: false };
+          case 'ok':
+            // Здесь можно добавить обработку выбора пункта установки
+            return { ...prev, installModalOpen: false };
+          case 'up':
+            return {
+              ...prev,
+              installModalIndex: (prev.installModalIndex + INSTALL_MENU_ITEMS.length - 1) % INSTALL_MENU_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              installModalIndex: (prev.installModalIndex + 1) % INSTALL_MENU_ITEMS.length,
+            };
+          default:
+            return prev;
+        }
+      }
       // Навигация по иконкам главного экрана
       switch (cmd) {
         case 'power':
@@ -300,6 +451,12 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         case 'ok':
           if (prev.selectedIcon === 0) {
             return { ...prev, channelEditorOpen: true, channelEditorIndex: 0 };
+          }
+          if (prev.selectedIcon === 1) {
+            return { ...prev, settingsModalOpen: true, settingsModalIndex: 0 };
+          }
+          if (prev.selectedIcon === 2) {
+            return { ...prev, installModalOpen: true, installModalIndex: 0 };
           }
           return prev;
         case 'left':
