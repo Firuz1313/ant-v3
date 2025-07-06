@@ -156,7 +156,21 @@ export default function SelectRemotePage() {
 
   return (
     <Layout showBackButton title="Пульт управления">
-      <div style={{ background: "#2563eb", minHeight: "100vh", padding: 0 }}>
+      <div style={{
+        minHeight: '100vh',
+        width: '100vw',
+        overflowX: 'hidden',
+        background: 'linear-gradient(120deg, #1e293b 0%, #2563eb 60%, #3386ff 100%)',
+        animation: 'gradient-move 12s ease-in-out infinite alternate',
+        backgroundSize: '200% 200%',
+        padding: 0
+      }}>
+        <style>{`
+          @keyframes gradient-move {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+          }
+        `}</style>
         {/* Верхнее меню */}
         <div style={{ background: "#0a1a4f", padding: "16px 0 8px 0", borderBottom: "2px solid #1e293b", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginLeft: 32 }}>
@@ -167,25 +181,37 @@ export default function SelectRemotePage() {
               <a href="/devices" style={{ color: "#fff", opacity: 0.9, fontWeight: 500, textDecoration: "none" }}>Приставки</a>
               <a href="/support" style={{ color: "#fff", opacity: 0.9, fontWeight: 500, textDecoration: "none" }}>Поддержка</a>
             </nav>
-                    </div>
+          </div>
           <div style={{ display: "flex", gap: 10, marginRight: 32 }}>
             <button style={{ background: "#2563eb", color: "#fff", border: 0, borderRadius: 16, padding: "6px 18px", fontWeight: 600, marginLeft: 4 }}>OpenBOX</button>
             <button style={{ background: "#2563eb", color: "#fff", border: 0, borderRadius: 16, padding: "6px 18px", fontWeight: 600, marginLeft: 4 }}>OpenBOX GOLD</button>
             <button style={{ background: "#2563eb", color: "#fff", border: 0, borderRadius: 16, padding: "6px 18px", fontWeight: 600, marginLeft: 4 }}>Uclan</button>
             <button style={{ background: "#2563eb", color: "#fff", border: 0, borderRadius: 16, padding: "6px 18px", fontWeight: 600, marginLeft: 4 }}>HDBox</button>
-                    </div>
-                  </div>
+          </div>
+        </div>
         {/* Контент */}
         <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", gap: 48, marginTop: 48, paddingBottom: 48 }}>
           {/* Карточка приставки */}
-          <div style={{ background: "#2563eb", border: "2px solid #fff3", borderRadius: 16, padding: 24, minWidth: 220, color: "#fff", boxShadow: "0 4px 24px #0002" }}>
+          <div style={{
+            background: 'linear-gradient(135deg, #23272e 0%, #2563eb 100%)',
+            border: '2.5px solid #3386ff',
+            borderRadius: 28,
+            padding: 32,
+            minWidth: 320,
+            maxWidth: 420,
+            color: '#fff',
+            boxShadow: '0 2px 32px #3386ff44, 0 1.5px 8px #0008',
+            marginBottom: 0,
+            marginTop: 0,
+            transition: 'box-shadow 0.25s, border-color 0.25s',
+          }}>
             <div style={{ fontWeight: 700, fontSize: 20, marginBottom: 8 }}>{selectedDevice?.name || "Openbox Gold"}</div>
             <div style={{ fontSize: 15, opacity: 0.8, marginBottom: 12 }}>{selectedDevice?.description}</div>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <span style={{ width: 10, height: 10, background: "#22c55e", borderRadius: 5, display: "inline-block" }} />
               <span style={{ fontSize: 14, color: "#a7f3d0" }}>Подключено</span>
-                    </div>
-                      </div>
+            </div>
+          </div>
           {/* Телевизор */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <TVScreen panelBtnFromRemote={panelBtnFromRemote} />

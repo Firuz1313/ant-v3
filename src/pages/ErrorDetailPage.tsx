@@ -131,10 +131,10 @@ export default function ErrorDetailPage() {
       <div className="w-full flex justify-center items-center">
         <div className="tv-remote-container">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <TVScreen />
-          </div>
+          <TVScreen />
+        </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
-            <RemoteControl />
+          <RemoteControl />
           </div>
         </div>
       </div>
