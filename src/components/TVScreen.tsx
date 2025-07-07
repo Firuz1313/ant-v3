@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { FaYoutube, FaCog, FaWifi, FaCloud, FaTv, FaAppStore, FaInfoCircle, FaMagic, FaSatelliteDish, FaCogs } from "react-icons/fa";
 import { MdSettings, MdApps, MdUpdate, MdInfo, MdNetworkWifi } from "react-icons/md";
-import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST, SETTINGS_MENU_ITEMS, INSTALL_MENU_ITEMS } from '../context/TVControlContext';
+import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST, SETTINGS_MENU_ITEMS, INSTALL_MENU_ITEMS, LANGUAGE_SETTINGS_ITEMS, AB_SETTINGS_ITEMS, ACCESS_CARD_ITEMS } from '../context/TVControlContext';
 import RealisticTVFrame from './RealisticTVFrame';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
+import ChannelListModal from './ChannelListModal';
 
 const IOSSettingsIcon = (
   <span style={{
@@ -52,9 +53,297 @@ function AIGlobe3D() {
   );
 }
 
+const ConaxInfoModal = ({ onClose }: { onClose: () => void }) => {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '/');
+  const timeStr = now.toTimeString().slice(0, 5);
+  return (
+    <div style={{
+      position: 'absolute',
+      left: 32,
+      top: 32,
+      right: 32,
+      bottom: 64,
+      zIndex: 30,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      pointerEvents: 'auto',
+    }}>
+      <div style={{
+        background: '#0a1a2a',
+        borderRadius: 16,
+        border: '2px solid #fff',
+        boxShadow: '0 4px 24px #000a',
+        width: 820,
+        minHeight: 380,
+        padding: '18px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Верхняя панель — как у ChannelListModal */}
+        <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <FaCog size={34} color="#fff" style={{marginRight: 14}} />
+            <span style={{ fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Conax Information</span>
+          </div>
+          <span style={{ color: '#fff', fontSize: 13 }}>{dateStr} {timeStr}</span>
+        </div>
+        {/* Таблица */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, background: '#102040' }}>
+          <div style={{ width: 700, margin: '0 auto', marginTop: 36, marginBottom: 36, border: 'none' }}>
+            {[
+              ['Interface Version', '0x40'],
+              ['Card Number', '021 0001 0241-4'],
+              ['Number of Sessions', '2'],
+              ['Настройки языка', '44'],
+              ['CA_SYS_ID', '0x0b00'],
+            ].map(([label, value]) => (
+              <div key={label} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', fontSize: 20, color: '#fff', minHeight: 44, height: 44, borderBottom: '1px solid #335', fontWeight: 500 }}>
+                <span style={{ flex: 1, textAlign: 'left', paddingLeft: 32 }}>{label}</span>
+                <span style={{ flex: 1, textAlign: 'right', paddingRight: 32 }}>{value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SubscriptionStatusModal = ({ onClose }: { onClose: () => void }) => {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '/');
+  const timeStr = now.toTimeString().slice(0, 5);
+  React.useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [onClose]);
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: 32,
+        top: 32,
+        right: 32,
+        bottom: 64,
+        zIndex: 30,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        pointerEvents: 'auto',
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="subscription-status-title"
+      tabIndex={0}
+    >
+      <div style={{
+        background: '#0a1a2a',
+        borderRadius: 16,
+        border: '2px solid #fff',
+        boxShadow: '0 4px 24px #000a',
+        width: 820,
+        minHeight: 380,
+        padding: '18px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Верхняя панель — как у ChannelListModal */}
+        <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <FaCog size={34} color="#fff" style={{marginRight: 14}} />
+            <span id="subscription-status-title" style={{ fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Subscription Status</span>
+          </div>
+          <span style={{ color: '#fff', fontSize: 13 }}>{dateStr} {timeStr}</span>
+        </div>
+        {/* Таблица */}
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', flex: 1, background: '#102040' }}>
+          <div style={{ width: 700, margin: '0 auto', marginTop: 36, marginBottom: 36, border: 'none' }}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', fontSize: 18, color: '#fff', minHeight: 44, height: 44, borderBottom: '1px solid #335', fontWeight: 700 }}>
+              <span style={{ flex: 1, textAlign: 'left', paddingLeft: 32 }}>Название</span>
+              <span style={{ flex: 1, textAlign: 'center' }}>Время пуска</span>
+              <span style={{ flex: 1, textAlign: 'center' }}>End Time</span>
+              <span style={{ flex: 1, textAlign: 'right', paddingRight: 32 }}>Entitlement</span>
+            </div>
+            {[
+              ['АНТ', '2025.05.20', '2027.01.31', ''],
+              ['АНТ', '2025.05.20', '2027.01.31', ''],
+            ].map(([name, start, end, ent], i) => (
+              <div key={i} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', fontSize: 18, color: '#ffe600', minHeight: 44, height: 44, borderBottom: '1px solid #335', fontWeight: 700 }}>
+                <span style={{ flex: 1, textAlign: 'left', paddingLeft: 32 }}>{name}</span>
+                <span style={{ flex: 1, textAlign: 'center' }}>{start}</span>
+                <span style={{ flex: 1, textAlign: 'center' }}>{end}</span>
+                <span style={{ flex: 1, textAlign: 'right', paddingRight: 32 }}>{ent}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const antennaOptions = {
+  satellites: ['Express 80', 'Yamal 401', 'ABS 2A', 'KazSat 3'],
+  lnbPower: ['18V', '13V', 'Выкл.'],
+  lnbFreq: ['Universal1(9750/10600)', 'Universal2(9750/10750)', 'Single(10750)'],
+  diseqc10: ['порт 1', 'порт 2', 'порт 3', 'порт 4'],
+  diseqc11: ['Выкл.', 'порт 1', 'порт 2', 'порт 3', 'порт 4'],
+  tp: ['11799 / H / 31999', '12049 / H / 31999', '12188 / V / 27500'],
+};
+
+const AntennaSetupModal = ({ onClose, selectedIndex, onSelect, values, onValueChange }: {
+  onClose: () => void,
+  selectedIndex: number,
+  onSelect: (idx: number) => void,
+  values: number[],
+  onValueChange: (idx: number, dir: 'left' | 'right') => void,
+}) => {
+  const now = new Date();
+  const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '/');
+  const timeStr = now.toTimeString().slice(0, 5);
+  const items = [
+    { label: 'Спутник', options: antennaOptions.satellites },
+    { label: 'Питание LNB', options: antennaOptions.lnbPower },
+    { label: 'Частота LNB', options: antennaOptions.lnbFreq },
+    { label: '22K', value: 'Авто', disabled: true },
+    { label: 'DiSEqC 1.0', options: antennaOptions.diseqc10 },
+    { label: 'DiSEqC 1.1', options: antennaOptions.diseqc11 },
+    { label: 'TP', options: antennaOptions.tp },
+    { label: 'Начать поиск', value: 'Спутник' },
+  ];
+  return (
+    <div style={{
+      position: 'absolute',
+      left: 32,
+      top: 32,
+      right: 32,
+      bottom: 64,
+      zIndex: 30,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      pointerEvents: 'auto',
+    }}>
+      <div style={{
+        background: '#0a1a2a',
+        borderRadius: 16,
+        border: '2px solid #fff',
+        boxShadow: '0 4px 24px #000a',
+        width: 820,
+        minHeight: 200,
+        padding: '8px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Верхняя панель */}
+        <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <FaSatelliteDish size={22} color="#fff" style={{marginRight: 8}} />
+            <span style={{ fontSize: 15, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Установка антенны</span>
+          </div>
+          <span style={{ color: '#fff', fontSize: 12 }}>{dateStr} {timeStr}</span>
+        </div>
+        {/* Основной flex-контейнер модалки */}
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 60, background: '#102040', justifyContent: 'center', alignItems: 'center', overflowY: 'auto' }}>
+          {/* Таблица настроек */}
+          <div style={{ width: 700, margin: '0 auto', marginTop: 8, marginBottom: 8 }}>
+            {items.map((item, idx) => (
+              <div
+                key={item.label}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: idx === selectedIndex ? '#e048b1' : 'transparent',
+                  color: idx === selectedIndex ? '#fff' : item.disabled ? '#888' : '#fff',
+                  fontWeight: idx === selectedIndex ? 700 : 400,
+                  fontSize: 15,
+                  borderRadius: 7,
+                  margin: '2px 0',
+                  minHeight: 28,
+                  height: 28,
+                  transition: 'background 0.15s',
+                  cursor: item.disabled ? 'not-allowed' : 'pointer',
+                  opacity: item.disabled ? 0.5 : 1,
+                }}
+                onClick={() => !item.disabled && onSelect(idx)}
+              >
+                <span style={{ flex: 1, paddingLeft: 20, textAlign: 'left', fontSize: 15 }}>{item.label}</span>
+                {item.options ? (
+                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 20, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
+                    {idx === selectedIndex && <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'left')}>&lt;</span>}
+                    <span style={{ minWidth: 80, textAlign: 'center', flex: 1 }}>{item.options[values[idx] ?? 0]}</span>
+                    {idx === selectedIndex && <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'right')}>&gt;</span>}
+                  </span>
+                ) : (
+                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 20, fontSize: 15 }}>{item.value}</span>
+                )}
+              </div>
+            ))}
+          </div>
+          {/* Уровень и Сигнал */}
+          <div style={{ width: 700, margin: '0 auto', marginBottom: 6 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
+              <span style={{ color: '#fff', fontSize: 13, width: 90 }}>Уровень</span>
+              <div style={{ flex: 1, height: 12, background: '#1a2a4a', borderRadius: 8, marginLeft: 8, marginRight: 8, overflow: 'hidden', border: '1.5px solid #3386ff' }}>
+                <div style={{ width: '83%', height: '100%', background: 'linear-gradient(90deg, #1e90ff 60%, #00eaff 100%)', borderRadius: 8 }} />
+              </div>
+              <span style={{ color: '#fff', fontSize: 13, width: 38, textAlign: 'right' }}>83%</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ color: '#fff', fontSize: 13, width: 90 }}>Сигнал</span>
+              <div style={{ flex: 1, height: 12, background: '#1a2a4a', borderRadius: 8, marginLeft: 8, marginRight: 8, overflow: 'hidden', border: '1.5px solid #3fcf4a' }}>
+                <div style={{ width: '79%', height: '100%', background: 'linear-gradient(90deg, #b6ff00 60%, #3fcf4a 100%)', borderRadius: 8 }} />
+              </div>
+              <span style={{ color: '#fff', fontSize: 13, width: 38, textAlign: 'right' }}>79%</span>
+            </div>
+          </div>
+        </div>
+        {/* Мини-футер — пустой, как у ChannelListModal */}
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          bottom: 2,
+          zIndex: 40,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: 13,
+          padding: '10px 36px',
+          pointerEvents: 'none',
+          background: '#0a1a2a',
+          borderRadius: 12,
+          width: 800,
+          margin: '0 auto',
+          boxSizing: 'border-box',
+          boxShadow: '0 2px 16px #0006',
+          marginTop: 0,
+        }}>
+          {/* Пусто */}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, height = 480 }: { panelBtnFromRemote?: number | null, highlight?: any, width?: number, height?: number }) {
   const { tvState, sendCommand } = useTVControl();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [antennaIndex, setAntennaIndex] = React.useState(0);
+  const [antennaValues, setAntennaValues] = React.useState([0,0,0,0,0,0,0,0]);
 
   React.useEffect(() => {
     if (panelBtnFromRemote && tvState.channelListOpen) {
@@ -117,6 +406,53 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
 
   // Новая подсказка для редактора каналов
   const showChannelEditorHint = highlight && highlight.step === 0 && highlight.errorKey === 'channel-editor' && highlight.subKey === 'delete';
+
+  React.useEffect(() => {
+    if (!tvState.antennaSetupModalOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowUp') setAntennaIndex(i => (i + 8 - 1) % 8);
+      if (e.key === 'ArrowDown') setAntennaIndex(i => (i + 1) % 8);
+      if (e.key === 'ArrowLeft') setAntennaValues(vals => {
+        const idx = antennaIndex;
+        const item = [
+          antennaOptions.satellites,
+          antennaOptions.lnbPower,
+          antennaOptions.lnbFreq,
+          null,
+          antennaOptions.diseqc10,
+          antennaOptions.diseqc11,
+          antennaOptions.tp,
+          null,
+        ][idx];
+        if (!item) return vals;
+        const len = item.length;
+        const newVals = [...vals];
+        newVals[idx] = (newVals[idx] + len - 1) % len;
+        return newVals;
+      });
+      if (e.key === 'ArrowRight') setAntennaValues(vals => {
+        const idx = antennaIndex;
+        const item = [
+          antennaOptions.satellites,
+          antennaOptions.lnbPower,
+          antennaOptions.lnbFreq,
+          null,
+          antennaOptions.diseqc10,
+          antennaOptions.diseqc11,
+          antennaOptions.tp,
+          null,
+        ][idx];
+        if (!item) return vals;
+        const len = item.length;
+        const newVals = [...vals];
+        newVals[idx] = (newVals[idx] + 1) % len;
+        return newVals;
+      });
+      if (e.key === 'Enter') {/* можно добавить действие по OK */}
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [tvState.antennaSetupModalOpen, antennaIndex]);
 
   return (
     <RealisticTVFrame width={width} height={height}>
@@ -189,7 +525,7 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
                           onClick={() => handlePanelBtnClick(idx)}
                         >
                           <span style={{ fontSize: 15, fontWeight: 700, marginRight: 3 }}>{num}</span>
-                          <span style={{ fontSize: 15, marginRight: 3 }}>{["🗑️","↔️","⏭️","🔒","★"][idx]}</span>
+                          <span style={{ fontSize: 15, marginRight: 3 }}>{["️","↔️","⏭️","🔒","★"][idx]}</span>
                           <span style={{ fontSize: 11, fontWeight: 500, color: '#fff' }}>{["Del","Move","Skip","Lock","Fav"][idx]}</span>
                         </button>
                       </div>
@@ -610,6 +946,123 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
               </div>
             );
           })}
+        </div>
+      )}
+      {tvState.languageSettingsModalOpen && (
+        <ChannelListModal
+          title="Настройки языка"
+          items={LANGUAGE_SETTINGS_ITEMS}
+          selectedIndex={tvState.languageSettingsModalIndex}
+          values={tvState.languageSettingsValues}
+          onSelect={(idx) => sendCommand(idx > tvState.languageSettingsModalIndex ? 'down' : 'up')}
+          onClose={() => sendCommand('exit')}
+          onValueChange={(idx, dir) => sendCommand(dir)}
+        />
+      )}
+      {tvState.abSettingsModalOpen && (
+        <ChannelListModal
+          title="Настройка AB"
+          items={AB_SETTINGS_ITEMS}
+          selectedIndex={tvState.abSettingsModalIndex}
+          values={tvState.abSettingsValues}
+          onSelect={(idx) => sendCommand(idx > tvState.abSettingsModalIndex ? 'down' : 'up')}
+          onClose={() => sendCommand('exit')}
+          onValueChange={(idx, dir) => sendCommand(dir)}
+        />
+      )}
+      {tvState.accessCardModalOpen && (
+        <ChannelListModal
+          title="Карта доступа"
+          items={ACCESS_CARD_ITEMS}
+          selectedIndex={tvState.accessCardModalIndex}
+          onSelect={(idx) => sendCommand(idx > tvState.accessCardModalIndex ? 'down' : 'up')}
+          onClose={() => sendCommand('exit')}
+          oneColumn={true}
+        />
+      )}
+      {tvState.conaxInfoModalOpen && (
+        <ConaxInfoModal onClose={() => sendCommand('exit')} />
+      )}
+      {tvState.subscriptionStatusModalOpen && (
+        <SubscriptionStatusModal onClose={() => sendCommand('exit')} />
+      )}
+      {tvState.antennaSetupModalOpen && (
+        <div style={{
+          position: 'absolute',
+          left: 0,
+          top: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 30,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'none',
+        }}>
+          {/* Модалка по центру */}
+          <div style={{
+            flex: '0 0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            pointerEvents: 'auto',
+          }}>
+            <AntennaSetupModal
+              onClose={() => sendCommand('exit')}
+              selectedIndex={antennaIndex}
+              onSelect={setAntennaIndex}
+              values={antennaValues}
+              onValueChange={(idx, dir) => {
+                setAntennaValues(vals => {
+                  const newVals = [...vals];
+                  const item = [
+                    antennaOptions.satellites,
+                    antennaOptions.lnbPower,
+                    antennaOptions.lnbFreq,
+                    null,
+                    antennaOptions.diseqc10,
+                    antennaOptions.diseqc11,
+                    antennaOptions.tp,
+                    null,
+                  ][idx];
+                  if (!item) return vals;
+                  const len = item.length;
+                  if (dir === 'left') newVals[idx] = (newVals[idx] + len - 1) % len;
+                  else newVals[idx] = (newVals[idx] + 1) % len;
+                  return newVals;
+                });
+              }}
+            />
+          </div>
+          {/* Мини-футер строго отдельно, всегда внизу */}
+          <div style={{
+            flex: '0 0 auto',
+            width: 800,
+            margin: '0 auto',
+            position: 'relative',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            zIndex: 31,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            fontSize: 13,
+            padding: '10px 36px',
+            pointerEvents: 'none',
+            background: '#0a1a2a',
+            borderRadius: 12,
+            boxSizing: 'border-box',
+            boxShadow: '0 2px 16px #0006',
+            color: '#fff',
+            marginTop: 24,
+          }}>
+            <span style={{marginRight: 32}}><span style={{color:'#ff1744'}}>●</span> Список спутник</span>
+            <span style={{marginRight: 32}}><span style={{color:'#00e676'}}>●</span> Список транспо</span>
+            <span><span style={{color:'#2979ff'}}>●</span> Поиск T2-MI</span>
+          </div>
         </div>
       )}
       <div style={{

@@ -40,6 +40,17 @@ interface TVState {
   settingsModalIndex: number;
   installModalOpen: boolean;
   installModalIndex: number;
+  languageSettingsModalOpen: boolean;
+  languageSettingsModalIndex: number;
+  languageSettingsValues: number[];
+  abSettingsModalOpen: boolean;
+  abSettingsModalIndex: number;
+  abSettingsValues: number[];
+  accessCardModalOpen: boolean;
+  accessCardModalIndex: number;
+  conaxInfoModalOpen: boolean;
+  subscriptionStatusModalOpen: boolean;
+  antennaSetupModalOpen: boolean;
 }
 
 interface TVControlContextType {
@@ -266,6 +277,30 @@ export const INSTALL_MENU_ITEMS = [
   'Список транспондеров',
 ];
 
+export const LANGUAGE_SETTINGS_ITEMS = [
+  { label: 'Язык меню', options: ['Русский', 'Английский', 'Французский'], default: 0 },
+  { label: 'Первый Язык аудио', options: ['Русский', 'Английский', 'Французский'], default: 0 },
+  { label: 'Второй Язык аудио', options: ['Русский', 'Английский', 'Французский'], default: 0 },
+  { label: 'Первый язык субтитров', options: ['Выкл.', 'Русский', 'Английский', 'Французский'], default: 0 },
+  { label: 'Второй язык субтитров', options: ['Авто', 'Русский', 'Английский', 'Французский'], default: 0 },
+  { label: 'EPG язык', options: ['Все', 'Русский', 'Английский', 'Французский'], default: 0 },
+];
+
+export const AB_SETTINGS_ITEMS = [
+  { label: 'ТВ стандарт', options: ['1080p@60Hz', '1080i@50Hz', '720p@60Hz', '720p@50Hz', '576p@50Hz', '480p@60Hz'], default: 0 },
+  { label: 'Соотношение ТВ', options: ['16:9', '4:3', 'Авто'], default: 0 },
+  { label: 'Аспект режим', options: ['Авто', '16:9', '4:3'], default: 0 },
+  { label: 'Громкость', options: ['Все каналы', 'Текущий канал'], default: 0 },
+  { label: 'SPDIF/HDMI', options: ['AC3 Авто', 'PCM', 'Выкл.'], default: 0 },
+];
+
+export const ACCESS_CARD_ITEMS = [
+  { label: 'Conax Information' },
+  { label: 'Change PIN' },
+  { label: 'Matural_Rate' },
+  { label: 'Subscription Status' },
+];
+
 export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [tvState, setTvState] = useState<TVState>({
     power: true,
@@ -285,6 +320,17 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     settingsModalIndex: 0,
     installModalOpen: false,
     installModalIndex: 0,
+    languageSettingsModalOpen: false,
+    languageSettingsModalIndex: 0,
+    languageSettingsValues: [0,0,0,0,0,0],
+    abSettingsModalOpen: false,
+    abSettingsModalIndex: 0,
+    abSettingsValues: [0,0,0,0,0],
+    accessCardModalOpen: false,
+    accessCardModalIndex: 0,
+    conaxInfoModalOpen: false,
+    subscriptionStatusModalOpen: false,
+    antennaSetupModalOpen: false,
   });
 
   function sendCommand(cmd: TVCommand) {
@@ -404,7 +450,16 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
           case 'exit':
             return { ...prev, settingsModalOpen: false };
           case 'ok':
-            // Здесь можно добавить обработку выбора пункта настроек
+            if (prev.settingsModalIndex === 0) {
+              return { ...prev, settingsModalOpen: false, languageSettingsModalOpen: true, languageSettingsModalIndex: 0 };
+            }
+            if (prev.settingsModalIndex === 5) {
+              return { ...prev, settingsModalOpen: false, abSettingsModalOpen: true, abSettingsModalIndex: 0 };
+            }
+            if (prev.settingsModalIndex === 14) {
+              return { ...prev, settingsModalOpen: false, accessCardModalOpen: true, accessCardModalIndex: 0 };
+            }
+            // Здесь можно добавить обработку выбора других пунктов настроек
             return { ...prev, settingsModalOpen: false };
           case 'up':
             return {
@@ -420,13 +475,51 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
             return prev;
         }
       }
+      // Language Settings Modal
+      if (prev.languageSettingsModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, languageSettingsModalOpen: false };
+          case 'ok':
+            // Здесь можно добавить обработку выбора языка
+            return prev;
+          case 'up':
+            return {
+              ...prev,
+              languageSettingsModalIndex: (prev.languageSettingsModalIndex + LANGUAGE_SETTINGS_ITEMS.length - 1) % LANGUAGE_SETTINGS_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              languageSettingsModalIndex: (prev.languageSettingsModalIndex + 1) % LANGUAGE_SETTINGS_ITEMS.length,
+            };
+          case 'left': {
+            const idx = prev.languageSettingsModalIndex;
+            const opts = LANGUAGE_SETTINGS_ITEMS[idx].options;
+            const newVals = [...prev.languageSettingsValues];
+            newVals[idx] = (newVals[idx] + opts.length - 1) % opts.length;
+            return { ...prev, languageSettingsValues: newVals };
+          }
+          case 'right': {
+            const idx = prev.languageSettingsModalIndex;
+            const opts = LANGUAGE_SETTINGS_ITEMS[idx].options;
+            const newVals = [...prev.languageSettingsValues];
+            newVals[idx] = (newVals[idx] + 1) % opts.length;
+            return { ...prev, languageSettingsValues: newVals };
+          }
+          default:
+            return prev;
+        }
+      }
       // Install Modal
       if (prev.installModalOpen) {
         switch (cmd) {
           case 'exit':
             return { ...prev, installModalOpen: false };
           case 'ok':
-            // Здесь можно добавить обработку выбора пункта установки
+            if (prev.installModalIndex === 0) {
+              return { ...prev, installModalOpen: false, antennaSetupModalOpen: true };
+            }
             return { ...prev, installModalOpen: false };
           case 'up':
             return {
@@ -438,6 +531,98 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
               ...prev,
               installModalIndex: (prev.installModalIndex + 1) % INSTALL_MENU_ITEMS.length,
             };
+          default:
+            return prev;
+        }
+      }
+      // Antenna Setup Modal
+      if (prev.antennaSetupModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, antennaSetupModalOpen: false, installModalOpen: true, installModalIndex: 0 };
+          default:
+            return prev;
+        }
+      }
+      // AB Settings Modal
+      if (prev.abSettingsModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, abSettingsModalOpen: false };
+          case 'ok':
+            // Здесь можно добавить обработку выбора
+            return prev;
+          case 'up':
+            return {
+              ...prev,
+              abSettingsModalIndex: (prev.abSettingsModalIndex + AB_SETTINGS_ITEMS.length - 1) % AB_SETTINGS_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              abSettingsModalIndex: (prev.abSettingsModalIndex + 1) % AB_SETTINGS_ITEMS.length,
+            };
+          case 'left': {
+            const idx = prev.abSettingsModalIndex;
+            const opts = AB_SETTINGS_ITEMS[idx].options;
+            const newVals = [...prev.abSettingsValues];
+            newVals[idx] = (newVals[idx] + opts.length - 1) % opts.length;
+            return { ...prev, abSettingsValues: newVals };
+          }
+          case 'right': {
+            const idx = prev.abSettingsModalIndex;
+            const opts = AB_SETTINGS_ITEMS[idx].options;
+            const newVals = [...prev.abSettingsValues];
+            newVals[idx] = (newVals[idx] + 1) % opts.length;
+            return { ...prev, abSettingsValues: newVals };
+          }
+          default:
+            return prev;
+        }
+      }
+      // Access Card Modal
+      if (prev.accessCardModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, accessCardModalOpen: false };
+          case 'ok':
+            // Открытие conaxInfoModalOpen при выборе первого пункта в accessCardModalOpen (accessCardModalIndex === 0 и OK)
+            if (prev.accessCardModalIndex === 0) {
+              return { ...prev, accessCardModalOpen: false, conaxInfoModalOpen: true };
+            }
+            // Открытие subscriptionStatusModalOpen при выборе последнего пункта в accessCardModalOpen (accessCardModalIndex === 3 и OK)
+            if (prev.accessCardModalIndex === 3) {
+              return { ...prev, accessCardModalOpen: false, subscriptionStatusModalOpen: true };
+            }
+            return prev;
+          case 'up':
+            return {
+              ...prev,
+              accessCardModalIndex: (prev.accessCardModalIndex + ACCESS_CARD_ITEMS.length - 1) % ACCESS_CARD_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              accessCardModalIndex: (prev.accessCardModalIndex + 1) % ACCESS_CARD_ITEMS.length,
+            };
+          default:
+            return prev;
+        }
+      }
+      // Conax Info Modal
+      if (prev.conaxInfoModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, conaxInfoModalOpen: false, accessCardModalOpen: true, accessCardModalIndex: 0 };
+          default:
+            return prev;
+        }
+      }
+      // Subscription Status Modal
+      if (prev.subscriptionStatusModalOpen) {
+        switch (cmd) {
+          case 'exit':
+            return { ...prev, subscriptionStatusModalOpen: false, accessCardModalOpen: true, accessCardModalIndex: 3 };
           default:
             return prev;
         }
