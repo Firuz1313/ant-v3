@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaYoutube, FaCog, FaWifi, FaCloud, FaTv, FaAppStore, FaInfoCircle, FaMagic, FaSatelliteDish, FaCogs } from "react-icons/fa";
 import { MdSettings, MdApps, MdUpdate, MdInfo, MdNetworkWifi } from "react-icons/md";
 import { useTVControl, CHANNEL_EDITOR_ITEMS_LIST, SETTINGS_MENU_ITEMS, INSTALL_MENU_ITEMS, LANGUAGE_SETTINGS_ITEMS, AB_SETTINGS_ITEMS, ACCESS_CARD_ITEMS } from '../context/TVControlContext';
+import { DEFAULT_CHANNEL_LIST } from '../context/TVControlContext';
 import RealisticTVFrame from './RealisticTVFrame';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Stars } from '@react-three/drei';
 import ChannelListModal from './ChannelListModal';
 import { ANTENNA_SETUP_ITEMS } from '../data/antennaSetup';
+import { SEARCH_SETTINGS_ITEMS } from '../data/searchSettings';
 
 const IOSSettingsIcon = (
   <span style={{
@@ -33,6 +35,11 @@ const apps = [
   { name: "Сеть Wi-Fi", icon: <MdNetworkWifi color="#2196f3" size={70} /> },
   { name: "Оператор", icon: <FaWifi color="#00e676" size={70} /> },
   { name: "Информация", icon: <MdInfo color="#fff" size={70} /> },
+];
+
+const RADIO_CHANNELS = [
+  'Радио 1', 'Радио 2', 'Радио 3', 'Радио 4', 'Радио 5', 'Радио 6',
+  'Радио 7', 'Радио 8', 'Радио 9', 'Радио 10', 'Радио 11', 'Радио 12',
 ];
 
 function AIGlobe3D() {
@@ -192,6 +199,236 @@ const SubscriptionStatusModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
+function ChannelSearchProgressModal({ progress, tvList, radioList, onClose }: { progress: number, tvList: string[], radioList: string[], onClose: () => void }) {
+  // Имитация поиска: увеличиваем прогресс и добавляем каналы
+  const tvListContainerRef = React.useRef<HTMLDivElement>(null);
+  const radioListContainerRef = React.useRef<HTMLDivElement>(null);
+  const [showCompletionModal, setShowCompletionModal] = React.useState(false);
+  const { sendCommand } = useTVControl();
+  
+  React.useEffect(() => {
+    if (progress >= 100) {
+      // Когда прогресс достигает 100%, показываем модальное окно завершения
+      setShowCompletionModal(true);
+      return;
+    }
+    
+    const timer = setTimeout(() => {
+      const nextProgress = Math.min(progress + 0.5, 100); // Ускорил до 0.5% за тик для быстрой демонстрации
+      
+      // Берем все каналы от 0 до 182 (или до конца списка, если он короче)
+      const maxChannels = Math.min(182, DEFAULT_CHANNEL_LIST.length);
+      const tvCount = Math.floor((nextProgress / 100) * maxChannels);
+      const radioCount = Math.floor((nextProgress / 100) * RADIO_CHANNELS.length);
+      
+      const nextTV = DEFAULT_CHANNEL_LIST.slice(0, tvCount).map(ch => ch.name);
+      const nextRadio = RADIO_CHANNELS.slice(0, radioCount);
+      
+      window.dispatchEvent(new CustomEvent('channel-search-progress', { detail: { progress: nextProgress, tv: nextTV, radio: nextRadio } }));
+    }, 100); // 100мс на тик
+    return () => clearTimeout(timer);
+  }, [progress]);
+  
+  // Автоматическая прокрутка списков к последнему элементу
+  React.useEffect(() => {
+    if (tvListContainerRef.current && tvList.length > 0) {
+      tvListContainerRef.current.scrollTop = tvListContainerRef.current.scrollHeight;
+    }
+    if (radioListContainerRef.current && radioList.length > 0) {
+      radioListContainerRef.current.scrollTop = radioListContainerRef.current.scrollHeight;
+    }
+  }, [tvList.length, radioList.length]);
+
+  // Обработчик кнопки "Хорошо" в модальном окне завершения
+  const handleCompletionOk = () => {
+    setShowCompletionModal(false);
+    onClose();
+    
+    // Перенаправление на экран установки антенны
+    // Сначала закрываем текущие модальные окна и открываем экран установки
+    sendCommand({ type: 'custom', action: 'openInstall' });
+    
+    // Затем открываем подменю установки антенны с небольшой задержкой
+    setTimeout(() => {
+      sendCommand({ type: 'custom', action: 'openAntennaSetup' });
+    }, 100);
+  };
+
+  function SolidBar({ percent, color, height = 16, border = '#fff', bg = '#1a2a4a', style = {} }: { percent: number, color: string, height?: number, border?: string, bg?: string, style?: React.CSSProperties }) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', height, background: bg, borderRadius: 7, border: `1.5px solid ${border}`, overflow: 'hidden', minWidth: 0, flex: 1, ...style }}>
+        <div style={{ width: `${percent}%`, height: '100%', background: color, borderRadius: 7, transition: 'width 0.2s' }} />
+      </div>
+    );
+  }
+  function SegmentedBar({ percent, color, segments = 24, height = 22, bg = '#1a2a4a', border = '#00e676', activeColor }: { percent: number, color: string, segments?: number, height?: number, bg?: string, border?: string, activeColor?: string }) {
+    const active = Math.round((percent / 100) * segments);
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', height, background: bg, borderRadius: 7, border: `1.5px solid ${border}`, overflow: 'hidden', minWidth: 0, flex: 1, margin: '0 10px', boxShadow: '0 0 8px #00e67688' }}>
+        {Array.from({ length: segments }).map((_, i) => (
+          <div key={i} style={{
+            flex: 1,
+            height: '100%',
+            background: i < active ? (activeColor || color) : 'transparent',
+            borderRight: i < segments - 1 ? '1px solid #222' : 'none',
+            transition: 'background 0.2s',
+          }} />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div style={{
+      position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 200,
+      width: 820, height: 410, maxHeight: 410, background: '#0a1a2a', borderRadius: 16, border: '2.5px solid #fff', boxShadow: '0 8px 32px #000a',
+      display: 'flex', flexDirection: 'column', alignItems: 'stretch',
+      overflow: 'hidden', // Предотвращает выход содержимого за границы
+    }}>
+      {/* Header */}
+      <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '8px 24px', minHeight: 38 }}>
+        <span style={{ fontSize: 18, fontWeight: 800, color: '#fff', marginRight: 18 }}>🛰️</span>
+        <span style={{ fontSize: 18, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Поиск каналов</span>
+      </div>
+      {/* Info row по центру */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#102040', color: '#fff', fontSize: 15, fontWeight: 700, padding: '6px 24px', borderBottom: '1.5px solid #335' }}>
+        <span style={{ textAlign: 'center', width: '100%' }}>(1 / 1) Express 80</span>
+      </div>
+      {/* Списки каналов */}
+      <div style={{ display: 'flex', flex: 1, background: '#102040', color: '#fff', fontSize: 15, fontWeight: 500, padding: '0 24px', gap: 18, height: 200, overflow: 'hidden' }}>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ fontWeight: 700, margin: '8px 0 4px 0', color: '#ffd600', fontSize: 15, position: 'sticky', top: 0, background: '#102040', zIndex: 1 }}>Спутник ТВ</div>
+          <div 
+            ref={tvListContainerRef}
+            style={{ 
+              overflowY: 'auto', 
+              maxHeight: 180, 
+              scrollBehavior: 'smooth',
+              flex: 1
+            }}
+          >
+            {tvList.map((ch, i) => (
+              <div key={ch + i} style={{ display: 'flex', alignItems: 'center', minHeight: 22, borderBottom: '1px solid #223', fontSize: 15 }}>
+                <span style={{ width: 38, textAlign: 'right', marginRight: 8 }}>{i + 1}</span>
+                <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ch}</span>
+                <span style={{ color: '#ffd600', marginLeft: 8 }}>$</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <div style={{ fontWeight: 700, margin: '8px 0 4px 0', color: '#ffd600', fontSize: 15, position: 'sticky', top: 0, background: '#102040', zIndex: 1 }}>Радио</div>
+          <div 
+            ref={radioListContainerRef}
+            style={{ 
+              overflowY: 'auto', 
+              maxHeight: 180, 
+              scrollBehavior: 'smooth',
+              flex: 1
+            }}
+          >
+            {radioList.map((ch, i) => (
+              <div key={ch + i} style={{ display: 'flex', alignItems: 'center', minHeight: 22, borderBottom: '1px solid #223', fontSize: 15 }}>
+                <span style={{ width: 22, textAlign: 'right', marginRight: 8 }}>{i + 1}</span>
+                <span style={{ flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ch}</span>
+                <span style={{ color: '#ffd600', marginLeft: 8 }}>$</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Бегунки уровень и сигнал под списками, над процессом */}
+      <div style={{ background: '#102040', display: 'flex', flexDirection: 'row', gap: 18, padding: '0 24px 0 24px' }}>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', marginTop: 6, marginBottom: 2 }}>
+          <span style={{ color: '#fff', fontSize: 14, width: 90 }}>Уровень</span>
+          <SolidBar percent={77} color={'#2979ff'} height={16} border={'#3386ff'} style={{ margin: 0 }} />
+          <span style={{ color: '#fff', fontSize: 14, width: 38, textAlign: 'right' }}>77%</span>
+        </div>
+        <div style={{ flex: 1, minWidth: 0, display: 'flex', alignItems: 'center', marginTop: 6, marginBottom: 2 }}>
+          <span style={{ color: '#fff', fontSize: 14, width: 90 }}>Сигнал</span>
+          <SolidBar percent={80} color={'#3fcf4a'} height={16} border={'#3fcf4a'} style={{ margin: 0 }} />
+          <span style={{ color: '#fff', fontSize: 14, width: 38, textAlign: 'right' }}>80%</span>
+        </div>
+      </div>
+      {/* Бегунок процесс — сеточный */}
+      <div style={{ background: '#102040', padding: '8px 24px 16px 24px', borderBottomLeftRadius: 14, borderBottomRightRadius: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', marginTop: 6 }}>
+          <span style={{ color: '#fff', fontSize: 15, width: 90 }}>Процесс</span>
+          <SegmentedBar percent={progress} color={'#00e676'} segments={24} height={22} border={'#00e676'} />
+          <span style={{ color: '#00e676', fontSize: 15, width: 38, textAlign: 'right' }}>{progress.toFixed(0)}%</span>
+        </div>
+      </div>
+
+      {/* Модальное окно завершения поиска */}
+      {showCompletionModal && (
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -50%)',
+          zIndex: 300,
+          width: 420,
+          background: 'linear-gradient(180deg, #f8f8f8 0%, #e0e0e0 100%)',
+          border: '2px solid #888',
+          borderRadius: 10,
+          boxShadow: '0 4px 24px rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          overflow: 'hidden',
+        }}>
+          {/* Заголовок модального окна */}
+          <div style={{
+            background: 'linear-gradient(180deg, #e0e0e0 0%, #d0d0d0 100%)',
+            padding: '8px 16px',
+            borderBottom: '1px solid #aaa',
+            fontSize: 18,
+            fontWeight: 'bold',
+            color: '#222',
+          }}>
+            Информация
+          </div>
+          
+          {/* Содержимое модального окна */}
+          <div style={{
+            padding: '24px 16px',
+            fontSize: 16,
+            color: '#222',
+            textAlign: 'center',
+          }}>
+            Найдено 182 каналов и 12 радио ТВ
+          </div>
+          
+          {/* Кнопки модального окна */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            padding: '16px',
+            borderTop: '1px solid #ddd',
+            background: 'linear-gradient(180deg, #f0f0f0 0%, #e0e0e0 100%)',
+          }}>
+            <button
+              onClick={handleCompletionOk}
+              style={{
+                background: 'linear-gradient(180deg, #2979ff 0%, #2563eb 100%)',
+                color: 'white',
+                border: 'none',
+                borderRadius: 4,
+                padding: '8px 32px',
+                fontSize: 16,
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              Хорошо
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, height = 480 }: { panelBtnFromRemote?: number | null, highlight?: any, width?: number, height?: number }) {
   const { tvState, sendCommand } = useTVControl();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -257,6 +494,16 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
 
   // Новая подсказка для редактора каналов
   const showChannelEditorHint = highlight && highlight.step === 0 && highlight.errorKey === 'channel-editor' && highlight.subKey === 'delete';
+
+  // Добавляю обработчик события channel-search-progress для обновления state:
+  useEffect(() => {
+    function onProgress(e: any) {
+      if (!e.detail) return;
+      sendCommand({ type: 'search-progress', ...e.detail });
+    }
+    window.addEventListener('channel-search-progress', onProgress);
+    return () => window.removeEventListener('channel-search-progress', onProgress);
+  }, [sendCommand]);
 
   return (
     <RealisticTVFrame width={width} height={height}>
@@ -849,6 +1096,101 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
             <span><span style={{color:'#2979ff'}}>●</span> Поиск T2-MI</span>
           </div>
         </>
+      )}
+      {/* Модалка поиска каналов поверх антенны */}
+      {tvState.searchSettingsModalOpen && (
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: '50%',
+          transform: 'translate(-50%, -44%)',
+          zIndex: 100,
+          minWidth: 340,
+          maxWidth: 370,
+          background: 'linear-gradient(180deg, #f8f8f8 80%, #e0e0e0 100%)',
+          border: '2.5px solid #888',
+          borderRadius: 10,
+          boxShadow: '0 8px 32px #0008, 0 2px 8px #2227',
+          padding: '0 0 10px 0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'stretch',
+          fontFamily: 'inherit',
+        }}>
+          {/* Заголовок */}
+          <div style={{
+            background: 'linear-gradient(90deg, #e0e0e0 60%, #f8f8f8 100%)',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            padding: '7px 18px 5px 18px',
+            fontWeight: 700,
+            fontSize: 18,
+            color: '#222',
+            borderBottom: '1.5px solid #bbb',
+            letterSpacing: 0.2,
+            textAlign: 'left',
+            boxShadow: '0 2px 8px #0001',
+          }}>
+            Поиск каналов
+          </div>
+          {/* Список настроек + кнопка Поиск */}
+          <div style={{ padding: '8px 18px 0 18px', display: 'flex', flexDirection: 'column', gap: 0 }}>
+            {SEARCH_SETTINGS_ITEMS.map((item, idx) => (
+              <div key={item.label}
+                onClick={() => sendCommand(idx > tvState.searchSettingsModalIndex ? 'down' : idx < tvState.searchSettingsModalIndex ? 'up' : null)}
+                style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  background: idx === tvState.searchSettingsModalIndex ? '#2979ff' : 'transparent',
+                  color: idx === tvState.searchSettingsModalIndex ? '#fff' : '#222',
+                  fontWeight: idx === tvState.searchSettingsModalIndex ? 700 : 400,
+                  fontSize: 15,
+                  borderRadius: 5,
+                  margin: '1.5px 0',
+                  minHeight: 28,
+                  height: 28,
+                  transition: 'background 0.15s',
+                  cursor: 'pointer',
+                  paddingLeft: 6,
+                  paddingRight: 6,
+                }}>
+                <span style={{ flex: 1, textAlign: 'left', fontSize: 15 }}>{item.label}</span>
+                <span style={{ flex: 1, textAlign: 'right', fontSize: 15, fontWeight: 700, color: idx === tvState.searchSettingsModalIndex ? '#fff' : '#2979ff' }}>
+                  {item.options[0]}
+                </span>
+              </div>
+            ))}
+            {/* Кнопка Поиск */}
+            <div
+              onClick={() => sendCommand('ok')}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: tvState.searchSettingsModalIndex === SEARCH_SETTINGS_ITEMS.length ? '#2979ff' : 'transparent',
+                color: tvState.searchSettingsModalIndex === SEARCH_SETTINGS_ITEMS.length ? '#fff' : '#2979ff',
+                fontWeight: 700,
+                fontSize: 16,
+                borderRadius: 5,
+                margin: '8px 0 0 0',
+                minHeight: 32,
+                height: 32,
+                transition: 'background 0.15s',
+                cursor: 'pointer',
+                border: '1.5px solid #2979ff',
+                boxShadow: tvState.searchSettingsModalIndex === SEARCH_SETTINGS_ITEMS.length ? '0 0 8px #2979ff88' : undefined,
+              }}
+            >
+              Поиск
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Модалка прогресса поиска каналов */}
+      {tvState.channelSearchProgressModalOpen && (
+        <ChannelSearchProgressModal
+          progress={tvState.channelSearchProgress}
+          tvList={tvState.channelSearchTVList}
+          radioList={tvState.channelSearchRadioList}
+          onClose={() => sendCommand('exit')}
+        />
       )}
       <div style={{
         display: "grid",
