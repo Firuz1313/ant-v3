@@ -40,25 +40,25 @@ const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selec
         border: '2px solid #fff',
         boxShadow: '0 4px 24px #000a',
         width: 820,
-        minHeight: 380,
-        padding: '18px 0',
+        minHeight: 300,
+        padding: '10px 0',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
         overflow: 'hidden',
       }}>
         {/* Верхняя панель */}
-        <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '4px 12px', justifyContent: 'space-between', minHeight: 28 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {(oneColumn || title.toLowerCase().includes('настройк')) && <AccessCardIcon />}
-            <span style={{ fontSize: 22, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>{title}</span>
+            <span style={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>{title}</span>
           </div>
-          <span style={{ color: '#fff', fontSize: 13 }}>{dateStr} {timeStr}</span>
+          <span style={{ color: '#fff', fontSize: 12 }}>{dateStr} {timeStr}</span>
         </div>
         {/* Основной flex-контейнер модалки */}
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 120, background: '#102040', justifyContent: 'center', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 80, background: '#102040', justifyContent: 'center', alignItems: 'center' }}>
           {/* Таблица настроек */}
-          <div style={{ width: 700, margin: '0 auto', marginTop: 24, marginBottom: 24 }}>
+          <div style={{ width: 700, margin: '0 auto', marginTop: 12, marginBottom: 12 }}>
             {items.map((item, idx) => (
               <div
                 key={item.label}
@@ -70,28 +70,28 @@ const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selec
                   background: idx === selectedIndex ? '#e048b1' : 'transparent',
                   color: idx === selectedIndex ? '#fff' : '#fff',
                   fontWeight: idx === selectedIndex ? 700 : 400,
-                  fontSize: 20,
+                  fontSize: 18,
                   borderRadius: 7,
-                  margin: '2.5px 0',
+                  margin: '2px 0',
                   padding: '0 0 0 0',
-                  minHeight: 44,
-                  height: 44,
+                  minHeight: 36,
+                  height: 36,
                   transition: 'background 0.15s',
                   cursor: 'pointer',
                 }}
                 onClick={() => onSelect(idx)}
               >
-                <span style={{ flex: 1, paddingLeft: 32, textAlign: 'left', fontSize: 20 }}>{item.label}</span>
+                <span style={{ flex: 1, paddingLeft: 24, textAlign: 'left', fontSize: 18 }}>{item.label}</span>
                 {!oneColumn && values && item.options && (
-                  <div style={{ display: 'flex', alignItems: 'center', minWidth: 220, justifyContent: 'flex-end', paddingRight: 32 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', minWidth: 180, justifyContent: 'flex-end', paddingRight: 24 }}>
                     {idx === selectedIndex ? (
                       <>
-                        <span style={{ fontSize: 26, fontWeight: 700, cursor: 'pointer', marginRight: 16 }} onClick={() => onValueChange && onValueChange(idx, 'left')}>&lt;</span>
-                        <span style={{ fontSize: 20, fontWeight: 700, minWidth: 80, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
-                        <span style={{ fontSize: 26, fontWeight: 700, cursor: 'pointer', marginLeft: 16 }} onClick={() => onValueChange && onValueChange(idx, 'right')}>&gt;</span>
+                        <span style={{ fontSize: 22, fontWeight: 700, cursor: 'pointer', marginRight: 12 }} onClick={() => onValueChange && onValueChange(idx, 'left')}>&lt;</span>
+                        <span style={{ fontSize: 18, fontWeight: 700, minWidth: 60, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
+                        <span style={{ fontSize: 22, fontWeight: 700, cursor: 'pointer', marginLeft: 12 }} onClick={() => onValueChange && onValueChange(idx, 'right')}>&gt;</span>
                       </>
                     ) : (
-                      <span style={{ fontSize: 20, fontWeight: 700, minWidth: 80, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
+                      <span style={{ fontSize: 18, fontWeight: 700, minWidth: 60, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
                     )}
                   </div>
                 )}
@@ -109,12 +109,12 @@ const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selec
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          fontSize: 13,
-          padding: '10px 36px',
+          fontSize: 12,
+          padding: '7px 24px',
           pointerEvents: 'none',
           background: '#0a1a2a',
           borderRadius: 12,
-          width: 800,
+          width: 760,
           margin: '0 auto',
           boxSizing: 'border-box',
           boxShadow: '0 2px 16px #0006',

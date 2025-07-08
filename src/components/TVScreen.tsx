@@ -239,8 +239,8 @@ const AntennaSetupModal = ({ onClose, selectedIndex, onSelect, values, onValueCh
         border: '2px solid #fff',
         boxShadow: '0 4px 24px #000a',
         width: 820,
-        minHeight: 200,
-        padding: '8px 0',
+        minHeight: 320,
+        padding: '16px 0',
         display: 'flex',
         flexDirection: 'column',
         position: 'relative',
@@ -249,15 +249,15 @@ const AntennaSetupModal = ({ onClose, selectedIndex, onSelect, values, onValueCh
         {/* Верхняя панель */}
         <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '5px 14px', justifyContent: 'space-between', minHeight: 32 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <FaSatelliteDish size={22} color="#fff" style={{marginRight: 8}} />
-            <span style={{ fontSize: 15, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Установка антенны</span>
+            <FaSatelliteDish size={32} color="#fff" style={{marginRight: 12}} />
+            <span style={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>Установка антенны</span>
           </div>
-          <span style={{ color: '#fff', fontSize: 12 }}>{dateStr} {timeStr}</span>
+          <span style={{ color: '#fff', fontSize: 14 }}>{dateStr} {timeStr}</span>
         </div>
         {/* Основной flex-контейнер модалки */}
-        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 60, background: '#102040', justifyContent: 'center', alignItems: 'center', overflowY: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 120, background: '#102040', justifyContent: 'center', alignItems: 'center', overflowY: 'auto' }}>
           {/* Таблица настроек */}
-          <div style={{ width: 700, margin: '0 auto', marginTop: 8, marginBottom: 8 }}>
+          <div style={{ width: 700, margin: '0 auto', marginTop: 18, marginBottom: 18 }}>
             {items.map((item, idx) => (
               <div
                 key={item.label}
@@ -269,45 +269,45 @@ const AntennaSetupModal = ({ onClose, selectedIndex, onSelect, values, onValueCh
                   background: idx === selectedIndex ? '#e048b1' : 'transparent',
                   color: idx === selectedIndex ? '#fff' : item.disabled ? '#888' : '#fff',
                   fontWeight: idx === selectedIndex ? 700 : 400,
-                  fontSize: 15,
+                  fontSize: 17,
                   borderRadius: 7,
-                  margin: '2px 0',
-                  minHeight: 28,
-                  height: 28,
+                  margin: '4px 0',
+                  minHeight: 38,
+                  height: 38,
                   transition: 'background 0.15s',
                   cursor: item.disabled ? 'not-allowed' : 'pointer',
                   opacity: item.disabled ? 0.5 : 1,
                 }}
                 onClick={() => !item.disabled && onSelect(idx)}
               >
-                <span style={{ flex: 1, paddingLeft: 20, textAlign: 'left', fontSize: 15 }}>{item.label}</span>
+                <span style={{ flex: 1, paddingLeft: 32, textAlign: 'left', fontSize: 17 }}>{item.label}</span>
                 {item.options ? (
-                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 20, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 8 }}>
-                    {idx === selectedIndex && <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'left')}>&lt;</span>}
+                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 32, fontSize: 17, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
+                    {idx === selectedIndex && <span style={{ fontSize: 24, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'left')}>&lt;</span>}
                     <span style={{ minWidth: 80, textAlign: 'center', flex: 1 }}>{item.options[values[idx] ?? 0]}</span>
-                    {idx === selectedIndex && <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'right')}>&gt;</span>}
+                    {idx === selectedIndex && <span style={{ fontSize: 24, fontWeight: 700, cursor: 'pointer' }} onClick={() => onValueChange(idx, 'right')}>&gt;</span>}
                   </span>
                 ) : (
-                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 20, fontSize: 15 }}>{item.value}</span>
+                  <span style={{ flex: 1, textAlign: 'right', paddingRight: 32, fontSize: 17 }}>{item.value}</span>
                 )}
               </div>
             ))}
           </div>
           {/* Уровень и Сигнал */}
-          <div style={{ width: 700, margin: '0 auto', marginBottom: 6 }}>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 4 }}>
-              <span style={{ color: '#fff', fontSize: 13, width: 90 }}>Уровень</span>
-              <div style={{ flex: 1, height: 12, background: '#1a2a4a', borderRadius: 8, marginLeft: 8, marginRight: 8, overflow: 'hidden', border: '1.5px solid #3386ff' }}>
+          <div style={{ width: 700, margin: '0 auto', marginBottom: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
+              <span style={{ color: '#fff', fontSize: 16, width: 110 }}>Уровень</span>
+              <div style={{ flex: 1, height: 18, background: '#1a2a4a', borderRadius: 8, marginLeft: 12, marginRight: 12, overflow: 'hidden', border: '1.5px solid #3386ff' }}>
                 <div style={{ width: '83%', height: '100%', background: 'linear-gradient(90deg, #1e90ff 60%, #00eaff 100%)', borderRadius: 8 }} />
               </div>
-              <span style={{ color: '#fff', fontSize: 13, width: 38, textAlign: 'right' }}>83%</span>
+              <span style={{ color: '#fff', fontSize: 16, width: 50, textAlign: 'right' }}>83%</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ color: '#fff', fontSize: 13, width: 90 }}>Сигнал</span>
-              <div style={{ flex: 1, height: 12, background: '#1a2a4a', borderRadius: 8, marginLeft: 8, marginRight: 8, overflow: 'hidden', border: '1.5px solid #3fcf4a' }}>
+              <span style={{ color: '#fff', fontSize: 16, width: 110 }}>Сигнал</span>
+              <div style={{ flex: 1, height: 18, background: '#1a2a4a', borderRadius: 8, marginLeft: 12, marginRight: 12, overflow: 'hidden', border: '1.5px solid #3fcf4a' }}>
                 <div style={{ width: '79%', height: '100%', background: 'linear-gradient(90deg, #b6ff00 60%, #3fcf4a 100%)', borderRadius: 8 }} />
               </div>
-              <span style={{ color: '#fff', fontSize: 13, width: 38, textAlign: 'right' }}>79%</span>
+              <span style={{ color: '#fff', fontSize: 16, width: 50, textAlign: 'right' }}>79%</span>
             </div>
           </div>
         </div>
@@ -987,64 +987,39 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
         <SubscriptionStatusModal onClose={() => sendCommand('exit')} />
       )}
       {tvState.antennaSetupModalOpen && (
-        <div style={{
-          position: 'absolute',
-          left: 0,
-          top: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 30,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          pointerEvents: 'none',
-        }}>
-          {/* Модалка по центру */}
+        <>
+          <AntennaSetupModal
+            onClose={() => sendCommand('exit')}
+            selectedIndex={antennaIndex}
+            onSelect={setAntennaIndex}
+            values={antennaValues}
+            onValueChange={(idx, dir) => {
+              setAntennaValues(vals => {
+                const newVals = [...vals];
+                const item = [
+                  antennaOptions.satellites,
+                  antennaOptions.lnbPower,
+                  antennaOptions.lnbFreq,
+                  null,
+                  antennaOptions.diseqc10,
+                  antennaOptions.diseqc11,
+                  antennaOptions.tp,
+                  null,
+                ][idx];
+                if (!item) return vals;
+                const len = item.length;
+                if (dir === 'left') newVals[idx] = (newVals[idx] + len - 1) % len;
+                else newVals[idx] = (newVals[idx] + 1) % len;
+                return newVals;
+              });
+            }}
+          />
+          {/* Мини-футер под модалкой, как у ChannelListModal */}
           <div style={{
-            flex: '0 0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            pointerEvents: 'auto',
-          }}>
-            <AntennaSetupModal
-              onClose={() => sendCommand('exit')}
-              selectedIndex={antennaIndex}
-              onSelect={setAntennaIndex}
-              values={antennaValues}
-              onValueChange={(idx, dir) => {
-                setAntennaValues(vals => {
-                  const newVals = [...vals];
-                  const item = [
-                    antennaOptions.satellites,
-                    antennaOptions.lnbPower,
-                    antennaOptions.lnbFreq,
-                    null,
-                    antennaOptions.diseqc10,
-                    antennaOptions.diseqc11,
-                    antennaOptions.tp,
-                    null,
-                  ][idx];
-                  if (!item) return vals;
-                  const len = item.length;
-                  if (dir === 'left') newVals[idx] = (newVals[idx] + len - 1) % len;
-                  else newVals[idx] = (newVals[idx] + 1) % len;
-                  return newVals;
-                });
-              }}
-            />
-          </div>
-          {/* Мини-футер строго отдельно, всегда внизу */}
-          <div style={{
-            flex: '0 0 auto',
-            width: 800,
-            margin: '0 auto',
-            position: 'relative',
-            bottom: 0,
-            left: 0,
-            right: 0,
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            bottom: 12,
             zIndex: 31,
             display: 'flex',
             alignItems: 'center',
@@ -1054,16 +1029,17 @@ export default function TVScreen({ panelBtnFromRemote, highlight, width = 900, h
             pointerEvents: 'none',
             background: '#0a1a2a',
             borderRadius: 12,
+            width: 800,
+            margin: '0 auto',
             boxSizing: 'border-box',
             boxShadow: '0 2px 16px #0006',
             color: '#fff',
-            marginTop: 24,
           }}>
             <span style={{marginRight: 32}}><span style={{color:'#ff1744'}}>●</span> Список спутник</span>
             <span style={{marginRight: 32}}><span style={{color:'#00e676'}}>●</span> Список транспо</span>
             <span><span style={{color:'#2979ff'}}>●</span> Поиск T2-MI</span>
           </div>
-        </div>
+        </>
       )}
       <div style={{
         display: "grid",
