@@ -10,13 +10,15 @@ interface ChannelListModalProps {
   onClose: () => void;
   onValueChange?: (idx: number, direction: 'left' | 'right') => void;
   oneColumn?: boolean;
+  headerIcon?: React.ReactNode;
+  signalBlock?: React.ReactNode;
 }
 
 const AccessCardIcon = () => (
   <FaCog size={34} color="#fff" style={{marginRight: 14}} />
 );
 
-const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selectedIndex, values, onSelect, onClose, onValueChange, oneColumn }) => {
+const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selectedIndex, values, onSelect, onClose, onValueChange, oneColumn, headerIcon, signalBlock }) => {
   const now = new Date();
   const dateStr = now.toISOString().slice(0, 10).replace(/-/g, '/');
   const timeStr = now.toTimeString().slice(0, 5);
@@ -50,7 +52,7 @@ const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selec
         {/* Верхняя панель */}
         <div style={{ display: 'flex', alignItems: 'center', background: '#174080', borderTopLeftRadius: 14, borderTopRightRadius: 14, padding: '4px 12px', justifyContent: 'space-between', minHeight: 28 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            {(oneColumn || title.toLowerCase().includes('настройк')) && <AccessCardIcon />}
+            {headerIcon ? headerIcon : ((oneColumn || title.toLowerCase().includes('настройк')) && <AccessCardIcon />)}
             <span style={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: 0.5, textShadow: '0 2px 12px #3386ff88' }}>{title}</span>
           </div>
           <span style={{ color: '#fff', fontSize: 12 }}>{dateStr} {timeStr}</span>
@@ -70,34 +72,40 @@ const ChannelListModal: React.FC<ChannelListModalProps> = ({ title, items, selec
                   background: idx === selectedIndex ? '#e048b1' : 'transparent',
                   color: idx === selectedIndex ? '#fff' : '#fff',
                   fontWeight: idx === selectedIndex ? 700 : 400,
-                  fontSize: 18,
+                  fontSize: 15,
                   borderRadius: 7,
-                  margin: '2px 0',
+                  margin: '1.5px 0',
                   padding: '0 0 0 0',
-                  minHeight: 36,
-                  height: 36,
+                  minHeight: 28,
+                  height: 28,
                   transition: 'background 0.15s',
                   cursor: 'pointer',
                 }}
                 onClick={() => onSelect(idx)}
               >
-                <span style={{ flex: 1, paddingLeft: 24, textAlign: 'left', fontSize: 18 }}>{item.label}</span>
+                <span style={{ flex: 1, paddingLeft: 18, textAlign: 'left', fontSize: 15 }}>{item.label}</span>
                 {!oneColumn && values && item.options && (
-                  <div style={{ display: 'flex', alignItems: 'center', minWidth: 180, justifyContent: 'flex-end', paddingRight: 24 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', minWidth: 140, justifyContent: 'flex-end', paddingRight: 18 }}>
                     {idx === selectedIndex ? (
                       <>
-                        <span style={{ fontSize: 22, fontWeight: 700, cursor: 'pointer', marginRight: 12 }} onClick={() => onValueChange && onValueChange(idx, 'left')}>&lt;</span>
-                        <span style={{ fontSize: 18, fontWeight: 700, minWidth: 60, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
-                        <span style={{ fontSize: 22, fontWeight: 700, cursor: 'pointer', marginLeft: 12 }} onClick={() => onValueChange && onValueChange(idx, 'right')}>&gt;</span>
+                        <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer', marginRight: 8 }} onClick={() => onValueChange && onValueChange(idx, 'left')}>&lt;</span>
+                        <span style={{ fontSize: 15, fontWeight: 700, minWidth: 50, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
+                        <span style={{ fontSize: 18, fontWeight: 700, cursor: 'pointer', marginLeft: 8 }} onClick={() => onValueChange && onValueChange(idx, 'right')}>&gt;</span>
                       </>
                     ) : (
-                      <span style={{ fontSize: 18, fontWeight: 700, minWidth: 60, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
+                      <span style={{ fontSize: 15, fontWeight: 700, minWidth: 50, textAlign: 'center', flex: 1 }}>{item.options[values[idx]]}</span>
                     )}
                   </div>
                 )}
               </div>
             ))}
           </div>
+          {/* Блок уровня/сигнала, если передан */}
+          {signalBlock && (
+            <div style={{ width: 700, margin: '0 auto', marginTop: 0, marginBottom: 4 }}>
+              {signalBlock}
+            </div>
+          )}
         </div>
         {/* Мини-футер — пустой */}
         <div style={{

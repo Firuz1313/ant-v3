@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { ANTENNA_SETUP_ITEMS } from '../data/antennaSetup';
 
 // Типы команд
 export type TVCommand =
@@ -51,6 +52,8 @@ interface TVState {
   conaxInfoModalOpen: boolean;
   subscriptionStatusModalOpen: boolean;
   antennaSetupModalOpen: boolean;
+  antennaSetupIndex: number;
+  antennaSetupValues: number[];
 }
 
 interface TVControlContextType {
@@ -331,6 +334,8 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     conaxInfoModalOpen: false,
     subscriptionStatusModalOpen: false,
     antennaSetupModalOpen: false,
+    antennaSetupIndex: 0,
+    antennaSetupValues: [0,0,0,0,0,0,0,0],
   });
 
   function sendCommand(cmd: TVCommand) {
@@ -540,6 +545,35 @@ export const TVControlProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         switch (cmd) {
           case 'exit':
             return { ...prev, antennaSetupModalOpen: false, installModalOpen: true, installModalIndex: 0 };
+          case 'up':
+            return {
+              ...prev,
+              antennaSetupIndex: (prev.antennaSetupIndex + ANTENNA_SETUP_ITEMS.length - 1) % ANTENNA_SETUP_ITEMS.length,
+            };
+          case 'down':
+            return {
+              ...prev,
+              antennaSetupIndex: (prev.antennaSetupIndex + 1) % ANTENNA_SETUP_ITEMS.length,
+            };
+          case 'left': {
+            const idx = prev.antennaSetupIndex;
+            const opts = ANTENNA_SETUP_ITEMS[idx].options;
+            if (!opts) return prev;
+            const newVals = [...prev.antennaSetupValues];
+            newVals[idx] = (newVals[idx] + opts.length - 1) % opts.length;
+            return { ...prev, antennaSetupValues: newVals };
+          }
+          case 'right': {
+            const idx = prev.antennaSetupIndex;
+            const opts = ANTENNA_SETUP_ITEMS[idx].options;
+            if (!opts) return prev;
+            const newVals = [...prev.antennaSetupValues];
+            newVals[idx] = (newVals[idx] + 1) % opts.length;
+            return { ...prev, antennaSetupValues: newVals };
+          }
+          case 'ok':
+            // Здесь можно добавить обработку OK для выбранного пункта
+            return prev;
           default:
             return prev;
         }
