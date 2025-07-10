@@ -42,8 +42,8 @@ export default function App() {
           <Route path="/" element={<Index />} />
           <Route path="/select-device" element={<SelectDevicePage />} />
           <Route path="/device/:deviceId" element={<DeviceRemotePage panelBtnFromRemote={panelBtnFromRemote} onRemoteButton={handleRemoteButton} />} />
-          <Route path="/error-select" element={<ErrorSelectionPage />} />
-          <Route path="/error/:errorKey/:subKey?" element={<ErrorDetailPage />} />
+          <Route path="/:deviceId/error-select" element={<ErrorSelectionPage />} />
+          <Route path="/:deviceId/error/:errorKey/:subKey?" element={<ErrorDetailPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

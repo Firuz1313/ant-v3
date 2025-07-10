@@ -127,7 +127,7 @@ export default function DeviceRemotePage({ panelBtnFromRemote, onRemoteButton }:
         animation: 'fade-in 0.7s cubic-bezier(.4,0,.2,1)',
       }}>
         <div style={{ boxShadow: '0 8px 32px #0004', borderRadius: 24, background: 'rgba(30,58,138,0.92)', padding: isMobile ? 8 : 18, transition: 'box-shadow 0.3s, background 0.3s', marginBottom: isMobile ? 18 : 0 }}>
-          <TVScreen panelBtnFromRemote={localPanelBtn} width={tvWidth} height={tvHeight} />
+          <TVScreen panelBtnFromRemote={localPanelBtn} width={tvWidth} height={tvHeight} deviceId={selectedDevice.id} />
         </div>
         {!isMobile && (
           <div style={{ boxShadow: '0 8px 32px #0004', borderRadius: 24, background: 'rgba(30,58,138,0.92)', padding: 12, transition: 'box-shadow 0.3s, background 0.3s' }}>

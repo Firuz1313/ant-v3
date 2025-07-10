@@ -6,12 +6,15 @@ import RemoteControl from '../components/RemoteControl';
 import { useTVControl } from '../context/TVControlContext';
 
 export default function ErrorDetailPage() {
-  const { errorKey, subKey } = useParams();
+  const { errorKey, subKey, deviceId } = useParams();
   const navigate = useNavigate();
   const error = errorList.find(e => e.key === errorKey);
   const subError = error?.subErrors?.find(s => s.key === subKey);
   const { tvState } = useTVControl();
   const [scale, setScale] = useState(1);
+
+  // Получаем выбранную приставку из localStorage
+  // const deviceId = typeof window !== 'undefined' ? localStorage.getItem('selectedDeviceId') : undefined;
 
   // Адаптивное масштабирование для больших экранов
   useEffect(() => {
@@ -115,7 +118,7 @@ export default function ErrorDetailPage() {
         <button
           className="px-5 py-2 rounded bg-[#23272e] hover:bg-[#2b3a67] text-white font-medium whitespace-nowrap self-start absolute left-0 top-0"
           style={{ left: '-24px' }}
-          onClick={() => navigate('/error-select')}
+          onClick={() => navigate(`/${deviceId}/error-select`)}
         >
           ← К списку ошибок
         </button>
@@ -131,7 +134,7 @@ export default function ErrorDetailPage() {
       <div className="w-full flex justify-center items-center">
         <div className="tv-remote-container">
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          <TVScreen />
+          <TVScreen deviceId={deviceId} />
         </div>
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
           <RemoteControl />

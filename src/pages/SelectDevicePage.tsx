@@ -41,7 +41,8 @@ const SelectDevicePage = () => {
   };
 
   const handleDeviceSelect = (deviceId: string) => {
-    navigate('/error-select');
+    localStorage.setItem('selectedDeviceId', deviceId);
+    navigate(`/${deviceId}/error-select`);
   };
 
   return (
