@@ -78,7 +78,7 @@ const devices = [
     rating: 4.1,
     status: "Классическая",
     price: "от 4,100 ₽",
-    supported: false,
+    supported: true,
   },
 ];
 
