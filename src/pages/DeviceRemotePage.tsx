@@ -65,6 +65,19 @@ const devices = [
     firmware: "v4.1.7",
     channels: 312,
   },
+  {
+    id: "hdbox",
+    name: "HDBox",
+    model: "FS-9200 PVR",
+    description: "Надёжная приставка с функцией записи",
+    status: "Подключено",
+    signalStrength: 72,
+    temperature: 46,
+    uptime: "3д 12ч",
+    color: "from-green-500 to-green-600",
+    firmware: "v1.8.22",
+    channels: 189,
+  },
 ];
 
 const quickActions = [
