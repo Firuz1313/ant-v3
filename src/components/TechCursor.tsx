@@ -28,7 +28,10 @@ export function TechCursor() {
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target;
+      // Check if target is an HTMLElement before calling methods
+      if (!target || !(target instanceof HTMLElement)) return;
+
       if (
         target.tagName === "BUTTON" ||
         target.closest("button") ||
@@ -42,7 +45,10 @@ export function TechCursor() {
     };
 
     const handleMouseLeave = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
+      const target = e.target;
+      // Check if target is an HTMLElement before calling methods
+      if (!target || !(target instanceof HTMLElement)) return;
+
       if (
         target.tagName === "BUTTON" ||
         target.closest("button") ||
