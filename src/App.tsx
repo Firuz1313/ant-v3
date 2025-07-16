@@ -1,55 +1,109 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/ANTSupport";
+import { TechCursor } from "@/components/TechCursor";
+import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import SelectDevicePage from "./pages/SelectDevicePage";
 import DeviceRemotePage from "./pages/DeviceRemotePage";
-import { TVControlProvider, useTVControl } from './context/TVControlContext';
-import TVScreen from './components/TVScreen';
-import RemoteControl from './components/RemoteControl';
-import ErrorSelectionPage from './pages/ErrorSelectionPage';
-import ErrorDetailPage from './pages/ErrorDetailPage';
+import ErrorSelectionPage from "./pages/ErrorSelectionPage";
+import ErrorDetailPage from "./pages/ErrorDetailPage";
+import AdminPanel from "./pages/AdminPanel";
+import { TVControlProvider } from "./context/TVControlContext";
 
 const queryClient = new QueryClient();
 
 export default function App() {
-  const [panelBtnFromRemote, setPanelBtnFromRemote] = useState<number | null>(null);
+  const [panelBtnFromRemote, setPanelBtnFromRemote] = useState<number | null>(
+    null,
+  );
 
-  // Обработчик для виртуального пульта
+  // Global theme initialization
+  useEffect(() => {
+    // Set dark mode by default
+    document.documentElement.classList.add("dark");
+
+    // Disable context menu on right click for more immersive experience
+    const handleContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+
+    document.addEventListener("contextmenu", handleContextMenu);
+
+    return () => {
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  }, []);
+
+  // Virtual remote control handler
   function handleRemoteButton(key: string) {
-    if (["1","2","3","4","5"].includes(key)) {
+    if (["1", "2", "3", "4", "5"].includes(key)) {
       setPanelBtnFromRemote(Number(key));
     }
-    // Пробрасываем OK
+    // Handle OK button
     if (key === "ok") {
-      setPanelBtnFromRemote((prev) => prev); // триггерим rerender
+      setPanelBtnFromRemote((prev) => prev); // trigger re-render
       window.dispatchEvent(new CustomEvent("virtual-remote-ok"));
     }
   }
 
   return (
-  <TVControlProvider>
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/select-device" element={<SelectDevicePage />} />
-          <Route path="/device/:deviceId" element={<DeviceRemotePage panelBtnFromRemote={panelBtnFromRemote} onRemoteButton={handleRemoteButton} />} />
-          <Route path="/:deviceId/error-select" element={<ErrorSelectionPage />} />
-          <Route path="/:deviceId/error/:errorKey/:subKey?" element={<ErrorDetailPage />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-  </TVControlProvider>
-);
+    <TVControlProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <BrowserRouter>
+            <div className="relative">
+              {/* Custom Tech Cursor */}
+              <TechCursor />
+
+              {/* Toast Notifications */}
+              <Toaster />
+              <Sonner />
+
+              {/* Main Application Routes */}
+              <Routes>
+                {/* Homepage - Device Selection */}
+                <Route path="/" element={<Index />} />
+
+                {/* Legacy route for device selection */}
+                <Route path="/select-device" element={<SelectDevicePage />} />
+
+                {/* Device Remote Control Interface */}
+                <Route
+                  path="/device/:deviceId"
+                  element={
+                    <DeviceRemotePage
+                      panelBtnFromRemote={panelBtnFromRemote}
+                      onRemoteButton={handleRemoteButton}
+                    />
+                  }
+                />
+
+                {/* Error Selection Page */}
+                <Route
+                  path="/:deviceId/error-select"
+                  element={<ErrorSelectionPage />}
+                />
+
+                {/* Error Detail Page */}
+                <Route
+                  path="/:deviceId/error/:errorKey/:subKey?"
+                  element={<ErrorDetailPage />}
+                />
+
+                {/* Admin Panel */}
+                <Route path="/admin" element={<AdminPanel />} />
+
+                {/* 404 Not Found - Must be last */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </div>
+          </BrowserRouter>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </TVControlProvider>
+  );
 }
