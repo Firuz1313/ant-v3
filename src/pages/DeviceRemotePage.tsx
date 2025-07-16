@@ -1,154 +1,276 @@
-import { useParams, Routes, Route } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import {
+  ArrowLeft,
+  Settings,
+  Tv,
+  Wifi,
+  Signal,
+  Power,
+  AlertTriangle,
+} from "lucide-react";
 import RemoteControl from "../components/RemoteControl";
 import TVScreen from "../components/TVScreen";
+import { useIsMobile } from "../hooks/use-mobile";
 import NotFound from "./NotFound";
-import React, { useState } from 'react';
-import ErrorSelectionPage from './ErrorSelectionPage';
-import ErrorDetailPage from './ErrorDetailPage';
-import { useIsMobile } from '../hooks/use-mobile';
 
 const devices = [
   {
     id: "openbox",
     name: "OpenBox",
     description: "Professional-grade receiver with advanced features",
+    status: "Connected",
+    signalStrength: 85,
+    color: "from-blue-500 to-blue-600",
   },
   {
     id: "openbox-gold",
     name: "OpenBox Gold",
     description: "Premium model with enhanced performance",
+    status: "Connected",
+    signalStrength: 92,
+    color: "from-amber-500 to-orange-600",
   },
   {
     id: "uclan",
     name: "Uclan",
     description: "Reliable and efficient digital receiver",
-  },
-  {
-    id: "hdbox",
-    name: "HDBox",
-    description: "Feature-rich PVR with recording capabilities",
+    status: "Connected",
+    signalStrength: 78,
+    color: "from-purple-500 to-purple-600",
   },
 ];
 
-export default function DeviceRemotePage({ panelBtnFromRemote, onRemoteButton }: { panelBtnFromRemote?: number | null, onRemoteButton?: (key: string) => void }) {
+interface DeviceRemotePageProps {
+  panelBtnFromRemote?: number | null;
+  onRemoteButton?: (key: string) => void;
+}
+
+export default function DeviceRemotePage({
+  panelBtnFromRemote,
+  onRemoteButton,
+}: DeviceRemotePageProps) {
   const { deviceId } = useParams();
+  const navigate = useNavigate();
   const selectedDevice = devices.find((d) => d.id === deviceId);
   const [localPanelBtn, setLocalPanelBtn] = useState<number | null>(null);
-  const [selectedForDelete, setSelectedForDelete] = useState<Set<number>>(new Set());
   const isMobile = useIsMobile();
-  // Адаптивные размеры ТВ
+
+  // Responsive TV dimensions
   let tvWidth = 850;
   let tvHeight = 430;
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     if (isMobile) {
-      tvWidth = Math.min(window.innerWidth * 0.98, 370);
+      tvWidth = Math.min(window.innerWidth * 0.95, 400);
       tvHeight = tvWidth * (430 / 850);
     } else {
-      tvWidth = Math.min(750, window.innerWidth * 0.7);
-      tvHeight = tvWidth * (330 / 750);
+      tvWidth = Math.min(800, window.innerWidth * 0.6);
+      tvHeight = tvWidth * (430 / 850);
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (panelBtnFromRemote) setLocalPanelBtn(panelBtnFromRemote);
   }, [panelBtnFromRemote]);
 
-  // Слушаем кастомное событие OK с виртуального пульта
-  React.useEffect(() => {
+  // Listen for virtual remote OK events
+  useEffect(() => {
     function onOk() {
-      // Здесь можно пробросить событие дальше, если нужно
-      // Например, window.dispatchEvent(new CustomEvent('device-remote-ok'));
+      // Handle OK button from virtual remote
     }
-    window.addEventListener('virtual-remote-ok', onOk);
-    return () => window.removeEventListener('virtual-remote-ok', onOk);
+    window.addEventListener("virtual-remote-ok", onOk);
+    return () => window.removeEventListener("virtual-remote-ok", onOk);
   }, []);
 
   function handleRemoteButton(key: string) {
     if (onRemoteButton) onRemoteButton(key);
   }
 
+  function handleErrorDiagnostics() {
+    navigate(`/${deviceId}/error-select`);
+  }
+
   if (!selectedDevice) return <NotFound />;
 
   return (
-    <div style={{ background: "#2563eb", minHeight: "100vh", padding: 0, position: 'relative', overflow: 'hidden' }}>
-      {/* Градиентный анимированный фон */}
-      <div style={{
-        position: 'fixed',
-        zIndex: 0,
-        left: 0,
-        top: 0,
-        width: '100vw',
-        height: '100vh',
-        background: 'linear-gradient(120deg, #1e293b 0%, #2563eb 60%, #3386ff 100%)',
-        animation: 'gradient-move 12s ease-in-out infinite alternate',
-        backgroundSize: '200% 200%',
-        pointerEvents: 'none',
-      }} />
-      {/* Верхнее меню */}
-      <div style={{ background: "rgba(10,26,79,0.98)", padding: isMobile ? "12px 0 6px 0" : "16px 0 8px 0", borderBottom: "2px solid #1e293b", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10, boxShadow: '0 2px 12px #0004' }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, marginLeft: isMobile ? 12 : 32 }}>
-          <img src="/favicon.ico" alt="АНТ" style={{ width: 36, height: 36, borderRadius: 8, marginRight: 12, boxShadow: '0 2px 8px #0006' }} />
-          <span style={{ color: "#fff", fontWeight: 700, fontSize: 22, letterSpacing: 1, textShadow: '0 2px 8px #0008' }}>АНТ</span>
+    <div className="min-h-screen tech-bg">
+      {/* Header */}
+      <motion.header
+        className="relative z-10 backdrop-blur-md bg-black/30 border-b border-white/10"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/10 interactive-element"
+                onClick={() => navigate("/")}
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
+                  <Tv className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <span className="font-bold text-xl text-white text-glow">
+                    ANT <span className="text-blue-400">V3</span>
+                  </span>
+                  <div className="text-xs text-gray-400 -mt-1">
+                    Device Control
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center space-x-3">
+              <Button
+                variant="outline"
+                size="sm"
+                className="border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white interactive-element"
+                onClick={handleErrorDiagnostics}
+              >
+                <AlertTriangle className="mr-2 h-4 w-4" />
+                Diagnostics
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-white hover:bg-white/10 interactive-element"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </motion.header>
+
+      {/* Device Status Card */}
+      <motion.div
+        className="container mx-auto px-6 py-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+      >
+        <div className="glass-card rounded-2xl p-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-2 text-glow">
+                {selectedDevice.name}
+              </h2>
+              <p className="text-gray-400 mb-3">{selectedDevice.description}</p>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-green-400 font-medium">
+                  {selectedDevice.status}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex justify-center space-x-8">
+              <div className="text-center">
+                <Wifi className="h-8 w-8 text-blue-400 mx-auto mb-2" />
+                <div className="text-sm text-gray-400">Network</div>
+                <div className="text-white font-bold">Connected</div>
+              </div>
+              <div className="text-center">
+                <Signal className="h-8 w-8 text-green-400 mx-auto mb-2" />
+                <div className="text-sm text-gray-400">Signal</div>
+                <div className="text-white font-bold">
+                  {selectedDevice.signalStrength}%
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center md:justify-end">
+              <div
+                className={`px-4 py-2 rounded-full bg-gradient-to-r ${selectedDevice.color} text-white font-medium shadow-lg`}
+              >
+                {selectedDevice.name} Active
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Main Control Interface */}
+      <motion.div
+        className="container mx-auto px-6 pb-8"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+      >
+        <div
+          className={`grid gap-8 max-w-7xl mx-auto ${
+            isMobile ? "grid-cols-1" : "grid-cols-1 lg:grid-cols-2"
+          } items-start`}
+        >
+          {/* TV Screen */}
+          <motion.div
+            className="glass-card rounded-2xl p-4 order-1"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <div className="tv-screen">
+              <TVScreen
+                panelBtnFromRemote={localPanelBtn}
+                width={tvWidth}
+                height={tvHeight}
+                deviceId={selectedDevice.id}
+              />
+            </div>
+          </motion.div>
+
+          {/* Remote Control */}
           {!isMobile && (
-            <nav style={{ display: "flex", gap: 18, marginLeft: 32 }}>
-              <a className="nav-button" href="/" style={{ fontSize: 16, padding: '7px 18px' }}>Главная</a>
-              <a className="nav-button" href="/devices" style={{ fontSize: 16, padding: '7px 18px' }}>Приставки</a>
-              <a className="nav-button" href="/support" style={{ fontSize: 16, padding: '7px 18px' }}>Поддержка</a>
-            </nav>
+            <motion.div
+              className="glass-card rounded-2xl p-6 order-2 lg:order-2"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="text-center mb-4">
+                <h3 className="text-xl font-bold text-white mb-2">
+                  Virtual Remote
+                </h3>
+                <p className="text-gray-400">
+                  Use the virtual remote to control your device
+                </p>
+              </div>
+              <div className="flex justify-center">
+                <RemoteControl onButtonClick={handleRemoteButton} />
+              </div>
+            </motion.div>
           )}
         </div>
-        <div style={{ display: "flex", gap: 10, marginRight: isMobile ? 10 : 32 }}>
-          {devices.map((d) => (
-            <button key={d.id} className="nav-button" style={{ fontSize: 15, padding: isMobile ? '6px 10px' : '6px 18px', borderRadius: 16, marginLeft: 4, background: selectedDevice?.id === d.id ? 'linear-gradient(90deg,#3386ff,#2563eb)' : undefined, opacity: selectedDevice?.id === d.id ? 1 : 0.85 }}>{d.name}</button>
-          ))}
-        </div>
-      </div>
-      {/* Карточка приставки */}
-      <div className="device-card animate-gradient-move" style={{ background: 'rgba(30,58,138,0.98)', border: "2px solid #fff3", borderRadius: 20, padding: isMobile ? 18 : 28, minWidth: 220, color: "#fff", boxShadow: "0 8px 32px #0003", margin: '8px auto 0', maxWidth: 420, position: 'relative', zIndex: 2, transition: 'box-shadow 0.3s, transform 0.3s' }}>
-        <div style={{ fontWeight: 700, fontSize: isMobile ? 18 : 22, marginBottom: 8, letterSpacing: 0.2 }}>{selectedDevice?.name}</div>
-        <div style={{ fontSize: isMobile ? 14 : 15, opacity: 0.85, marginBottom: 12 }}>{selectedDevice?.description}</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{ width: 10, height: 10, background: "#22c55e", borderRadius: 5, display: "inline-block", boxShadow: '0 0 8px #22c55e88' }} />
-          <span style={{ fontSize: 14, color: "#a7f3d0" }}>Подключено</span>
-        </div>
-      </div>
-      {/* Один комплект ТВ и пульта в основном контенте */}
-      <div style={{
-        display: 'flex',
-        flexDirection: isMobile ? 'column' : 'row',
-        justifyContent: 'center',
-        alignItems: isMobile ? 'center' : 'flex-start',
-        gap: isMobile ? 24 : 56,
-        marginTop: 8,
-        paddingBottom: isMobile ? 18 : 48,
-        width: '100%',
-        position: 'relative',
-        zIndex: 2,
-        animation: 'fade-in 0.7s cubic-bezier(.4,0,.2,1)',
-      }}>
-        <div style={{ boxShadow: '0 8px 32px #0004', borderRadius: 24, background: 'rgba(30,58,138,0.92)', padding: isMobile ? 8 : 18, transition: 'box-shadow 0.3s, background 0.3s', marginBottom: isMobile ? 18 : 0 }}>
-          <TVScreen panelBtnFromRemote={localPanelBtn} width={tvWidth} height={tvHeight} deviceId={selectedDevice.id} />
-        </div>
-        {!isMobile && (
-          <div style={{ boxShadow: '0 8px 32px #0004', borderRadius: 24, background: 'rgba(30,58,138,0.92)', padding: 12, transition: 'box-shadow 0.3s, background 0.3s' }}>
-            <RemoteControl onButtonClick={handleRemoteButton} />
-          </div>
+
+        {/* Mobile Remote Control Button */}
+        {isMobile && (
+          <motion.div
+            className="fixed bottom-6 right-6 z-20"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.8, duration: 0.4 }}
+          >
+            <Button
+              size="lg"
+              className="rounded-full w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 shadow-2xl interactive-element"
+              onClick={() => {
+                // Open mobile remote modal or navigate to remote page
+              }}
+            >
+              <Power className="h-8 w-8" />
+            </Button>
+          </motion.div>
         )}
-      </div>
-      <Routes>
-        <Route path="/error-select" element={<ErrorSelectionPage />} />
-        <Route path="/error/:errorKey/:subKey?" element={<ErrorDetailPage />} />
-      </Routes>
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(32px); }
-          to { opacity: 1; transform: none; }
-        }
-        @keyframes gradient-move {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 100% 50%; }
-        }
-      `}</style>
+      </motion.div>
     </div>
   );
-} 
+}
