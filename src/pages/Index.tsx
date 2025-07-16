@@ -24,7 +24,7 @@ const Index = () => {
     { label: "Поддерживаемых устройств", value: "15+", icon: Tv },
     { label: "Диагностических сценариев", value: "200+", icon: Zap },
     { label: "Активных пользователей", value: "50K+", icon: Users },
-    { label: "Решённых про��лем", value: "95%", icon: Shield },
+    { label: "Решённых проблем", value: "95%", icon: Shield },
   ];
 
   return (
@@ -189,7 +189,7 @@ const Index = () => {
             </h3>
             <p className="text-gray-400 leading-relaxed">
               OpenBox, OpenBox Gold, Uclan, HDBox и другие популярные модели
-              цифровых ТВ-приставок. Каждое устройство имеет свой реал��стичный
+              цифровых ТВ-приставок. Каждое устройство имеет свой реалистичный
               интерфейс и виртуальный пульт управления.
             </p>
           </motion.div>
