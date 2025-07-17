@@ -26,6 +26,7 @@ import {
 import RemoteControl from "../components/RemoteControl";
 import TVScreen from "../components/TVScreen";
 import { useIsMobile } from "../hooks/use-mobile";
+import { Breadcrumb } from "../components/Breadcrumb";
 import NotFound from "./NotFound";
 
 const devices = [
@@ -87,7 +88,7 @@ const quickActions = [
   { id: "channels", label: "Каналы", icon: Tv },
   { id: "settings", label: "Настройки", icon: Settings },
   { id: "search", label: "Поиск", icon: Search },
-  { id: "info", label: "Информация", icon: Info },
+  { id: "info", label: "Ин��ормация", icon: Info },
 ];
 
 interface DeviceRemotePageProps {
