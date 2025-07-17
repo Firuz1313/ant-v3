@@ -24,7 +24,7 @@ export default function App() {
     null,
   );
 
-    // Global initialization
+  // Global initialization
   useEffect(() => {
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
@@ -50,63 +50,67 @@ export default function App() {
     }
   }
 
-      return (
+  return (
     <LanguageProvider>
       <ThemeProvider>
         <TVControlProvider>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <BrowserRouter>
-                                          <div className="relative">
-                {/* Navigation Menu */}
-                <NavigationMenu />
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <BrowserRouter>
+                <div className="relative">
+                  {/* Navigation Menu */}
+                  <NavigationMenu />
 
-              {/* Toast Notifications */}
-              <Toaster />
-              <Sonner />
+                  {/* Toast Notifications */}
+                  <Toaster />
+                  <Sonner />
 
-              {/* Main Application Routes */}
-              <Routes>
-                {/* Homepage - Device Selection */}
-                <Route path="/" element={<Index />} />
+                  {/* Main Application Routes */}
+                  <Routes>
+                    {/* Homepage - Device Selection */}
+                    <Route path="/" element={<Index />} />
 
-                {/* Legacy route for device selection */}
-                <Route path="/select-device" element={<SelectDevicePage />} />
-
-                {/* Device Remote Control Interface */}
-                <Route
-                  path="/device/:deviceId"
-                  element={
-                    <DeviceRemotePage
-                      panelBtnFromRemote={panelBtnFromRemote}
-                      onRemoteButton={handleRemoteButton}
+                    {/* Legacy route for device selection */}
+                    <Route
+                      path="/select-device"
+                      element={<SelectDevicePage />}
                     />
-                  }
-                />
 
-                {/* Error Selection Page */}
-                <Route
-                  path="/:deviceId/error-select"
-                  element={<ErrorSelectionPage />}
-                />
+                    {/* Device Remote Control Interface */}
+                    <Route
+                      path="/device/:deviceId"
+                      element={
+                        <DeviceRemotePage
+                          panelBtnFromRemote={panelBtnFromRemote}
+                          onRemoteButton={handleRemoteButton}
+                        />
+                      }
+                    />
 
-                {/* Error Detail Page */}
-                <Route
-                  path="/:deviceId/error/:errorKey/:subKey?"
-                  element={<ErrorDetailPage />}
-                />
+                    {/* Error Selection Page */}
+                    <Route
+                      path="/:deviceId/error-select"
+                      element={<ErrorSelectionPage />}
+                    />
 
-                {/* Admin Panel */}
-                <Route path="/admin" element={<AdminPanel />} />
+                    {/* Error Detail Page */}
+                    <Route
+                      path="/:deviceId/error/:errorKey/:subKey?"
+                      element={<ErrorDetailPage />}
+                    />
 
-                {/* 404 Not Found - Must be last */}
-                <Route path="*" element={<NotFound />} />
-                            </Routes>
-              </div>
-            </BrowserRouter>
-          </TooltipProvider>
-        </QueryClientProvider>
-      </TVControlProvider>
-    </ThemeProvider>
+                    {/* Admin Panel */}
+                    <Route path="/admin" element={<AdminPanel />} />
+
+                    {/* 404 Not Found - Must be last */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+              </BrowserRouter>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </TVControlProvider>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }
