@@ -8,7 +8,8 @@
     "test": "vitest --run",
     "format.fix": "prettier --write .",
     "typecheck": "tsc",
-    "analyze": "source-map-explorer build/static/js/*.js",
+    "analyze": "vite-bundle-analyzer dist",
+    "analyze:build": "npm run build && npm run analyze",
     "unused": "ts-unused-exports tsconfig.json"
   },
   "dependencies": {
