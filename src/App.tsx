@@ -24,7 +24,7 @@ export default function App() {
     null,
   );
 
-  // Global initialization
+    // Global initialization
   useEffect(() => {
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
@@ -50,57 +50,58 @@ export default function App() {
     }
   }
 
-  return (
-    <ThemeProvider>
-      <TVControlProvider>
+      return (
+    <LanguageProvider>
+      <ThemeProvider>
+        <TVControlProvider>
         <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <BrowserRouter>
-              <div className="relative">
+                                          <div className="relative">
                 {/* Navigation Menu */}
                 <NavigationMenu />
 
-                {/* Toast Notifications */}
-                <Toaster />
-                <Sonner />
+              {/* Toast Notifications */}
+              <Toaster />
+              <Sonner />
 
-                {/* Main Application Routes */}
-                <Routes>
-                  {/* Homepage - Device Selection */}
-                  <Route path="/" element={<Index />} />
+              {/* Main Application Routes */}
+              <Routes>
+                {/* Homepage - Device Selection */}
+                <Route path="/" element={<Index />} />
 
-                  {/* Legacy route for device selection */}
-                  <Route path="/select-device" element={<SelectDevicePage />} />
+                {/* Legacy route for device selection */}
+                <Route path="/select-device" element={<SelectDevicePage />} />
 
-                  {/* Device Remote Control Interface */}
-                  <Route
-                    path="/device/:deviceId"
-                    element={
-                      <DeviceRemotePage
-                        panelBtnFromRemote={panelBtnFromRemote}
-                        onRemoteButton={handleRemoteButton}
-                      />
-                    }
-                  />
+                {/* Device Remote Control Interface */}
+                <Route
+                  path="/device/:deviceId"
+                  element={
+                    <DeviceRemotePage
+                      panelBtnFromRemote={panelBtnFromRemote}
+                      onRemoteButton={handleRemoteButton}
+                    />
+                  }
+                />
 
-                  {/* Error Selection Page */}
-                  <Route
-                    path="/:deviceId/error-select"
-                    element={<ErrorSelectionPage />}
-                  />
+                {/* Error Selection Page */}
+                <Route
+                  path="/:deviceId/error-select"
+                  element={<ErrorSelectionPage />}
+                />
 
-                  {/* Error Detail Page */}
-                  <Route
-                    path="/:deviceId/error/:errorKey/:subKey?"
-                    element={<ErrorDetailPage />}
-                  />
+                {/* Error Detail Page */}
+                <Route
+                  path="/:deviceId/error/:errorKey/:subKey?"
+                  element={<ErrorDetailPage />}
+                />
 
-                  {/* Admin Panel */}
-                  <Route path="/admin" element={<AdminPanel />} />
+                {/* Admin Panel */}
+                <Route path="/admin" element={<AdminPanel />} />
 
-                  {/* 404 Not Found - Must be last */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
+                {/* 404 Not Found - Must be last */}
+                <Route path="*" element={<NotFound />} />
+                            </Routes>
               </div>
             </BrowserRouter>
           </TooltipProvider>
