@@ -107,25 +107,25 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Exact reference proportions - huge TV, ultra narrow remote
-  let tvWidth = 1100;
-  let tvHeight = 620;
-  let remoteWidth = 100;
-  let remoteHeight = 340;
+  // Perfect reference match - TV dominates, remote minimal
+  let tvWidth = 1200;
+  let tvHeight = 675;
+  let remoteWidth = 90;
+  let remoteHeight = 320;
 
   if (typeof window !== "undefined") {
     if (isMobile) {
       tvWidth = Math.min(window.innerWidth * 0.9, 350);
       tvHeight = tvWidth * (9 / 16);
-      remoteWidth = 80;
-      remoteHeight = Math.min(window.innerHeight * 0.5, 240);
+      remoteWidth = 70;
+      remoteHeight = Math.min(window.innerHeight * 0.5, 220);
     } else {
-      // Huge TV like in reference - takes almost all horizontal space
-      const screenWidth = window.innerWidth;
-      tvWidth = Math.min(1100, screenWidth * 0.85);
-      tvHeight = tvWidth * 0.56; // Wide TV aspect ratio from reference
-      remoteWidth = 100; // Ultra narrow remote
-      remoteHeight = Math.min(340, window.innerHeight * 0.45);
+      // TV takes maximum space like in reference
+      const availableWidth = window.innerWidth - 120; // Reserve minimal space for remote
+      tvWidth = Math.min(1200, availableWidth * 0.88);
+      tvHeight = tvWidth * (9 / 16); // Standard TV ratio
+      remoteWidth = 90; // Minimal remote width
+      remoteHeight = Math.min(320, window.innerHeight * 0.4);
     }
   }
 
