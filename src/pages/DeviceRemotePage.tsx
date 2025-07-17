@@ -320,9 +320,9 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - Reduced width with smart rendering */}
+            {/* TV Screen - Balanced with smaller remote */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[60%] order-1"} perf-critical`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[65%] order-1"} perf-critical`}
               whileHover={{ scale: 1.005 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
