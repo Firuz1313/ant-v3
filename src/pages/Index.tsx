@@ -152,7 +152,7 @@ const Index = () => {
             </motion.div>
           </motion.div>
 
-                    {/* Статистика */}
+                              {/* Статистика */}
           <LazyComponent rootMargin="50px">
             <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
