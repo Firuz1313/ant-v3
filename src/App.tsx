@@ -62,6 +62,9 @@ export default function App() {
                   {/* Navigation Menu */}
                   <NavigationMenu />
 
+                  {/* Feedback Button */}
+                  <FeedbackButton />
+
                   {/* Toast Notifications */}
                   <Toaster />
                   <Sonner />
