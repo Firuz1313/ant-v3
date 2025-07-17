@@ -149,8 +149,7 @@ export default function ErrorDetailPage() {
         style={{ marginTop: 24 }}
       >
         <button
-          className="px-5 py-2 rounded bg-[#23272e] hover:bg-[#2b3a67] text-white font-medium whitespace-nowrap self-start absolute left-0 top-0"
-          style={{ left: "-24px" }}
+          className="px-5 py-2 rounded bg-[#23272e] hover:bg-[#2b3a67] text-white font-medium whitespace-nowrap self-start absolute left-0 top-0 md:left-[-24px] mobile:static mobile:mb-4 interactive-element ripple-effect"
           onClick={() => navigate(`/${deviceId}/error-select`)}
         >
           ← К списку ошибок
