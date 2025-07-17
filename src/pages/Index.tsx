@@ -128,7 +128,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-                        >
+            >
               {t("main.description")}
             </motion.p>
 
@@ -145,14 +145,14 @@ const Index = () => {
               >
                 <span className="relative z-10 flex items-center">
                   <Tv className="mr-3 h-5 w-5" />
-                                    {t("main.button")}
+                  {t("main.button")}
                   <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Button>
             </motion.div>
           </motion.div>
 
-                              {/* Статистика */}
+          {/* Статистика */}
           <LazyComponent rootMargin="50px">
             <motion.div
               className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
@@ -160,27 +160,28 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
             >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="glass-card rounded-3xl p-8 text-center group hover:scale-105 transition-all duration-300 border border-white/10"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.1 + index * 0.1, duration: 0.6 }}
-                whileHover={{ y: -8 }}
-              >
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform shadow-lg">
-                  <stat.icon className="h-8 w-8 text-white" />
-                </div>
-                <div className="text-3xl font-bold text-white mb-2 text-glow">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-gray-400 font-medium">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  className="glass-card rounded-3xl p-8 text-center group hover:scale-105 transition-all duration-300 border border-white/10"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.1 + index * 0.1, duration: 0.6 }}
+                  whileHover={{ y: -8 }}
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform shadow-lg">
+                    <stat.icon className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="text-3xl font-bold text-white mb-2 text-glow">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm text-gray-400 font-medium">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </LazyComponent>
 
           {/* Дополнительная информация */}
           <motion.div
