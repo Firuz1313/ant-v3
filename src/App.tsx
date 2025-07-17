@@ -56,9 +56,6 @@ export default function App() {
           <TooltipProvider>
             <BrowserRouter>
               <div className="relative">
-                {/* Simplified Cursor */}
-                <SimpleCursor />
-
                 {/* Navigation Menu */}
                 <NavigationMenu />
 
