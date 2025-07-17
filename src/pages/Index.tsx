@@ -142,7 +142,7 @@ const Index = () => {
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-blue-700 to-purple-700 text-white px-16 py-7 text-xl font-bold rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 interactive-element ripple-effect glow-ring group"
+                className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-16 py-7 text-xl font-bold rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 interactive-element ripple-effect group"
               >
                 <span className="relative z-10 flex items-center">
                   <Sparkles className="mr-4 h-7 w-7 animate-pulse" />
