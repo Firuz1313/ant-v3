@@ -118,7 +118,7 @@ const Index = () => {
               transition={{ delay: 0.4, duration: 1, type: "spring" }}
             >
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700">
-                Ваш онлайн-помощник от ANT
+                {t("main.title")}
               </span>
             </motion.h2>
 
