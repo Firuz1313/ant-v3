@@ -40,14 +40,33 @@ const menuItems = [
 
 export default function OpenboxTVInterface() {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [showMenu, setShowMenu] = useState(true);
+  const [showMenu, setShowMenu] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
+  const [isPoweredOn, setIsPoweredOn] = useState(false);
+  const [bootProgress, setBootProgress] = useState(0);
   const { sendCommand } = useTVControl();
 
   // Добавляем эффект мерцания для создания ощущения живого ТВ
   const [flicker, setFlicker] = useState(false);
 
+  // Плавное включение при загрузке
   useEffect(() => {
+    const bootSequence = async () => {
+      // Имитация включения приставки
+      for (let i = 0; i <= 100; i += 5) {
+        setBootProgress(i);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      setIsPoweredOn(true);
+      setTimeout(() => setShowMenu(true), 800);
+    };
+
+    bootSequence();
+  }, []);
+
+  useEffect(() => {
+    if (!isPoweredOn) return;
+
     const flickerInterval = setInterval(
       () => {
         setFlicker((prev) => !prev);
@@ -56,14 +75,14 @@ export default function OpenboxTVInterface() {
     ); // Случайное мерцание каждые 3-5 сек
 
     return () => clearInterval(flickerInterval);
-  }, []);
+  }, [isPoweredOn]);
 
   // Обработка команд с пульта
   useEffect(() => {
     const handleRemoteCommand = (event: CustomEvent) => {
       const { type, key } = event.detail;
 
-      if (!showMenu) return;
+      if (!showMenu || !isPoweredOn) return;
 
       switch (key) {
         case "up":
@@ -102,7 +121,7 @@ export default function OpenboxTVInterface() {
         handleRemoteCommand as EventListener,
       );
     };
-  }, [selectedIndex, showMenu]);
+  }, [selectedIndex, showMenu, isPoweredOn]);
 
   // Отправка команд обратно к пульту для создания обратной связи
   useEffect(() => {
@@ -136,6 +155,9 @@ export default function OpenboxTVInterface() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        opacity: isPoweredOn ? 1 : bootProgress / 100,
+        filter: isPoweredOn ? "none" : `brightness(${bootProgress / 100})`,
+        transition: "opacity 0.5s ease, filter 0.5s ease",
       }}
     >
       {/* Тонкие линии сканирования для эффекта ТВ */}
@@ -191,8 +213,64 @@ export default function OpenboxTVInterface() {
         }}
       />
 
+      {/* Лого загрузки */}
+      {!isPoweredOn && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            zIndex: 20,
+            textAlign: "center",
+            color: "#fff",
+          }}
+        >
+          <div
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              marginBottom: "20px",
+              textShadow: "0 0 20px rgba(255,255,255,0.5)",
+              animation: "logoGlow 2s ease-in-out infinite alternate",
+            }}
+          >
+            OPENBOX
+          </div>
+          <div
+            style={{
+              width: "200px",
+              height: "4px",
+              background: "rgba(255,255,255,0.2)",
+              borderRadius: "2px",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                width: `${bootProgress}%`,
+                height: "100%",
+                background: "linear-gradient(90deg, #1976d2, #42a5f5)",
+                borderRadius: "2px",
+                transition: "width 0.1s ease",
+                boxShadow: "0 0 10px rgba(25,118,210,0.5)",
+              }}
+            />
+          </div>
+          <div
+            style={{
+              fontSize: "12px",
+              marginTop: "10px",
+              opacity: 0.7,
+            }}
+          >
+            Загрузка... {bootProgress}%
+          </div>
+        </div>
+      )}
+
       {/* Главное меню в левом нижнем углу */}
-      {showMenu && (
+      {showMenu && isPoweredOn && (
         <div
           style={{
             position: "absolute",
@@ -372,33 +450,35 @@ export default function OpenboxTVInterface() {
       )}
 
       {/* Индикатор активности в правом верхнем углу */}
-      <div
-        style={{
-          position: "absolute",
-          top: 20,
-          right: 20,
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          background: "rgba(0,0,0,0.6)",
-          padding: "8px 16px",
-          borderRadius: "20px",
-          border: "1px solid rgba(255,255,255,0.1)",
-        }}
-      >
+      {isPoweredOn && (
         <div
           style={{
-            width: "8px",
-            height: "8px",
-            background: "#4caf50",
-            borderRadius: "50%",
-            animation: "blink 2s infinite",
+            position: "absolute",
+            top: 20,
+            right: 20,
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            background: "rgba(0,0,0,0.6)",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            border: "1px solid rgba(255,255,255,0.1)",
           }}
-        />
-        <span style={{ color: "#fff", fontSize: "12px", fontWeight: "500" }}>
-          OPENBOX
-        </span>
-      </div>
+        >
+          <div
+            style={{
+              width: "8px",
+              height: "8px",
+              background: "#4caf50",
+              borderRadius: "50%",
+              animation: "blink 2s infinite",
+            }}
+          />
+          <span style={{ color: "#fff", fontSize: "12px", fontWeight: "500" }}>
+            OPENBOX
+          </span>
+        </div>
+      )}
 
       {/* Добавляем CSS анимации */}
       <style>{`
@@ -455,6 +535,15 @@ export default function OpenboxTVInterface() {
           }
           100% { 
             transform: translateY(2px);
+          }
+        }
+
+        @keyframes logoGlow {
+          0% { 
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+          }
+          100% { 
+            text-shadow: 0 0 30px rgba(25,118,210,0.8), 0 0 40px rgba(25,118,210,0.6);
           }
         }
       `}</style>
