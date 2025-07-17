@@ -27,6 +27,7 @@ import {
   Activity,
   BarChart3,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 interface Device {
   id: string;
@@ -498,7 +499,7 @@ const AdminPanel = () => {
                     change: "+2",
                   },
                   {
-                    label: "Активных ошибок",
+                    label: "Ак��ивных ошибок",
                     value: stats.activeErrors,
                     icon: AlertTriangle,
                     color: "orange",
@@ -882,7 +883,7 @@ const AdminPanel = () => {
                     setDeviceForm({ ...deviceForm, name: e.target.value })
                   }
                   className="bg-black/20 border-white/20 text-white"
-                  placeholder="Например: OpenBox Gold"
+                  placeholder="Наприм��р: OpenBox Gold"
                 />
               </div>
 
