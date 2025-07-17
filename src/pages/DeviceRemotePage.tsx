@@ -298,7 +298,7 @@ export default function DeviceRemotePage({
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-400 mb-1">П��ошивка</div>
+                    <div className="text-xs text-gray-400 mb-1">Прошивка</div>
                     <div className="text-lg font-bold text-white">
                       {selectedDevice.firmware}
                     </div>
@@ -339,19 +339,7 @@ export default function DeviceRemotePage({
                 </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className="grid grid-cols-4 gap-3">
-                {quickActions.map((action) => (
-                  <Button
-                    key={action.id}
-                    variant="ghost"
-                    className="h-16 flex flex-col items-center justify-center space-y-1 text-gray-400 hover:text-white hover:bg-white/10 interactive-element"
-                  >
-                    <action.icon className="h-5 w-5" />
-                    <span className="text-xs">{action.label}</span>
-                  </Button>
-                ))}
-              </div>
+              {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
             {/* Remote Control Panel - WOW Size, perfectly aligned with TV */}
