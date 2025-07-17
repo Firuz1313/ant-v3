@@ -105,7 +105,7 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Responsive TV dimensions
+  // Optimized TV dimensions - increased to 70% for better visibility
   let tvWidth = 900;
   let tvHeight = 500;
   if (typeof window !== "undefined") {
@@ -113,7 +113,8 @@ export default function DeviceRemotePage({
       tvWidth = Math.min(window.innerWidth * 0.95, 400);
       tvHeight = tvWidth * (9 / 16);
     } else {
-      tvWidth = Math.min(900, window.innerWidth * 0.55);
+      // Increased from 55% to 70% for wider TV screen
+      tvWidth = Math.min(1100, window.innerWidth * 0.7);
       tvHeight = tvWidth * (9 / 16);
     }
   }
@@ -304,15 +305,15 @@ export default function DeviceRemotePage({
             </div>
           </div>
 
-          {/* TV Screen and Controls Layout */}
+          {/* TV Screen and Controls Layout - Horizontal alignment with equal heights */}
           <div
-            className={`grid gap-8 ${
-              isMobile ? "grid-cols-1" : "grid-cols-1 xl:grid-cols-12"
-            } items-start`}
+            className={`flex gap-6 ${
+              isMobile ? "flex-col" : "flex-row items-start"
+            }`}
           >
-            {/* TV Screen */}
+            {/* TV Screen - 70% width */}
             <motion.div
-              className={`${isMobile ? "order-1" : "xl:col-span-8 order-1"}`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[70%] order-1"}`}
               whileHover={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -342,15 +343,15 @@ export default function DeviceRemotePage({
               </div>
             </motion.div>
 
-            {/* Remote Control Panel */}
+            {/* Remote Control Panel - 30% width, centered vertically with TV */}
             {!isMobile && (
               <motion.div
-                className="xl:col-span-4 order-2"
+                className="w-[30%] order-2 flex-shrink-0"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                <div className="glass rounded-2xl p-6 sticky top-6">
+                <div className="glass rounded-2xl p-4 sticky top-6 h-fit">
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-bold text-white mb-2">
                       Виртуальный пульт
@@ -361,7 +362,7 @@ export default function DeviceRemotePage({
                   </div>
 
                   <div className="flex justify-center">
-                    <div className="scale-90 origin-center">
+                    <div className="scale-75 origin-center">
                       {selectedDevice.id === "openbox" ? (
                         <OpenboxRemoteControl
                           onButtonClick={handleRemoteButton}
