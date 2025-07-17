@@ -1,18 +1,26 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { TechCursor } from "@/components/TechCursor";
+
+import { NavigationMenu } from "@/components/NavigationMenu";
+import { FeedbackButton } from "@/components/FeedbackButton";
+import { ThemeProvider } from "@/context/ThemeContext";
+import { LanguageProvider } from "@/context/LanguageContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import SelectDevicePage from "./pages/SelectDevicePage";
+
+// Lazy load heavy components for better performance
+const SelectDevicePage = lazy(() => import("./pages/SelectDevicePage"));
+// DeviceRemotePage temporarily using regular import due to dynamic import issue
 import DeviceRemotePage from "./pages/DeviceRemotePage";
-import ErrorSelectionPage from "./pages/ErrorSelectionPage";
-import ErrorDetailPage from "./pages/ErrorDetailPage";
-import AdminPanel from "./pages/AdminPanel";
+const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
+const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 import { TVControlProvider } from "./context/TVControlContext";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const queryClient = new QueryClient();
 
@@ -21,11 +29,8 @@ export default function App() {
     null,
   );
 
-  // Global theme initialization
+  // Global initialization
   useEffect(() => {
-    // Set dark mode by default
-    document.documentElement.classList.add("dark");
-
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
@@ -51,59 +56,71 @@ export default function App() {
   }
 
   return (
-    <TVControlProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <BrowserRouter>
-            <div className="relative">
-              {/* Custom Tech Cursor */}
-              <TechCursor />
+    <LanguageProvider>
+      <ThemeProvider>
+        <TVControlProvider>
+          <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+              <BrowserRouter>
+                <div className="relative">
+                  {/* Navigation Menu */}
+                  <NavigationMenu />
 
-              {/* Toast Notifications */}
-              <Toaster />
-              <Sonner />
+                  {/* Feedback Button */}
+                  <FeedbackButton />
 
-              {/* Main Application Routes */}
-              <Routes>
-                {/* Homepage - Device Selection */}
-                <Route path="/" element={<Index />} />
+                  {/* Toast Notifications */}
+                  <Toaster />
+                  <Sonner />
 
-                {/* Legacy route for device selection */}
-                <Route path="/select-device" element={<SelectDevicePage />} />
+                  {/* Main Application Routes */}
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Routes>
+                      {/* Homepage - Device Selection */}
+                      <Route path="/" element={<Index />} />
 
-                {/* Device Remote Control Interface */}
-                <Route
-                  path="/device/:deviceId"
-                  element={
-                    <DeviceRemotePage
-                      panelBtnFromRemote={panelBtnFromRemote}
-                      onRemoteButton={handleRemoteButton}
-                    />
-                  }
-                />
+                      {/* Legacy route for device selection */}
+                      <Route
+                        path="/select-device"
+                        element={<SelectDevicePage />}
+                      />
 
-                {/* Error Selection Page */}
-                <Route
-                  path="/:deviceId/error-select"
-                  element={<ErrorSelectionPage />}
-                />
+                      {/* Device Remote Control Interface */}
+                      <Route
+                        path="/device/:deviceId"
+                        element={
+                          <DeviceRemotePage
+                            panelBtnFromRemote={panelBtnFromRemote}
+                            onRemoteButton={handleRemoteButton}
+                          />
+                        }
+                      />
 
-                {/* Error Detail Page */}
-                <Route
-                  path="/:deviceId/error/:errorKey/:subKey?"
-                  element={<ErrorDetailPage />}
-                />
+                      {/* Error Selection Page */}
+                      <Route
+                        path="/:deviceId/error-select"
+                        element={<ErrorSelectionPage />}
+                      />
 
-                {/* Admin Panel */}
-                <Route path="/admin" element={<AdminPanel />} />
+                      {/* Error Detail Page */}
+                      <Route
+                        path="/:deviceId/error/:errorKey/:subKey?"
+                        element={<ErrorDetailPage />}
+                      />
 
-                {/* 404 Not Found - Must be last */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </TVControlProvider>
+                      {/* Admin Panel */}
+                      <Route path="/admin" element={<AdminPanel />} />
+
+                      {/* 404 Not Found - Must be last */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
+                </div>
+              </BrowserRouter>
+            </TooltipProvider>
+          </QueryClientProvider>
+        </TVControlProvider>
+      </ThemeProvider>
+    </LanguageProvider>
   );
 }

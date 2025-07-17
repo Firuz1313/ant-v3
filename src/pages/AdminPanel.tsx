@@ -27,6 +27,8 @@ import {
   Activity,
   BarChart3,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { AdminSettings } from "@/components/AdminSettings";
 
 interface Device {
   id: string;
@@ -334,7 +336,7 @@ const AdminPanel = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen tech-bg flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
           className="glass-card rounded-2xl p-8 w-full max-w-md"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -342,7 +344,7 @@ const AdminPanel = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 mx-auto animate-glow">
+            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 mx-auto glow-ring ripple-effect">
               <Lock className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2 text-glow">
@@ -363,7 +365,7 @@ const AdminPanel = () => {
             />
             <Button
               onClick={handleLogin}
-              className="w-full nav-button interactive-element"
+              className="w-full nav-button interactive-element ripple-effect glow-ring"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -399,10 +401,10 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen tech-bg">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <motion.header
-        className="relative z-10 backdrop-blur-md bg-black/30 border-b border-white/10"
+        className="relative z-10 backdrop-blur-md bg-background/80 border-b border-border"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -435,9 +437,10 @@ const AdminPanel = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-400">
-                Администратор: <span className="text-white">admin</span>
+              <div className="text-sm text-muted-foreground">
+                Администратор: <span className="text-foreground">admin</span>
               </div>
+              <ThemeToggle />
               <Button
                 variant="outline"
                 size="sm"
@@ -453,7 +456,7 @@ const AdminPanel = () => {
 
       {/* Navigation Tabs */}
       <div className="container mx-auto px-6 pt-6">
-        <div className="flex space-x-1 mb-6">
+        <div className="flex flex-wrap gap-2 mb-6">
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
@@ -463,9 +466,9 @@ const AdminPanel = () => {
             <Button
               key={tab.id}
               variant={activeTab === tab.id ? "default" : "ghost"}
-              className={`interactive-element ${
+              className={`interactive-element ripple-effect ${
                 activeTab === tab.id
-                  ? "bg-blue-600 text-white"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white glow-ring"
                   : "text-gray-400 hover:text-white hover:bg-white/10"
               }`}
               onClick={() => setActiveTab(tab.id)}
@@ -498,7 +501,7 @@ const AdminPanel = () => {
                     change: "+2",
                   },
                   {
-                    label: "Активных ошибок",
+                    label: "Ак��ивных ошибок",
                     value: stats.activeErrors,
                     icon: AlertTriangle,
                     color: "orange",
@@ -769,80 +772,7 @@ const AdminPanel = () => {
             </Card>
           )}
 
-          {activeTab === "settings" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="glass-card border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">
-                    Системные настройки
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h4 className="text-white font-medium mb-2">Внешний вид</h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Настройка темы интерфейса
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white interactive-element"
-                    >
-                      Настроить тему
-                    </Button>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-medium mb-2">
-                      Эффекты курсора
-                    </h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Управление кастомными эффектами курсора
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white interactive-element"
-                    >
-                      Настройки курсора
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Интеграции</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h4 className="text-white font-medium mb-2">
-                      Внешние проекты
-                    </h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Настройка интеграции с внешними репозиториями
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-green-400 text-green-400 hover:bg-green-400 hover:text-white interactive-element"
-                    >
-                      Управление импортами
-                    </Button>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-medium mb-2">База данных</h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Операции с базой данных
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white interactive-element"
-                    >
-                      <Database className="mr-2 h-4 w-4" />
-                      Настройки БД
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {activeTab === "settings" && <AdminSettings />}
         </motion.div>
       </div>
 
@@ -882,7 +812,7 @@ const AdminPanel = () => {
                     setDeviceForm({ ...deviceForm, name: e.target.value })
                   }
                   className="bg-black/20 border-white/20 text-white"
-                  placeholder="Например: OpenBox Gold"
+                  placeholder="Наприм��р: OpenBox Gold"
                 />
               </div>
 

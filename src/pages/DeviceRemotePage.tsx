@@ -19,11 +19,16 @@ import {
   Info,
   PlayCircle,
   MoreHorizontal,
+  Headphones,
+  History,
+  Video,
 } from "lucide-react";
-import RemoteControl from "../components/RemoteControl";
-import TVScreen from "../components/TVScreen";
-import { useIsMobile } from "../hooks/use-mobile";
-import NotFound from "./NotFound";
+import RemoteControl from "@/components/RemoteControl";
+import OpenboxRemoteControl from "@/components/OpenboxRemoteControl";
+import TVScreen from "@/components/TVScreen";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import NotFound from "@/pages/NotFound";
 
 const devices = [
   {
@@ -33,11 +38,10 @@ const devices = [
     description: "Классическая модель с базовым функционалом",
     status: "Подключено",
     signalStrength: 85,
-    temperature: 42,
     uptime: "2д 14ч",
     color: "from-blue-500 to-blue-600",
     firmware: "v2.1.45",
-    channels: 147,
+    channels: 182,
   },
   {
     id: "openbox-gold",
@@ -46,11 +50,10 @@ const devices = [
     description: "Премиум модель с расширенными возможностями",
     status: "Подключено",
     signalStrength: 92,
-    temperature: 38,
     uptime: "5д 8ч",
     color: "from-amber-500 to-orange-600",
     firmware: "v3.2.18",
-    channels: 203,
+    channels: 182,
   },
   {
     id: "uclan",
@@ -59,11 +62,10 @@ const devices = [
     description: "Профессиональная приставка для IPTV",
     status: "Подключено",
     signalStrength: 78,
-    temperature: 44,
     uptime: "1д 3ч",
     color: "from-purple-500 to-purple-600",
     firmware: "v4.1.7",
-    channels: 312,
+    channels: 182,
   },
   {
     id: "hdbox",
@@ -72,11 +74,10 @@ const devices = [
     description: "Надёжная приставка с функцией записи",
     status: "Подключено",
     signalStrength: 72,
-    temperature: 46,
     uptime: "3д 12ч",
     color: "from-green-500 to-green-600",
     firmware: "v1.8.22",
-    channels: 189,
+    channels: 182,
   },
 ];
 
@@ -84,7 +85,7 @@ const quickActions = [
   { id: "channels", label: "Каналы", icon: Tv },
   { id: "settings", label: "Настройки", icon: Settings },
   { id: "search", label: "Поиск", icon: Search },
-  { id: "info", label: "Информация", icon: Info },
+  { id: "info", label: "Ин��ормация", icon: Info },
 ];
 
 interface DeviceRemotePageProps {
@@ -150,16 +151,15 @@ export default function DeviceRemotePage({
     return "text-red-400";
   };
 
-  const getTemperatureColor = (temp: number) => {
-    if (temp <= 40) return "text-green-400";
-    if (temp <= 50) return "text-yellow-400";
-    return "text-red-400";
-  };
-
   if (!selectedDevice) return <NotFound />;
 
   return (
     <div className="min-h-screen tech-bg">
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-6 pt-4">
+        <Breadcrumb />
+      </div>
+
       {/* Minimalist Header */}
       <motion.header
         className="relative z-20 backdrop-blur-sm bg-black/40 border-b border-white/5"
@@ -262,7 +262,7 @@ export default function DeviceRemotePage({
           <div className="flex flex-col lg:flex-row gap-6 mb-6">
             <div className="flex-1">
               <div className="glass rounded-xl p-4">
-                <div className="grid grid-cols-3 md:grid-cols-6 gap-4 text-center">
+                <div className="grid grid-cols-3 md:grid-cols-5 gap-4 text-center">
                   <div>
                     <div className="text-xs text-gray-400 mb-1">Каналы</div>
                     <div className="text-lg font-bold text-white">
@@ -277,18 +277,6 @@ export default function DeviceRemotePage({
                       )}`}
                     >
                       {selectedDevice.signalStrength}%
-                    </div>
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-400 mb-1">
-                      Температура
-                    </div>
-                    <div
-                      className={`text-lg font-bold ${getTemperatureColor(
-                        selectedDevice.temperature,
-                      )}`}
-                    >
-                      {selectedDevice.temperature}°C
                     </div>
                   </div>
                   <div>
@@ -374,7 +362,13 @@ export default function DeviceRemotePage({
 
                   <div className="flex justify-center">
                     <div className="scale-90 origin-center">
-                      <RemoteControl onButtonClick={handleRemoteButton} />
+                      {selectedDevice.id === "openbox" ? (
+                        <OpenboxRemoteControl
+                          onButtonClick={handleRemoteButton}
+                        />
+                      ) : (
+                        <RemoteControl onButtonClick={handleRemoteButton} />
+                      )}
                     </div>
                   </div>
 
@@ -443,38 +437,58 @@ export default function DeviceRemotePage({
               </div>
               <div className="flex justify-center">
                 <div className="scale-75 origin-center">
-                  <RemoteControl onButtonClick={handleRemoteButton} />
+                  {selectedDevice.id === "openbox" ? (
+                    <OpenboxRemoteControl onButtonClick={handleRemoteButton} />
+                  ) : (
+                    <RemoteControl onButtonClick={handleRemoteButton} />
+                  )}
                 </div>
               </div>
             </motion.div>
           </motion.div>
         )}
 
-        {/* Side Status Panel (Desktop only) */}
+        {/* Quick Navigation Panel (Desktop only) */}
         {!isMobile && (
           <motion.div
-            className="fixed left-6 top-1/2 transform -translate-y-1/2 z-10"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            className="fixed right-6 bottom-6 z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.6 }}
           >
-            <div className="glass rounded-xl p-4 w-16 flex flex-col items-center space-y-4">
-              <div className="text-center">
-                <Home className="h-6 w-6 text-blue-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Главная</div>
-              </div>
-              <div className="text-center">
-                <Volume2 className="h-6 w-6 text-white mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Звук</div>
-              </div>
-              <div className="text-center">
-                <PlayCircle className="h-6 w-6 text-green-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Запись</div>
-              </div>
-              <div className="text-center">
-                <Monitor className="h-6 w-6 text-purple-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Экран</div>
-              </div>
+            <div className="bg-background/95 backdrop-blur-md border border-border rounded-xl p-3 w-14 flex flex-col items-center space-y-3 shadow-lg">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate("/")}
+              >
+                <Home className="h-5 w-5 text-primary" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate(`/${deviceId}/error-select`)}
+              >
+                <Headphones className="h-5 w-5 text-muted-foreground" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate("/select-device")}
+              >
+                <History className="h-5 w-5 text-muted-foreground" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => window.location.reload()}
+              >
+                <Video className="h-5 w-5 text-muted-foreground" />
+              </Button>
             </div>
           </motion.div>
         )}

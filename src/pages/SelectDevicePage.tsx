@@ -18,6 +18,7 @@ import {
   Settings,
   CheckCircle,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const devices = [
   {
@@ -32,7 +33,6 @@ const devices = [
     users: "2.3M+",
     rating: 4.2,
     status: "Стабильная",
-    price: "от 3,500 ₽",
     supported: true,
   },
   {
@@ -47,7 +47,6 @@ const devices = [
     users: "1.8M+",
     rating: 4.7,
     status: "Расширенная",
-    price: "от 7,200 ₽",
     supported: true,
   },
   {
@@ -62,7 +61,6 @@ const devices = [
     users: "1.2M+",
     rating: 4.5,
     status: "Профессиональная",
-    price: "от 5,800 ₽",
     supported: true,
   },
   {
@@ -77,7 +75,6 @@ const devices = [
     users: "950K+",
     rating: 4.1,
     status: "Классическая",
-    price: "от 4,100 ₽",
     supported: true,
   },
 ];
@@ -86,7 +83,7 @@ const categories = [
   { id: "all", name: "Все устройства", count: devices.length },
   {
     id: "supported",
-    name: "Поддерживаемые",
+    name: "Поддержива��мые",
     count: devices.filter((d) => d.supported).length,
   },
   { id: "popular", name: "Популярные", count: 3 },
@@ -135,14 +132,14 @@ export default function SelectDevicePage() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/10 interactive-element"
+                className="text-white hover:bg-white/10 interactive-element ripple-effect"
                 onClick={handleBackHome}
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
 
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center glow-ring">
                   <Tv className="h-5 w-5 text-white" />
                 </div>
                 <div>
@@ -156,8 +153,11 @@ export default function SelectDevicePage() {
               </div>
             </div>
 
-            <div className="text-sm text-gray-400">
-              {filteredDevices.length} из {devices.length} устройств
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-muted-foreground">
+                {filteredDevices.length} из {devices.length} устройств
+              </div>
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -170,7 +170,7 @@ export default function SelectDevicePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.6 }}
       >
-        <div className="glass-card rounded-2xl p-6 mb-8">
+        <div className="glass-card rounded-2xl p-6 mb-8 border border-white/10">
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Search */}
             <div className="flex-1">
@@ -180,7 +180,7 @@ export default function SelectDevicePage() {
                   placeholder="Поиск по названию модели..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-12 bg-black/20 border-white/20 text-white placeholder:text-gray-400 h-12"
+                  className="pl-12 bg-black/20 border-white/20 text-white placeholder:text-gray-400 h-12 focus:border-blue-400 transition-colors"
                 />
               </div>
             </div>
@@ -207,9 +207,9 @@ export default function SelectDevicePage() {
               <Button
                 key={category.id}
                 variant={selectedCategory === category.id ? "default" : "ghost"}
-                className={`interactive-element ${
+                className={`interactive-element ripple-effect ${
                   selectedCategory === category.id
-                    ? "bg-blue-600 text-white"
+                    ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white glow-ring"
                     : "text-gray-400 hover:text-white hover:bg-white/10"
                 }`}
                 onClick={() => setSelectedCategory(category.id)}
@@ -228,15 +228,15 @@ export default function SelectDevicePage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 0.6 }}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
           {filteredDevices.map((device, index) => (
             <motion.div
               key={device.id}
-              className="device-card group interactive-element"
+              className="device-card group interactive-element ripple-effect cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 + index * 0.1, duration: 0.4 }}
-              whileHover={{ scale: 1.02, y: -5 }}
+              whileHover={{ scale: 1.02, y: -8 }}
               onClick={() => handleDeviceSelect(device.id)}
             >
               {/* Device Image Placeholder */}
@@ -372,7 +372,7 @@ export default function SelectDevicePage() {
           <div className="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
             <Shield className="h-12 w-12 text-blue-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-4">
-              Не нашли своё устройство?
+              Не нашли своё ��стройство?
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Мы постоянно добавляем поддержку новых моделей. Свяжитесь с нашей

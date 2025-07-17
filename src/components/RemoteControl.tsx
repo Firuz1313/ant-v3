@@ -1,14 +1,56 @@
 import React, { useState } from "react";
-import { FaPowerOff, FaVolumeUp, FaVolumeDown, FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight, FaRegCircle, FaPlay, FaPause, FaStop, FaYoutube, FaArrowLeft, FaArrowRight, FaArrowUp, FaArrowDown, FaMicrophone, FaTv, FaTh, FaListUl, FaRegSquare, FaRegDotCircle, FaStepBackward, FaStepForward, FaCircle, FaVolumeMute } from "react-icons/fa";
-import { MdMenu, MdSubtitles, MdTextFields, MdSettingsVoice } from "react-icons/md";
+import {
+  FaPowerOff,
+  FaVolumeUp,
+  FaVolumeDown,
+  FaChevronUp,
+  FaChevronDown,
+  FaChevronLeft,
+  FaChevronRight,
+  FaRegCircle,
+  FaPlay,
+  FaPause,
+  FaStop,
+  FaYoutube,
+  FaArrowLeft,
+  FaArrowRight,
+  FaArrowUp,
+  FaArrowDown,
+  FaMicrophone,
+  FaTv,
+  FaTh,
+  FaListUl,
+  FaRegSquare,
+  FaRegDotCircle,
+  FaStepBackward,
+  FaStepForward,
+  FaCircle,
+  FaVolumeMute,
+} from "react-icons/fa";
+import {
+  MdMenu,
+  MdSubtitles,
+  MdTextFields,
+  MdSettingsVoice,
+} from "react-icons/md";
 import { IoMdReturnLeft } from "react-icons/io";
-import { useTVControl } from '../context/TVControlContext';
+import { useTVControl } from "../context/TVControlContext";
 
 const buttonMap = [
   // Верхний ряд
   [
-    { label: "Power", icon: <FaPowerOff color="#e53935" />, key: "power", type: "power" },
-    { label: "Mute", icon: <FaVolumeMute color="#ff9800" />, key: "mute", type: "round" },
+    {
+      label: "Power",
+      icon: <FaPowerOff color="#e53935" />,
+      key: "power",
+      type: "power",
+    },
+    {
+      label: "Mute",
+      icon: <FaVolumeMute color="#ff9800" />,
+      key: "mute",
+      type: "round",
+    },
   ],
   // Цветные кнопки
   [
@@ -19,21 +61,56 @@ const buttonMap = [
   ],
   // Новые кнопки управления медиа (верхний ряд)
   [
-    { label: "Prev", icon: <FaStepBackward size={8} />, key: "prev", type: "media" },
+    {
+      label: "Prev",
+      icon: <FaStepBackward size={8} />,
+      key: "prev",
+      type: "media",
+    },
     { label: "Play", icon: <FaPlay size={8} />, key: "play", type: "media" },
-    { label: "Next", icon: <FaStepForward size={8} />, key: "next", type: "media" },
+    {
+      label: "Next",
+      icon: <FaStepForward size={8} />,
+      key: "next",
+      type: "media",
+    },
     { label: "Stop", icon: <FaStop size={8} />, key: "stop", type: "media" },
   ],
-  // Новые кнопки управления медиа (нижний ряд)
+  // Новые кнопки уп��авления медиа (нижний ряд)
   [
-    { label: "Back", icon: <FaArrowLeft size={8} />, key: "back", type: "media" },
-    { label: "Pause", icon: <FaPause size={8} />, key: "pause_media", type: "media" },
-    { label: "Forward", icon: <FaArrowRight size={8} />, key: "forward", type: "media" },
-    { label: "Record", icon: <FaCircle size={8} color="#e53935" />, key: "record", type: "media" },
+    {
+      label: "Back",
+      icon: <FaArrowLeft size={8} />,
+      key: "back",
+      type: "media",
+    },
+    {
+      label: "Pause",
+      icon: <FaPause size={8} />,
+      key: "pause_media",
+      type: "media",
+    },
+    {
+      label: "Forward",
+      icon: <FaArrowRight size={8} />,
+      key: "forward",
+      type: "media",
+    },
+    {
+      label: "Record",
+      icon: <FaCircle size={8} color="#e53935" />,
+      key: "record",
+      type: "media",
+    },
   ],
   // Кнопки управления
   [
-    { label: "YouTube", icon: <FaYoutube color="#e53935" />, key: "youtube", type: "app" },
+    {
+      label: "YouTube",
+      icon: <FaYoutube color="#e53935" />,
+      key: "youtube",
+      type: "app",
+    },
     { label: "IPTV", color: "#1e88e5", key: "iptv", type: "app" },
     { label: "FAV", key: "fav", type: "app" },
     { label: "EPG", key: "epg", type: "app" },
@@ -105,71 +182,85 @@ const getButtonStyles = (btn: any, pressed: boolean) => {
     border: "none",
     fontWeight: 800,
     fontSize: 11,
-    color: '#ffffff',
-    textShadow: '0 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(255,255,255,0.3)',
+    color: "#ffffff",
+    textShadow: "0 1px 2px rgba(0,0,0,0.8), 0 0 8px rgba(255,255,255,0.3)",
     margin: 0,
     padding: 0,
   };
   let borderRadius = 8;
-  let width = 38, height = 22;
+  let width = 38,
+    height = 22;
   let fontSize = 8;
   let background = baseStyles.background;
-  
+
   // Круглые кнопки: Menu, Exit, Audio, Info, Sat, Recall
   const roundLabels = ["Menu", "Exit", "Audio", "INFO", "SAT", "RECALL"];
-  if (roundLabels.includes(btn.label)) { 
-    width = 26; height = 26; borderRadius = 13; fontSize = 7; 
+  if (roundLabels.includes(btn.label)) {
+    width = 26;
+    height = 26;
+    borderRadius = 13;
+    fontSize = 7;
   }
-  if (btn.label === 'RECALL') fontSize = 5;
-  
+  if (btn.label === "RECALL") fontSize = 5;
+
   // OK кнопка — крупная овальная
-  if (btn.type === 'ok') { 
-    width = 48; height = 28; borderRadius = 14; fontSize = 12; 
+  if (btn.type === "ok") {
+    width = 48;
+    height = 28;
+    borderRadius = 14;
+    fontSize = 12;
   }
-  
+
   // Улучшенные фоны для кнопок
-  if (btn.type === 'colored') {
+  if (btn.type === "colored") {
     background = pressed
       ? `linear-gradient(145deg, ${btn.color}dd 0%, ${btn.color}aa 50%, ${btn.color}88 100%)`
       : `linear-gradient(145deg, ${btn.color} 0%, ${btn.color}dd 50%, ${btn.color}cc 100%)`;
-  } else if (btn.type === 'power') {
+  } else if (btn.type === "power") {
     background = pressed
-      ? 'linear-gradient(145deg, #e53935dd 0%, #c62828 50%, #b71c1c 100%)'
-      : 'linear-gradient(145deg, #e53935 0%, #d32f2f 50%, #c62828 100%)';
+      ? "linear-gradient(145deg, #e53935dd 0%, #c62828 50%, #b71c1c 100%)"
+      : "linear-gradient(145deg, #e53935 0%, #d32f2f 50%, #c62828 100%)";
   } else if (roundLabels.includes(btn.label)) {
     background = pressed
-      ? 'linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)'
-      : 'linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #0d0d0d 100%)';
+      ? "linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)"
+      : "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #0d0d0d 100%)";
   } else {
     background = pressed
-      ? 'linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)'
-      : 'linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #0d0d0d 100%)';
+      ? "linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)"
+      : "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #0d0d0d 100%)";
   }
-  
+
   // Улучшенные тени и эффекты
   const boxShadow = pressed
-    ? 'inset 0 3px 6px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.4), 0 0 0 2px #00eaff66 inset'
-    : '0 4px 12px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1) inset, 0 0 8px rgba(0,234,255,0.2)';
-  
-      return {
-        ...baseStyles,
-        borderRadius,
+    ? "inset 0 3px 6px rgba(0,0,0,0.8), 0 1px 3px rgba(0,0,0,0.4), 0 0 0 2px #00eaff66 inset"
+    : "0 4px 12px rgba(0,0,0,0.6), 0 2px 4px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1) inset, 0 0 8px rgba(0,234,255,0.2)";
+
+  return {
+    ...baseStyles,
+    borderRadius,
     background,
     width,
     height,
-        fontSize,
+    fontSize,
     boxShadow,
-    border: btn.type === 'colored' ? `2px solid ${btn.color}` : '1.5px solid #000000',
+    border:
+      btn.type === "colored" ? `2px solid ${btn.color}` : "1.5px solid #000000",
     _fontSize: fontSize,
   };
 };
 
-const REMOTE_WIDTH = 150;
-const REMOTE_HEIGHT = 490;
-const ICON_SIZE = 10;
+const REMOTE_WIDTH = 180;
+const REMOTE_HEIGHT = 580;
+const ICON_SIZE = 12;
 const BUTTON_SIZE = 20;
 
-export default function RemoteControl({ onButtonClick, highlight }: { onButtonClick?: (key: string) => void, highlight?: { key?: string } }) {
+export default function RemoteControl({
+  onButtonClick,
+  highlight,
+}: {
+  onButtonClick?: (key: string) => void;
+  highlight?: { key?: string };
+}) {
   const [pressed, setPressed] = useState<string | null>(null);
   const { sendCommand } = useTVControl();
 
@@ -178,26 +269,34 @@ export default function RemoteControl({ onButtonClick, highlight }: { onButtonCl
     if (onButtonClick) onButtonClick(key);
     // Управление ТВ с пульта
     switch (key) {
-      case 'power':
-        sendCommand('power'); break;
-      case 'ok':
-        sendCommand('ok'); break;
-      case 'exit':
-        sendCommand('exit'); break;
-      case 'up':
-        sendCommand('up'); break;
-      case 'down':
-        sendCommand('down'); break;
-      case 'left':
-        sendCommand('left'); break;
-      case 'right':
-        sendCommand('right'); break;
-      case '1':
-      case '2':
-      case '3':
-      case '4':
-      case '5':
-        sendCommand(key as '1' | '2' | '3' | '4' | '5'); break;
+      case "power":
+        sendCommand("power");
+        break;
+      case "ok":
+        sendCommand("ok");
+        break;
+      case "exit":
+        sendCommand("exit");
+        break;
+      case "up":
+        sendCommand("up");
+        break;
+      case "down":
+        sendCommand("down");
+        break;
+      case "left":
+        sendCommand("left");
+        break;
+      case "right":
+        sendCommand("right");
+        break;
+      case "1":
+      case "2":
+      case "3":
+      case "4":
+      case "5":
+        sendCommand(key as "1" | "2" | "3" | "4" | "5");
+        break;
       default:
         break;
     }
@@ -208,22 +307,24 @@ export default function RemoteControl({ onButtonClick, highlight }: { onButtonCl
     <div
       style={{
         width: REMOTE_WIDTH,
-        minWidth: 160,
-        maxWidth: '100vw',
+        minWidth: 180,
+        maxWidth: "100vw",
         height: REMOTE_HEIGHT,
-        background: 'linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)',
+        background:
+          "linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 50%, #000000 100%)",
         borderRadius: 28,
-        boxShadow: '0 8px 32px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.05) inset, 0 0 20px rgba(0,234,255,0.1)',
-        padding: 18,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        boxShadow:
+          "0 8px 32px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.05) inset, 0 0 20px rgba(0,234,255,0.1)",
+        padding: 24,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
         gap: 4,
-        overflow: 'hidden',
-        position: 'relative',
-        boxSizing: 'border-box',
-        border: '1px solid rgba(255,255,255,0.1)',
+        overflow: "hidden",
+        position: "relative",
+        boxSizing: "border-box",
+        border: "1px solid rgba(255,255,255,0.1)",
       }}
     >
       {buttonMap.map((row, rowIdx) => {
@@ -239,70 +340,89 @@ export default function RemoteControl({ onButtonClick, highlight }: { onButtonCl
           <div
             key={rowIdx}
             style={{
-              display: 'flex',
-              gap: isDigitRow ? 8 : (isSpaced ? 0 : (isPowerMuteRow ? 12 : 4)),
+              display: "flex",
+              gap: isDigitRow ? 8 : isSpaced ? 0 : isPowerMuteRow ? 12 : 4,
               marginBottom: 2,
-              justifyContent: isSpaced ? 'space-between' : (isPowerMuteRow ? 'space-between' : 'center'),
-              width: '100%',
-              padding: isSpaced ? '0 8px' : (isPowerMuteRow ? '0 4px' : 0),
+              justifyContent: isSpaced
+                ? "space-between"
+                : isPowerMuteRow
+                  ? "space-between"
+                  : "center",
+              width: "100%",
+              padding: isSpaced ? "0 8px" : isPowerMuteRow ? "0 4px" : 0,
             }}
           >
             {row.map((btn, btnIdx) => {
-            const isHighlighted = highlight?.key === btn.key;
+              const isHighlighted = highlight?.key === btn.key;
               const btnStyles = getButtonStyles(btn, pressed === btn.key);
               // Для крайних кнопок в spacedRows добавим margin
               let extraStyle = {};
               if (isSpaced && btnIdx === 0) extraStyle = { marginLeft: 2 };
-              if (isSpaced && btnIdx === row.length - 1) extraStyle = { marginRight: 2 };
-            return (
-            <button
-              key={btn.key}
-              onClick={() => handlePress(btn.key)}
-              style={{
+              if (isSpaced && btnIdx === row.length - 1)
+                extraStyle = { marginRight: 2 };
+              return (
+                <button
+                  key={btn.key}
+                  onClick={() => handlePress(btn.key)}
+                  style={{
                     ...btnStyles,
                     ...extraStyle,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'background 0.18s, box-shadow 0.18s',
-              }}
-              title={btn.label}
-            >
-                  {btn.icon ? React.cloneElement(btn.icon, { size: btnStyles._fontSize }) : <span style={{
-                    fontSize: btnStyles._fontSize, 
-                    fontWeight: 800, 
-                    color: '#ffffff',
-                    textShadow: '0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(255,255,255,0.4)',
-                    letterSpacing: 0.3,
-                  }}>{btn.label}</span>}
-            </button>
-            );
-          })}
-        </div>
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    transition: "background 0.18s, box-shadow 0.18s",
+                  }}
+                  title={btn.label}
+                >
+                  {btn.icon ? (
+                    React.cloneElement(btn.icon, { size: btnStyles._fontSize })
+                  ) : (
+                    <span
+                      style={{
+                        fontSize: btnStyles._fontSize,
+                        fontWeight: 800,
+                        color: "#ffffff",
+                        textShadow:
+                          "0 1px 2px rgba(0,0,0,0.9), 0 0 6px rgba(255,255,255,0.4)",
+                        letterSpacing: 0.3,
+                      }}
+                    >
+                      {btn.label}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
         );
       })}
-      
+
       {/* Улучшенный логотип */}
-      <div style={{ 
-        marginTop: 8, 
-        color: "#ff1744", 
-        fontWeight: 900, 
-        fontSize: 10, 
-        letterSpacing: 1.2, 
-        textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(255,23,68,0.6), 0 0 20px rgba(255,23,68,0.3)",
-        textAlign: "center",
-        background: "linear-gradient(145deg, #000000 0%, #1a1a1a 50%, #000000 100%)",
-        padding: "8px 12px",
-        borderRadius: 8,
-        border: "1px solid rgba(255,23,68,0.3)",
-        display: "inline-block",
-        whiteSpace: "nowrap",
-        boxShadow: "0 4px 12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 16px rgba(255,23,68,0.2)",
-      }}>
+      <div
+        style={{
+          marginTop: 8,
+          color: "#ff1744",
+          fontWeight: 900,
+          fontSize: 10,
+          letterSpacing: 1.2,
+          textShadow:
+            "0 2px 4px rgba(0,0,0,0.9), 0 0 12px rgba(255,23,68,0.6), 0 0 20px rgba(255,23,68,0.3)",
+          textAlign: "center",
+          background:
+            "linear-gradient(145deg, #000000 0%, #1a1a1a 50%, #000000 100%)",
+          padding: "8px 12px",
+          borderRadius: 8,
+          border: "1px solid rgba(255,23,68,0.3)",
+          display: "inline-block",
+          whiteSpace: "nowrap",
+          boxShadow:
+            "0 4px 12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1), 0 0 16px rgba(255,23,68,0.2)",
+        }}
+      >
         OPENBOX GOLD
       </div>
     </div>
   );
-} 
+}
 
-// @keyframes remote-blink { 0% { box-shadow: 0 0 0 6px #ff174400, 0 0 16px 4px #ff174400; } 100% { box-shadow: 0 0 0 6px #ff174488, 0 0 16px 4px #ff174488; } } 
+// @keyframes remote-blink { 0% { box-shadow: 0 0 0 6px #ff174400, 0 0 16px 4px #ff174400; } 100% { box-shadow: 0 0 0 6px #ff174488, 0 0 16px 4px #ff174488; } }
