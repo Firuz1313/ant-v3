@@ -76,7 +76,7 @@ const buttonMap = [
     },
     { label: "Stop", icon: <FaStop size={8} />, key: "stop", type: "media" },
   ],
-  // Новые кнопки управления медиа (нижний ряд)
+  // Новые кнопки уп��авления медиа (нижний ряд)
   [
     {
       label: "Back",
@@ -315,7 +315,7 @@ export default function RemoteControl({
         borderRadius: 28,
         boxShadow:
           "0 8px 32px rgba(0,0,0,0.8), 0 4px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(255,255,255,0.05) inset, 0 0 20px rgba(0,234,255,0.1)",
-        padding: 18,
+        padding: 24,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
