@@ -13,6 +13,8 @@ import {
   Radio,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Index = () => {
   const navigate = useNavigate();
