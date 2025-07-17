@@ -46,7 +46,6 @@ const devices = [
     users: "1.8M+",
     rating: 4.7,
     status: "Расширенная",
-    price: "от 7,200 ₽",
     supported: true,
   },
   {
@@ -89,7 +88,7 @@ const categories = [
     count: devices.filter((d) => d.supported).length,
   },
   { id: "popular", name: "Популярные", count: 3 },
-  { id: "new", name: "Нови��ки", count: 1 },
+  { id: "new", name: "Новинки", count: 1 },
 ];
 
 export default function SelectDevicePage() {
@@ -374,7 +373,7 @@ export default function SelectDevicePage() {
               Не нашли своё устройство?
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Мы постоянно добавляем поддержку новых моделей. Свяжитесь с нашей
+              М�� постоянно добавляем поддержку новых моделей. Свяжитесь с нашей
               службой поддержки, и мы поможем вам настроить диагностику для
               вашего устройства.
             </p>
