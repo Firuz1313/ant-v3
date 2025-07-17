@@ -83,7 +83,7 @@ const categories = [
   { id: "all", name: "Все устройства", count: devices.length },
   {
     id: "supported",
-    name: "Поддерживаемые",
+    name: "Поддержива��мые",
     count: devices.filter((d) => d.supported).length,
   },
   { id: "popular", name: "Популярные", count: 3 },
@@ -153,8 +153,11 @@ export default function SelectDevicePage() {
               </div>
             </div>
 
-            <div className="text-sm text-gray-400">
-              {filteredDevices.length} из {devices.length} устройств
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-muted-foreground">
+                {filteredDevices.length} из {devices.length} устройств
+              </div>
+              <ThemeToggle />
             </div>
           </div>
         </div>
@@ -369,10 +372,10 @@ export default function SelectDevicePage() {
           <div className="glass-card rounded-2xl p-8 max-w-2xl mx-auto">
             <Shield className="h-12 w-12 text-blue-400 mx-auto mb-4" />
             <h3 className="text-2xl font-bold text-white mb-4">
-              Не нашли своё устройство?
+              Не нашли своё ��стройство?
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Мы постоя��но добавляем поддержку новых моделей. Свяжитесь с нашей
+              Мы постоянно добавляем поддержку новых моделей. Свяжитесь с нашей
               службой поддержки, и мы поможем вам настроить диагностику для
               вашего устройства.
             </p>
