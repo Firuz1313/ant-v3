@@ -107,17 +107,24 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Optimized TV dimensions - increased to 70% for better visibility
-  let tvWidth = 900;
-  let tvHeight = 500;
+  // WOW Effect - Massive TV and Remote (30% larger, equal heights)
+  let tvWidth = 1200;
+  let tvHeight = 650;
+  let remoteWidth = 320;
+  let remoteHeight = 650; // Same height as TV for visual balance
+
   if (typeof window !== "undefined") {
     if (isMobile) {
-      tvWidth = Math.min(window.innerWidth * 0.95, 400);
+      tvWidth = Math.min(window.innerWidth * 0.95, 450);
       tvHeight = tvWidth * (9 / 16);
+      remoteWidth = 280;
+      remoteHeight = tvHeight;
     } else {
-      // Increased from 55% to 70% for wider TV screen
-      tvWidth = Math.min(1100, window.innerWidth * 0.7);
-      tvHeight = tvWidth * (9 / 16);
+      // Massive sizes for WOW effect - 30% larger than before
+      tvWidth = Math.min(1200, window.innerWidth * 0.68);
+      tvHeight = 650; // Fixed height for visual balance
+      remoteWidth = 320;
+      remoteHeight = 650; // Same height as TV
     }
   }
 
@@ -291,7 +298,7 @@ export default function DeviceRemotePage({
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-gray-400 mb-1">Прошивка</div>
+                    <div className="text-xs text-gray-400 mb-1">П��ошивка</div>
                     <div className="text-lg font-bold text-white">
                       {selectedDevice.firmware}
                     </div>
@@ -313,11 +320,11 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - 70% width with smart rendering */}
+            {/* TV Screen - WOW Size with smart rendering */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[70%] order-1"} perf-critical`}
-              whileHover={{ scale: 1.01 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[68%] order-1"} perf-critical`}
+              whileHover={{ scale: 1.005 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
               <div className="glass rounded-2xl p-6 mb-4 contain-content">
                 <div className="tv-screen layer-promote">
@@ -347,15 +354,18 @@ export default function DeviceRemotePage({
               </div>
             </motion.div>
 
-            {/* Remote Control Panel - 30% width, centered vertically with TV */}
+            {/* Remote Control Panel - WOW Size, perfectly aligned with TV */}
             {!isMobile && (
               <motion.div
-                className="w-[30%] order-2 flex-shrink-0 perf-isolate"
+                className="w-[32%] order-2 flex-shrink-0 perf-isolate ml-4"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                <div className="glass rounded-2xl p-4 sticky top-6 h-fit contain-layout">
+                <div
+                  className="bg-transparent p-2 sticky top-6"
+                  style={{ height: `${remoteHeight}px` }}
+                >
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-bold text-white mb-2">
                       Виртуальный пульт
@@ -365,14 +375,20 @@ export default function DeviceRemotePage({
                     </p>
                   </div>
 
-                  <div className="flex justify-center">
-                    <div className="scale-75 origin-center">
+                  <div className="flex justify-center h-full">
+                    <div className="w-full h-full flex justify-center items-center">
                       {selectedDevice.id === "openbox" ? (
                         <OpenboxRemoteControl
                           onButtonClick={handleRemoteButton}
+                          width={remoteWidth}
+                          height={remoteHeight}
                         />
                       ) : (
-                        <RemoteControl onButtonClick={handleRemoteButton} />
+                        <RemoteControl
+                          onButtonClick={handleRemoteButton}
+                          width={remoteWidth}
+                          height={remoteHeight}
+                        />
                       )}
                     </div>
                   </div>
