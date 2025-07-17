@@ -320,9 +320,9 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - WOW Size with smart rendering */}
+            {/* TV Screen - Reduced width with smart rendering */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[68%] order-1"} perf-critical`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[60%] order-1"} perf-critical`}
               whileHover={{ scale: 1.005 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
@@ -342,10 +342,10 @@ export default function DeviceRemotePage({
               {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel - WOW Size, perfectly aligned with TV */}
+            {/* Remote Control Panel - Adjusted for smaller TV */}
             {!isMobile && (
               <motion.div
-                className="w-[32%] order-2 flex-shrink-0 perf-isolate ml-4"
+                className="w-[40%] order-2 flex-shrink-0 perf-isolate ml-4"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
