@@ -14,7 +14,8 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load heavy components for better performance
 const SelectDevicePage = lazy(() => import("./pages/SelectDevicePage"));
-const DeviceRemotePage = lazy(() => import("./pages/DeviceRemotePage"));
+// Temporarily use regular import for DeviceRemotePage to debug
+import DeviceRemotePage from "./pages/DeviceRemotePage";
 const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
 const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
