@@ -11,24 +11,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(() => {
-    // Check localStorage first, then system preference, fallback to light
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("ant-theme") as Theme;
-      if (saved && (saved === "light" || saved === "dark")) {
-        return saved;
-      }
-
-      // Check system preference
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        return "dark";
-      }
-    }
-    return "light";
-  });
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
     // Apply theme to document
