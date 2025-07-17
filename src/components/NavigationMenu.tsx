@@ -96,7 +96,7 @@ function NavigationMenuComponent() {
     <>
       {/* Menu Toggle Button */}
       <motion.div
-        className="fixed bottom-6 left-6 z-40"
+        className="fixed bottom-4 left-4 md:bottom-6 md:left-6 z-40"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.5 }}
