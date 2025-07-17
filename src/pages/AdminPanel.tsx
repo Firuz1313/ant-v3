@@ -261,7 +261,7 @@ const AdminPanel = () => {
         const newDevice: Device = {
           id: deviceForm.name.toLowerCase().replace(/\s+/g, "-"),
           ...deviceForm,
-          status: "Активна",
+          status: "А��тивна",
         };
         setDevices((prev) => [...prev, newDevice]);
         toast({
@@ -436,9 +436,10 @@ const AdminPanel = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="text-sm text-gray-400">
-                Администратор: <span className="text-white">admin</span>
+              <div className="text-sm text-muted-foreground">
+                Администратор: <span className="text-foreground">admin</span>
               </div>
+              <ThemeToggle />
               <Button
                 variant="outline"
                 size="sm"
