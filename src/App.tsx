@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SimpleCursor } from "@/components/SimpleCursor";
+import { NavigationMenu } from "@/components/NavigationMenu";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
