@@ -5,8 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { NavigationMenu } from "@/components/NavigationMenu";
-import { FeedbackButton } from "@/components/FeedbackButton";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Index from "./pages/Index";
@@ -14,11 +12,13 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load heavy components for better performance
 const SelectDevicePage = lazy(() => import("./pages/SelectDevicePage"));
-// DeviceRemotePage temporarily using regular import due to dynamic import issue
-import DeviceRemotePage from "./pages/DeviceRemotePage";
+const DeviceRemotePage = lazy(() => import("./pages/DeviceRemotePage"));
 const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
 const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+// Lazy load heavy components
+const NavigationMenu = lazy(() => import("@/components/NavigationMenu"));
+const FeedbackButton = lazy(() => import("@/components/FeedbackButton"));
 import { TVControlProvider } from "./context/TVControlContext";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -64,10 +64,14 @@ export default function App() {
               <BrowserRouter>
                 <div className="relative">
                   {/* Navigation Menu */}
-                  <NavigationMenu />
+                  <Suspense fallback={null}>
+                    <NavigationMenu />
+                  </Suspense>
 
                   {/* Feedback Button */}
-                  <FeedbackButton />
+                  <Suspense fallback={null}>
+                    <FeedbackButton />
+                  </Suspense>
 
                   {/* Toast Notifications */}
                   <Toaster />
