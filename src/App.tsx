@@ -18,9 +18,9 @@ const DeviceRemotePage = lazy(() => import("./pages/DeviceRemotePage"));
 const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
 const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
-// Lazy load heavy components
-const NavigationMenu = lazy(() => import("@/components/NavigationMenu"));
-const FeedbackButton = lazy(() => import("@/components/FeedbackButton"));
+// Import non-heavy components normally to avoid export issues
+import { NavigationMenu } from "@/components/NavigationMenu";
+import { FeedbackButton } from "@/components/FeedbackButton";
 import { TVControlProvider } from "./context/TVControlContext";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -69,14 +69,10 @@ export default function App() {
                   <IconSprite />
 
                   {/* Navigation Menu */}
-                  <Suspense fallback={null}>
-                    <NavigationMenu />
-                  </Suspense>
+                  <NavigationMenu />
 
                   {/* Feedback Button */}
-                  <Suspense fallback={null}>
-                    <FeedbackButton />
-                  </Suspense>
+                  <FeedbackButton />
 
                   {/* Toast Notifications */}
                   <Toaster />
