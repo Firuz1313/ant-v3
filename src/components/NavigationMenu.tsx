@@ -68,23 +68,29 @@ const navigationItems: NavigationItem[] = [
   },
 ];
 
-export function NavigationMenu() {
+function NavigationMenuComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
 
-  const handleNavigate = (path: string) => {
-    navigate(path);
-    setIsOpen(false);
-  };
+  const handleNavigate = useCallback(
+    (path: string) => {
+      navigate(path);
+      setIsOpen(false);
+    },
+    [navigate],
+  );
 
-  const isCurrentPath = (path: string) => {
-    return location.pathname === path;
-  };
+  const isCurrentPath = useCallback(
+    (path: string) => {
+      return location.pathname === path;
+    },
+    [location.pathname],
+  );
 
   return (
     <>
