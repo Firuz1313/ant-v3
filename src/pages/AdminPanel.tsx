@@ -28,6 +28,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { AdminSettings } from "@/components/AdminSettings";
 
 interface Device {
   id: string;
@@ -261,7 +262,7 @@ const AdminPanel = () => {
         const newDevice: Device = {
           id: deviceForm.name.toLowerCase().replace(/\s+/g, "-"),
           ...deviceForm,
-          status: "А��тивна",
+          status: "Активна",
         };
         setDevices((prev) => [...prev, newDevice]);
         toast({
@@ -459,7 +460,7 @@ const AdminPanel = () => {
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
-            { id: "errors", label: "Ошибки", icon: AlertTriangle },
+            { id: "errors", label: "Ошиб��и", icon: AlertTriangle },
             { id: "settings", label: "Настройки", icon: Settings },
           ].map((tab) => (
             <Button
@@ -838,7 +839,7 @@ const AdminPanel = () => {
                       className="border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white interactive-element"
                     >
                       <Database className="mr-2 h-4 w-4" />
-                      Настройки БД
+                      Наст��ойки БД
                     </Button>
                   </div>
                 </CardContent>
