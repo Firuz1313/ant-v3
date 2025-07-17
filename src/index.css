@@ -156,7 +156,31 @@
 }
 
 @layer components {
-  /* Enhanced Tech Cursor System */
+  /* Simplified Cursor System */
+  .simple-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--cursor-color, #3b82f6);
+    transform: translate3d(-50%, -50%, 0);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+  }
+
+  .simple-cursor.hovering {
+    width: 20px;
+    height: 20px;
+    background: var(--cursor-hover-color, #2563eb);
+    box-shadow: 0 0 16px rgba(37, 99, 235, 0.6);
+  }
+
+  /* Legacy Tech Cursor System (keeping for fallback) */
   .tech-cursor-main {
     position: fixed;
     top: 0;
