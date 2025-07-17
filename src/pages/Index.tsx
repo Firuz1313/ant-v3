@@ -12,6 +12,7 @@ import {
   Monitor,
   Radio,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Index = () => {
   const navigate = useNavigate();
