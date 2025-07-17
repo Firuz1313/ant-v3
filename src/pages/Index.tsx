@@ -97,7 +97,7 @@ const Index = () => {
         </div>
       </motion.header>
 
-      {/* Главный кон��ент */}
+      {/* Главный контент */}
       <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)]">
         <div className="container mx-auto px-6 text-center">
           {/* Главный заголовок */}
@@ -144,7 +144,7 @@ const Index = () => {
               >
                 <span className="relative z-10 flex items-center">
                   <Tv className="mr-3 h-5 w-5" />
-                  Выбрать приставку
+                  {t("main.button")}
                   <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Button>
