@@ -45,7 +45,7 @@ const Index = () => {
 
       {/* Минималистичный хедер */}
       <motion.header
-        className="relative z-10 backdrop-blur-sm bg-black/20 border-b border-white/5"
+        className="relative z-10 backdrop-blur-sm bg-background/80 border-b border-border"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -146,7 +146,7 @@ const Index = () => {
               >
                 <span className="relative z-10 flex items-center">
                   <Sparkles className="mr-4 h-7 w-7 animate-pulse" />
-                  Начать диагностику
+                  Начать д��агностику
                   <ArrowRight className="ml-4 h-7 w-7 transition-transform group-hover:translate-x-2" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
