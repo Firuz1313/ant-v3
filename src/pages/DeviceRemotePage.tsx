@@ -73,7 +73,7 @@ const devices = [
     id: "hdbox",
     name: "HDBox",
     model: "FS-9200 PVR",
-    description: "Надёжная приставка с функцией записи",
+    description: "Надёжная приставка с ��ункцией записи",
     status: "Подключено",
     signalStrength: 72,
     uptime: "3д 12ч",
@@ -107,25 +107,25 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Perfect reference match - TV dominates, remote minimal
-  let tvWidth = 1200;
-  let tvHeight = 675;
-  let remoteWidth = 90;
-  let remoteHeight = 320;
+  // Exact reference dimensions - TV maximum, remote tiny
+  let tvWidth = 1300;
+  let tvHeight = 730;
+  let remoteWidth = 85;
+  let remoteHeight = 300;
 
   if (typeof window !== "undefined") {
     if (isMobile) {
       tvWidth = Math.min(window.innerWidth * 0.9, 350);
       tvHeight = tvWidth * (9 / 16);
-      remoteWidth = 70;
-      remoteHeight = Math.min(window.innerHeight * 0.5, 220);
+      remoteWidth = 65;
+      remoteHeight = Math.min(window.innerHeight * 0.5, 200);
     } else {
-      // TV takes maximum space like in reference
-      const availableWidth = window.innerWidth - 120; // Reserve minimal space for remote
-      tvWidth = Math.min(1200, availableWidth * 0.88);
-      tvHeight = tvWidth * (9 / 16); // Standard TV ratio
-      remoteWidth = 90; // Minimal remote width
-      remoteHeight = Math.min(320, window.innerHeight * 0.4);
+      // TV takes nearly all available width like in reference
+      const screenWidth = window.innerWidth;
+      tvWidth = Math.min(1300, screenWidth * 0.9);
+      tvHeight = tvWidth * (9 / 16); // Wide screen TV
+      remoteWidth = 85; // Very narrow remote
+      remoteHeight = Math.min(300, window.innerHeight * 0.35);
     }
   }
 
@@ -321,9 +321,9 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - Massive like in reference */}
+            {/* TV Screen - Maximum size like in reference */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[90%] order-1"} perf-critical`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[92%] order-1"} perf-critical`}
               whileHover={{ scale: 1.001 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
@@ -343,10 +343,10 @@ export default function DeviceRemotePage({
               {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel - Ultra narrow like in reference */}
+            {/* Remote Control Panel - Minimal space like in reference */}
             {!isMobile && (
               <motion.div
-                className="w-[10%] order-2 flex-shrink-0 perf-isolate ml-1"
+                className="w-[8%] order-2 flex-shrink-0 perf-isolate ml-1"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
