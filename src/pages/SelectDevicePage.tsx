@@ -60,7 +60,6 @@ const devices = [
     users: "1.2M+",
     rating: 4.5,
     status: "Профессиональная",
-    price: "от 5,800 ₽",
     supported: true,
   },
   {
