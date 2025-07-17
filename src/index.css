@@ -143,13 +143,6 @@
     );
   }
 
-  /* Hide cursor on all elements */
-  *,
-  *::before,
-  *::after {
-    cursor: none !important;
-  }
-
   /* Custom scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
