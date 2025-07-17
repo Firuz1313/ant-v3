@@ -189,7 +189,7 @@ const AdminPanel = () => {
           id: "uclan",
           name: "Uclan",
           model: "Denys H.265",
-          description: "Профессиональная приставка для IPTV",
+          description: "Профессиональная приставка дл�� IPTV",
           supported: true,
           users: "1.2M+",
           rating: 4.5,
@@ -342,7 +342,7 @@ const AdminPanel = () => {
           transition={{ duration: 0.6 }}
         >
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 mx-auto animate-glow">
+            <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl flex items-center justify-center mb-4 mx-auto glow-ring ripple-effect">
               <Lock className="h-8 w-8 text-white" />
             </div>
             <h2 className="text-2xl font-bold text-white mb-2 text-glow">
@@ -457,7 +457,7 @@ const AdminPanel = () => {
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
-            { id: "errors", label: "Ошибки", icon: AlertTriangle },
+            { id: "errors", label: "Оши��ки", icon: AlertTriangle },
             { id: "settings", label: "Настройки", icon: Settings },
           ].map((tab) => (
             <Button
