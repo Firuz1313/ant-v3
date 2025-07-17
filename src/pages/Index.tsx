@@ -16,6 +16,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { LazyComponent } from "@/components/LazyComponent";
 import { useLanguage } from "@/context/LanguageContext";
+import { SmartRender } from "@/hooks/useSmartRender";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -142,9 +143,9 @@ const Index = () => {
           </motion.div>
 
           {/* Статистика */}
-          <LazyComponent rootMargin="50px">
+          <SmartRender threshold={0.2}>
             <motion.div
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20 contain-layout"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
@@ -170,40 +171,43 @@ const Index = () => {
                 </motion.div>
               ))}
             </motion.div>
-          </LazyComponent>
+          </SmartRender>
 
           {/* Дополнительная информация */}
-          <motion.div
-            className="glass-card rounded-3xl p-10 max-w-3xl mx-auto border border-white/10"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.4, duration: 0.8 }}
-          >
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
-                <Monitor className="h-6 w-6 text-white" />
+          <SmartRender>
+            <motion.div
+              className="glass-card rounded-3xl p-10 max-w-3xl mx-auto border border-white/10 contain-content"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 1.4, duration: 0.8 }}
+            >
+              <div className="flex items-center justify-center mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mr-4">
+                  <Monitor className="h-6 w-6 text-white" />
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mr-4">
+                  <Radio className="h-6 w-6 text-white" />
+                </div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
+                  <Tv className="h-6 w-6 text-white" />
+                </div>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 flex items-center justify-center mr-4">
-                <Radio className="h-6 w-6 text-white" />
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 flex items-center justify-center">
-                <Tv className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            <h3 className="text-2xl font-bold text-white mb-4 text-glow">
-              Поддерживаемые устройства
-            </h3>
-            <p className="text-gray-300 leading-relaxed text-lg">
-              <span className="text-blue-400 font-semibold">OpenBox</span>,{" "}
-              <span className="text-purple-400 font-semibold">
-                OpenBox Gold
-              </span>
-              , <span className="text-cyan-400 font-semibold">Uclan</span>,{" "}
-              <span className="text-green-400 font-semibold">HDBox</span> и
-              другие популярные модели цифровых ТВ-приставок. Каждое устройство
-              имеет свой реалистичный интерфейс и виртуальный пульт управления.
-            </p>
-          </motion.div>
+              <h3 className="text-2xl font-bold text-white mb-4 text-glow">
+                Поддерживаемые устройства
+              </h3>
+              <p className="text-gray-300 leading-relaxed text-lg">
+                <span className="text-blue-400 font-semibold">OpenBox</span>,{" "}
+                <span className="text-purple-400 font-semibold">
+                  OpenBox Gold
+                </span>
+                , <span className="text-cyan-400 font-semibold">Uclan</span>,{" "}
+                <span className="text-green-400 font-semibold">HDBox</span> и
+                другие популярные модели цифровых ТВ-приставок. Каждое
+                устройство имеет свой реалистичный интерфейс и виртуальный пульт
+                управления.
+              </p>
+            </motion.div>
+          </SmartRender>
         </div>
       </main>
 
