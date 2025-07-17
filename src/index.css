@@ -162,6 +162,54 @@
 }
 
 @layer components {
+  /* CSS Containment for performance isolation */
+  .contain-layout {
+    contain: layout;
+  }
+
+  .contain-style {
+    contain: style;
+  }
+
+  .contain-paint {
+    contain: paint;
+  }
+
+  .contain-size {
+    contain: size;
+  }
+
+  .contain-strict {
+    contain: layout style paint size;
+  }
+
+  .contain-content {
+    contain: layout style paint;
+  }
+
+  /* Layer promotion for GPU acceleration */
+  .layer-promote {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .layer-promote-transform {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .layer-promote-opacity {
+    will-change: opacity;
+    transform: translateZ(0);
+  }
+
+  /* Remove will-change after animation */
+  .layer-auto {
+    will-change: auto;
+    transform: none;
+  }
   /* Optimized Simple Cursor System */
   .simple-cursor {
     position: fixed;
@@ -209,14 +257,19 @@
     text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
   }
 
-  /* Optimized interactive elements */
+  /* Optimized interactive elements with containment */
   .interactive-element {
     @apply transition-transform duration-200;
+    contain: layout style;
     will-change: transform;
   }
 
   .interactive-element:hover {
     transform: translate3d(0, -1px, 0);
+  }
+
+  .interactive-element:not(:hover):not(:focus):not(:active) {
+    will-change: auto;
   }
 
   /* Simplified ripple effect */
@@ -245,21 +298,31 @@
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   }
 
-  /* Optimized device cards */
+  /* Optimized device cards with containment */
   .device-card {
     @apply glass-card rounded-2xl p-6 transition-transform duration-300;
+    contain: layout style paint;
+    transform: translate3d(0, 0, 0);
   }
 
   .device-card:hover {
+    will-change: transform;
     transform: translate3d(0, -4px, 0);
   }
 
-  /* Optimized navigation buttons */
+  .device-card:not(:hover) {
+    will-change: auto;
+  }
+
+  /* Optimized navigation buttons with layer promotion */
   .nav-button {
     @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-transform duration-200;
+    contain: layout style;
+    transform: translate3d(0, 0, 0);
   }
 
   .nav-button:hover {
+    will-change: transform;
     transform: translate3d(0, -1px, 0);
   }
 
@@ -267,12 +330,18 @@
     transform: translate3d(0, 0, 0);
   }
 
-  /* Optimized TV Screen */
+  .nav-button:not(:hover):not(:active) {
+    will-change: auto;
+  }
+
+  /* Optimized TV Screen with containment */
   .tv-screen {
     @apply relative overflow-hidden rounded-2xl;
     background: linear-gradient(145deg, #1a1a1a 0%, #0a0a0a 100%);
     border: 2px solid #333;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+    contain: layout style paint;
+    transform: translate3d(0, 0, 0);
   }
 
   /* Loading animations enhanced */
