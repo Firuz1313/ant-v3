@@ -61,13 +61,13 @@ const Index = () => {
                 <Tv className="h-7 w-7 text-white" />
               </div>
               <div>
-                <h1 className="font-bold text-2xl text-white text-glow">
+                <h1 className="font-bold text-2xl text-foreground">
                   ANT{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-600">
                     Support
                   </span>
                 </h1>
-                <p className="text-xs text-gray-400 font-medium tracking-widest uppercase">
+                <p className="text-xs text-muted-foreground font-medium tracking-widest uppercase">
                   Виртуальная ТВ диагностика
                 </p>
               </div>
@@ -146,7 +146,7 @@ const Index = () => {
               >
                 <span className="relative z-10 flex items-center">
                   <Sparkles className="mr-4 h-7 w-7 animate-pulse" />
-                  Начать д��агностику
+                  Начать диагностику
                   <ArrowRight className="ml-4 h-7 w-7 transition-transform group-hover:translate-x-2" />
                 </span>
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -211,7 +211,7 @@ const Index = () => {
               </span>
               , <span className="text-cyan-400 font-semibold">Uclan</span>,{" "}
               <span className="text-green-400 font-semibold">HDBox</span> и
-              другие популярные модели цифровых ТВ-приставок. Каждое устройство
+              другие попул��рные модели цифровых ТВ-приставок. Каждое устройство
               имеет свой реалистичный интерфейс и виртуальный пульт управления.
             </p>
           </motion.div>
