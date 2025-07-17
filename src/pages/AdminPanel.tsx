@@ -453,7 +453,7 @@ const AdminPanel = () => {
 
       {/* Navigation Tabs */}
       <div className="container mx-auto px-6 pt-6">
-        <div className="flex space-x-1 mb-6">
+        <div className="flex flex-wrap gap-2 mb-6">
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
