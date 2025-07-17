@@ -13,6 +13,32 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
 
+  // Initialize theme on mount
+  useEffect(() => {
+    const initializeTheme = () => {
+      let initialTheme: Theme = "light";
+
+      // Check localStorage
+      try {
+        const saved = localStorage.getItem("ant-theme") as Theme;
+        if (saved && (saved === "light" || saved === "dark")) {
+          initialTheme = saved;
+        } else if (
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          initialTheme = "dark";
+        }
+      } catch (error) {
+        console.warn("Failed to read theme from localStorage:", error);
+      }
+
+      setThemeState(initialTheme);
+    };
+
+    initializeTheme();
+  }, []);
+
   useEffect(() => {
     // Apply theme to document
     document.documentElement.setAttribute("data-theme", theme);
@@ -25,7 +51,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }
 
     // Save to localStorage
-    localStorage.setItem("ant-theme", theme);
+    try {
+      localStorage.setItem("ant-theme", theme);
+    } catch (error) {
+      console.warn("Failed to save theme to localStorage:", error);
+    }
 
     // Update CSS custom properties for cursor
     document.documentElement.style.setProperty(
