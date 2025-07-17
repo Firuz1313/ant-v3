@@ -455,7 +455,7 @@ function ChannelSearchProgressModal({
   radioList: string[];
   onClose: () => void;
 }) {
-  // Имитация поиска: увеличиваем прогресс и добавляем каналы
+  // Имитация поиска: увел��чиваем прогресс и добавляем каналы
   const tvListContainerRef = React.useRef<HTMLDivElement>(null);
   const radioListContainerRef = React.useRef<HTMLDivElement>(null);
   const [showCompletionModal, setShowCompletionModal] = React.useState(false);
@@ -821,7 +821,7 @@ function ChannelSearchProgressModal({
           </div>
         </div>
       </div>
-      {/* Бегунки уровень и сигнал под списками, над процессом */}
+      {/* Бегунки уровень и сигнал под списками, над процес��ом */}
       <div
         style={{
           background: "#102040",
@@ -1042,7 +1042,7 @@ export default function TVScreen({
   }
 
   function handlePanelBtnClick(idx: number) {
-    // Отправляем команду для активации кнопки панели
+    // Отправляем ко��анду для активации кнопки панели
     sendCommand((idx + 1).toString() as "1" | "2" | "3" | "4" | "5");
   }
 
@@ -2390,8 +2390,8 @@ export default function TVScreen({
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(4, 1fr)",
-                gap: 24,
-                padding: 36,
+                gap: 32,
+                padding: 48,
                 width: "100%",
                 height: "100%",
                 background: "linear-gradient(135deg, #2b3a67 0%, #1e2a47 100%)",
