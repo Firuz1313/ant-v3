@@ -116,7 +116,7 @@ const Index = () => {
             </motion.h2>
 
             <motion.p
-              className="text-lg md:text-xl xl:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-medium"
+              className="text-lg md:text-xl xl:text-2xl text-muted-foreground mb-12 max-w-4xl mx-auto leading-relaxed font-medium"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -124,10 +124,10 @@ const Index = () => {
               Передовая платформа для диагностики и поддержки цифровых
               ТВ-приставок.
               <br className="hidden md:block" />
-              <span className="text-blue-400">
+              <span className="text-blue-600">
                 Интерактивный интерфейс
               </span> и{" "}
-              <span className="text-purple-400">
+              <span className="text-blue-500">
                 реалистичные пульты управления
               </span>{" "}
               для быстрого решения проблем.
