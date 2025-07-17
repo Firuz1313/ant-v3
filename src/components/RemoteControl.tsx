@@ -203,7 +203,7 @@ const getButtonStyles = (btn: any, pressed: boolean) => {
   }
   if (btn.label === "RECALL") fontSize = 5;
 
-  // OK ��нопка — крупная овальная
+  // OK кнопка — крупная овальная
   if (btn.type === "ok") {
     width = 48;
     height = 28;
@@ -307,7 +307,7 @@ export default function RemoteControl({
     <div
       style={{
         width: REMOTE_WIDTH,
-        minWidth: 160,
+        minWidth: 180,
         maxWidth: "100vw",
         height: REMOTE_HEIGHT,
         background:
