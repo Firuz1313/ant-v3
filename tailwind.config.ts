@@ -81,6 +81,12 @@ export default {
         "gradient-move": "gradient-move 4s linear infinite alternate",
         "tech-pulse": "tech-pulse 2s ease-in-out infinite",
         "cursor-glow": "cursor-glow 1.5s ease-in-out infinite",
+        "slide-up-fade": "slide-up-fade 0.6s ease-out",
+        "slide-down-fade": "slide-down-fade 0.6s ease-out",
+        "scale-in": "scale-in 0.5s ease-out",
+        "elastic-scale": "elastic-scale 0.8s ease-out",
+        shimmer: "shimmer 2s linear infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
       },
       keyframes: {
         "accordion-down": {
