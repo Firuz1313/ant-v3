@@ -146,11 +146,10 @@ const Index = () => {
                 className="relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 group"
               >
                 <span className="relative z-10 flex items-center">
-                  <Sparkles className="mr-4 h-7 w-7 animate-pulse" />
-                  Начать диагностику
-                  <ArrowRight className="ml-4 h-7 w-7 transition-transform group-hover:translate-x-2" />
+                  <Tv className="mr-3 h-5 w-5" />
+                  Выбрать приставку
+                  <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </Button>
             </motion.div>
           </motion.div>
