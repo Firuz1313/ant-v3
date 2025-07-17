@@ -126,7 +126,7 @@ const Index = () => {
             >
               Быстрое решение проблем с цифровыми ТВ-приставками через{" "}
               <span className="text-primary font-semibold">
-                интера��тивный интерфейс
+                интерактивный интерфейс
               </span>{" "}
               и{" "}
               <span className="text-primary font-semibold">
@@ -143,7 +143,7 @@ const Index = () => {
               <Button
                 onClick={handleGetStarted}
                 size="lg"
-                className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-16 py-7 text-xl font-bold rounded-2xl transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/25 interactive-element ripple-effect group"
+                className="relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 group"
               >
                 <span className="relative z-10 flex items-center">
                   <Sparkles className="mr-4 h-7 w-7 animate-pulse" />
