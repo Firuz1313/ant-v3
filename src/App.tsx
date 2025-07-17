@@ -11,11 +11,13 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import SelectDevicePage from "./pages/SelectDevicePage";
-import DeviceRemotePage from "./pages/DeviceRemotePage";
-import ErrorSelectionPage from "./pages/ErrorSelectionPage";
-import ErrorDetailPage from "./pages/ErrorDetailPage";
-import AdminPanel from "./pages/AdminPanel";
+
+// Lazy load heavy components for better performance
+const SelectDevicePage = lazy(() => import("./pages/SelectDevicePage"));
+const DeviceRemotePage = lazy(() => import("./pages/DeviceRemotePage"));
+const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
+const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
+const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 import { TVControlProvider } from "./context/TVControlContext";
 
 const queryClient = new QueryClient();
