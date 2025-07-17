@@ -22,7 +22,7 @@ const Index = () => {
   };
 
   const stats = [
-    { label: "Поддерживаемых устройств", value: "15+", icon: Tv },
+    { label: "��оддерживаемых устройств", value: "15+", icon: Tv },
     { label: "Диагностических сценариев", value: "200+", icon: Zap },
     { label: "Активных пользователей", value: "50K+", icon: Users },
     { label: "Решённых проблем", value: "95%", icon: Shield },
@@ -104,13 +104,13 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <motion.h2
-              className="text-5xl md:text-7xl xl:text-8xl font-bold text-white mb-8 text-glow leading-tight"
+              className="text-5xl md:text-7xl xl:text-8xl font-bold text-foreground mb-8 leading-tight"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 1, type: "spring" }}
             >
               <span className="block mb-2">Добро пожаловать в</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 animate-gradient-shift">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700">
                 ANT Support
               </span>
             </motion.h2>
@@ -211,7 +211,7 @@ const Index = () => {
               </span>
               , <span className="text-cyan-400 font-semibold">Uclan</span>,{" "}
               <span className="text-green-400 font-semibold">HDBox</span> и
-              другие попул��рные модели цифровых ТВ-приставок. Каждое устройство
+              другие популярные модели цифровых ТВ-приставок. Каждое устройство
               имеет свой реалистичный интерфейс и виртуальный пульт управления.
             </p>
           </motion.div>
