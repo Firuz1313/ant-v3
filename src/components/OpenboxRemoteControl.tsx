@@ -93,7 +93,7 @@ export default function OpenboxRemoteControl({
     setTimeout(() => setPressed(null), 150);
   };
 
-  // Стили для разных типов кнопок
+  // Стили для разных типов кнопок - строго по референсу
   const getButtonStyle = (
     type: string,
     color?: string,
@@ -107,14 +107,14 @@ export default function OpenboxRemoteControl({
       alignItems: "center",
       justifyContent: "center",
       fontWeight: "bold" as const,
-      fontSize: "11px",
-      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+      fontSize: "10px",
+      transition: "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
       position: "relative" as const,
       outline: "none",
       transform: isPressed
-        ? "scale(0.9)"
+        ? "scale(0.92)"
         : isHovered
-          ? "scale(1.05)"
+          ? "scale(1.02)"
           : "scale(1)",
     };
 
@@ -122,140 +122,112 @@ export default function OpenboxRemoteControl({
       case "power":
         return {
           ...baseStyle,
-          width: "45px",
-          height: "20px",
+          width: "32px",
+          height: "16px",
           background: isPressed
             ? "linear-gradient(145deg, #c62828, #e53935)"
-            : isHovered
-              ? "linear-gradient(145deg, #f44336, #e53935)"
-              : "linear-gradient(145deg, #e53935, #d32f2f)",
+            : "#d32f2f",
           color: "#fff",
-          borderRadius: "10px",
+          borderRadius: "8px",
           boxShadow: isPressed
-            ? "inset 0 3px 6px rgba(0,0,0,0.4), 0 0 15px rgba(229,57,53,0.4)"
-            : isHovered
-              ? "0 4px 12px rgba(0,0,0,0.4), 0 0 20px rgba(229,57,53,0.5)"
-              : "0 2px 6px rgba(0,0,0,0.3), 0 0 10px rgba(229,57,53,0.2)",
+            ? "inset 0 2px 4px rgba(0,0,0,0.4)"
+            : "0 1px 3px rgba(0,0,0,0.3)",
+          fontSize: "8px",
         };
 
       case "number":
         return {
           ...baseStyle,
-          width: "28px",
-          height: "28px",
+          width: "24px",
+          height: "24px",
           background: isPressed
-            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
-            : isHovered
-              ? "linear-gradient(145deg, #404040, #2d2d2d)"
-              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
+            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 3px 6px rgba(0,0,0,0.6)"
-            : isHovered
-              ? "0 4px 12px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1)"
-              : "0 2px 6px rgba(0,0,0,0.4)",
-          fontSize: "12px",
+            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
+            : "0 1px 4px rgba(0,0,0,0.4)",
+          fontSize: "11px",
+          fontWeight: "600" as const,
         };
 
       case "colored":
         return {
           ...baseStyle,
-          width: "24px",
-          height: "18px",
-          background: isPressed
-            ? `linear-gradient(145deg, ${color}99, ${color}cc)`
-            : isHovered
-              ? `linear-gradient(145deg, ${color}ee, ${color})`
-              : `linear-gradient(145deg, ${color}, ${color}dd)`,
+          width: "18px",
+          height: "14px",
+          background: color,
           color: "#fff",
-          borderRadius: "6px",
+          borderRadius: "3px",
           boxShadow: isPressed
-            ? `inset 0 2px 4px rgba(0,0,0,0.4)`
-            : isHovered
-              ? `0 4px 12px rgba(0,0,0,0.4), 0 0 15px ${color}66`
-              : "0 2px 4px rgba(0,0,0,0.3)",
-          fontSize: "8px",
+            ? `inset 0 1px 3px rgba(0,0,0,0.4)`
+            : "0 1px 2px rgba(0,0,0,0.3)",
+          fontSize: "6px",
         };
 
       case "navigation":
         return {
           ...baseStyle,
-          width: "32px",
-          height: "32px",
+          width: "28px",
+          height: "28px",
           background: isPressed
-            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
-            : isHovered
-              ? "linear-gradient(145deg, #404040, #2d2d2d)"
-              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
+            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 3px 6px rgba(0,0,0,0.6)"
-            : isHovered
-              ? "0 4px 12px rgba(0,0,0,0.5), 0 0 15px rgba(0,234,255,0.3)"
-              : "0 2px 6px rgba(0,0,0,0.4)",
+            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
+            : "0 1px 4px rgba(0,0,0,0.4)",
         };
 
       case "ok":
         return {
           ...baseStyle,
-          width: "48px",
-          height: "48px",
+          width: "40px",
+          height: "40px",
           background: isPressed
-            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
-            : isHovered
-              ? "linear-gradient(145deg, #404040, #2d2d2d)"
-              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
+            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 4px 8px rgba(0,0,0,0.6)"
-            : isHovered
-              ? "0 6px 20px rgba(0,0,0,0.5), 0 0 25px rgba(0,234,255,0.4)"
-              : "0 3px 8px rgba(0,0,0,0.4)",
-          fontSize: "14px",
+            ? "inset 0 3px 6px rgba(0,0,0,0.5)"
+            : "0 2px 6px rgba(0,0,0,0.4)",
+          fontSize: "11px",
           fontWeight: "bold" as const,
         };
 
       case "media":
         return {
           ...baseStyle,
-          width: "22px",
-          height: "22px",
+          width: "18px",
+          height: "18px",
           background: isPressed
-            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
-            : isHovered
-              ? "linear-gradient(145deg, #404040, #2d2d2d)"
-              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
+            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
-          borderRadius: "4px",
+          borderRadius: "3px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.6)"
-            : isHovered
-              ? "0 3px 8px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.1)"
-              : "0 2px 4px rgba(0,0,0,0.4)",
-          fontSize: "10px",
+            ? "inset 0 1px 3px rgba(0,0,0,0.5)"
+            : "0 1px 3px rgba(0,0,0,0.4)",
+          fontSize: "8px",
         };
 
       default:
         return {
           ...baseStyle,
-          width: "35px",
-          height: "20px",
+          width: "28px",
+          height: "16px",
           background: isPressed
-            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
-            : isHovered
-              ? "linear-gradient(145deg, #404040, #2d2d2d)"
-              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
+            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
-          borderRadius: "8px",
+          borderRadius: "6px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.6)"
-            : isHovered
-              ? "0 3px 8px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.1)"
-              : "0 2px 4px rgba(0,0,0,0.4)",
-          fontSize: "9px",
+            ? "inset 0 1px 3px rgba(0,0,0,0.5)"
+            : "0 1px 3px rgba(0,0,0,0.4)",
+          fontSize: "7px",
         };
     }
   };
@@ -291,47 +263,39 @@ export default function OpenboxRemoteControl({
   return (
     <div
       style={{
-        width: "180px",
-        height: "580px",
+        width: "160px",
+        height: "520px",
         background:
           "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #000000 100%)",
-        borderRadius: "32px",
-        padding: "24px 20px",
+        borderRadius: "28px",
+        padding: "16px 12px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "8px",
+        gap: "6px",
         boxShadow:
-          "0 12px 40px rgba(0,0,0,0.7), 0 6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
-        border: "2px solid #404040",
+          "0 8px 24px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
+        border: "1px solid #404040",
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Эффект подсветки по краям */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          borderRadius: "32px",
-          background:
-            "linear-gradient(45deg, transparent 30%, rgba(0,234,255,0.03) 50%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
       {/* Кнопка питания */}
       <Button onClick={() => handlePress("power")} type="power" keyName="power">
-        <FaPowerOff size={12} />
+        <FaPowerOff size={8} />
+      </Button>
+
+      <div style={{ height: "2px" }} />
+
+      {/* Кнопка MUTE */}
+      <Button onClick={() => handlePress("mute")} type="default" keyName="mute">
+        MUTE
       </Button>
 
       <div style={{ height: "4px" }} />
 
       {/* Цифровые кнопки 1-3 */}
-      <div style={{ display: "flex", gap: "12px" }}>
+      <div style={{ display: "flex", gap: "8px" }}>
         {["1", "2", "3"].map((num) => (
           <Button
             key={num}
@@ -345,7 +309,7 @@ export default function OpenboxRemoteControl({
       </div>
 
       {/* Цифровые кнопки 4-6 */}
-      <div style={{ display: "flex", gap: "12px" }}>
+      <div style={{ display: "flex", gap: "8px" }}>
         {["4", "5", "6"].map((num) => (
           <Button
             key={num}
@@ -359,7 +323,7 @@ export default function OpenboxRemoteControl({
       </div>
 
       {/* Цифровые кнопки 7-9 */}
-      <div style={{ display: "flex", gap: "12px" }}>
+      <div style={{ display: "flex", gap: "8px" }}>
         {["7", "8", "9"].map((num) => (
           <Button
             key={num}
@@ -373,7 +337,7 @@ export default function OpenboxRemoteControl({
       </div>
 
       {/* LANG, 0, LIST */}
-      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
         <Button
           onClick={() => handlePress("lang")}
           type="default"
@@ -396,7 +360,7 @@ export default function OpenboxRemoteControl({
       <div style={{ height: "8px" }} />
 
       {/* MENU, BACK, INFO */}
-      <div style={{ display: "flex", gap: "10px" }}>
+      <div style={{ display: "flex", gap: "6px" }}>
         <Button
           onClick={() => handlePress("menu")}
           type="default"
@@ -425,7 +389,7 @@ export default function OpenboxRemoteControl({
         EXIT
       </Button>
 
-      <div style={{ height: "12px" }} />
+      <div style={{ height: "8px" }} />
 
       {/* Навигационный блок */}
       <div
@@ -433,7 +397,7 @@ export default function OpenboxRemoteControl({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "6px",
+          gap: "4px",
         }}
       >
         {/* Верхняя стрелка */}
@@ -442,17 +406,17 @@ export default function OpenboxRemoteControl({
           type="navigation"
           keyName="up"
         >
-          <FaChevronUp size={14} />
+          <FaChevronUp size={10} />
         </Button>
 
         {/* Средний ряд: Left, OK, Right */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
           <Button
             onClick={() => handlePress("left")}
             type="navigation"
             keyName="left"
           >
-            <FaChevronLeft size={14} />
+            <FaChevronLeft size={10} />
           </Button>
 
           <Button onClick={() => handlePress("ok")} type="ok" keyName="ok">
@@ -464,7 +428,7 @@ export default function OpenboxRemoteControl({
             type="navigation"
             keyName="right"
           >
-            <FaChevronRight size={14} />
+            <FaChevronRight size={10} />
           </Button>
         </div>
 
@@ -474,95 +438,101 @@ export default function OpenboxRemoteControl({
           type="navigation"
           keyName="down"
         >
-          <FaChevronDown size={14} />
+          <FaChevronDown size={10} />
         </Button>
       </div>
 
-      <div style={{ height: "12px" }} />
+      <div style={{ height: "8px" }} />
 
-      {/* Цветные кнопки */}
-      <div style={{ display: "flex", gap: "8px" }}>
+      {/* Цветные кнопки строго по референсу */}
+      <div style={{ display: "flex", gap: "6px" }}>
         <Button
           onClick={() => handlePress("red")}
           type="colored"
           color="#e53935"
           keyName="red"
-        />
+        >
+          <></>
+        </Button>
         <Button
           onClick={() => handlePress("green")}
           type="colored"
           color="#43a047"
           keyName="green"
-        />
+        >
+          <></>
+        </Button>
         <Button
           onClick={() => handlePress("yellow")}
           type="colored"
           color="#fbc02d"
           keyName="yellow"
-        />
+        >
+          <></>
+        </Button>
         <Button
           onClick={() => handlePress("blue")}
           type="colored"
           color="#1e88e5"
           keyName="blue"
-        />
+        >
+          <></>
+        </Button>
       </div>
 
-      <div style={{ height: "8px" }} />
+      <div style={{ height: "6px" }} />
 
       {/* Медиа кнопки - верхний ряд */}
-      <div style={{ display: "flex", gap: "8px" }}>
+      <div style={{ display: "flex", gap: "6px" }}>
         <Button onClick={() => handlePress("prev")} type="media" keyName="prev">
-          <FaStepBackward size={8} />
+          <FaStepBackward size={6} />
         </Button>
         <Button onClick={() => handlePress("play")} type="media" keyName="play">
-          <FaPlay size={8} />
+          <FaPlay size={6} />
         </Button>
         <Button
           onClick={() => handlePress("pause")}
           type="media"
           keyName="pause"
         >
-          <FaPause size={8} />
+          <FaPause size={6} />
         </Button>
         <Button onClick={() => handlePress("next")} type="media" keyName="next">
-          <FaStepForward size={8} />
+          <FaStepForward size={6} />
         </Button>
       </div>
 
       {/* Медиа кнопки - нижний ряд */}
-      <div style={{ display: "flex", gap: "8px" }}>
+      <div style={{ display: "flex", gap: "6px" }}>
         <Button onClick={() => handlePress("ff")} type="media" keyName="ff">
-          &gt;&gt;
+          ▶▶
         </Button>
         <Button onClick={() => handlePress("rec")} type="media" keyName="rec">
-          <FaCircle size={8} color="#e53935" />
+          <FaCircle size={6} color="#e53935" />
         </Button>
         <Button onClick={() => handlePress("stop")} type="media" keyName="stop">
-          <FaSquare size={8} />
+          <FaSquare size={6} />
         </Button>
         <Button onClick={() => handlePress("rw")} type="media" keyName="rw">
-          &lt;&lt;
+          ◀◀
         </Button>
       </div>
 
       <div style={{ flex: 1 }} />
 
-      {/* Логотип OPENBOX с эффектом свечения */}
+      {/* Логотип OPENBOX строго по референсу */}
       <div
         style={{
           color: "#fff",
           fontWeight: "900",
-          fontSize: "12px",
-          letterSpacing: "1.5px",
+          fontSize: "9px",
+          letterSpacing: "1px",
           textAlign: "center",
-          textShadow:
-            "0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.3)",
+          textShadow: "0 1px 2px rgba(0,0,0,0.8)",
           marginTop: "auto",
-          background:
-            "linear-gradient(145deg, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.05) 100%)",
-          padding: "8px 16px",
-          borderRadius: "12px",
+          background: "rgba(0,0,0,0.2)",
+          padding: "4px 8px",
+          borderRadius: "8px",
           border: "1px solid rgba(255,255,255,0.1)",
         }}
       >
