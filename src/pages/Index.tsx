@@ -104,14 +104,17 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
           >
             <motion.h2
-              className="text-5xl md:text-7xl xl:text-8xl font-bold text-foreground mb-8 leading-tight"
+              className="text-4xl md:text-5xl xl:text-6xl font-bold text-foreground mb-8 leading-tight"
+              style={{
+                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                filter: "drop-shadow(0 0 8px rgba(0, 123, 255, 0.3))",
+              }}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 1, type: "spring" }}
             >
-              <span className="block mb-2">Добро пожаловать в</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700">
-                ANT Support
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-500 to-blue-700">
+                Ваш онлайн-помощник от ANT
               </span>
             </motion.h2>
 
