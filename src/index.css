@@ -119,8 +119,8 @@
     @apply bg-background text-foreground font-sans antialiased;
     min-height: 100vh;
     overflow-x: hidden;
-    /* Hide default cursor */
-    cursor: none !important;
+    /* Hide default cursor - disabled for debugging */
+    /* cursor: none !important; */
     transition: background 0.3s ease;
     /* Fallback background */
     background: #ffffff;
