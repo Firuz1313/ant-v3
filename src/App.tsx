@@ -22,11 +22,8 @@ export default function App() {
     null,
   );
 
-  // Global theme initialization
+  // Global initialization
   useEffect(() => {
-    // Set dark mode by default
-    document.documentElement.classList.add("dark");
-
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
       e.preventDefault();
