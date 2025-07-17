@@ -19,6 +19,7 @@ const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
 const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
 import { TVControlProvider } from "./context/TVControlContext";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const queryClient = new QueryClient();
 
