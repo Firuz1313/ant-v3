@@ -127,7 +127,7 @@ function NavigationMenuComponent() {
 
             {/* Menu Content */}
             <motion.div
-              className="fixed bottom-24 left-6 z-40 bg-background/95 backdrop-blur-md border border-border rounded-2xl p-4 shadow-2xl min-w-[280px]"
+              className="fixed bottom-20 left-4 right-4 md:bottom-24 md:left-6 md:right-auto z-40 bg-background/95 backdrop-blur-md border border-border rounded-2xl p-4 shadow-2xl min-w-[280px] max-w-[90vw] md:max-w-none"
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
