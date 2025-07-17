@@ -97,7 +97,7 @@ const Index = () => {
         </div>
       </motion.header>
 
-      {/* Главный контент */}
+      {/* Главный кон��ент */}
       <main className="relative z-10 flex items-center justify-center min-h-[calc(100vh-100px)]">
         <div className="container mx-auto px-6 text-center">
           {/* Главный заголовок */}
@@ -128,14 +128,7 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              Быстрое решение проблем с цифровыми ТВ-приставками через{" "}
-              <span className="text-primary font-semibold">
-                интерактивный интерфейс
-              </span>{" "}
-              и{" "}
-              <span className="text-primary font-semibold">
-                виртуальные пульты управления
-              </span>
+              {t("main.description")}
             </motion.p>
 
             {/* Главная кнопка */}
