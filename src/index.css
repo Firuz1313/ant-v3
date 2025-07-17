@@ -162,28 +162,26 @@
 }
 
 @layer components {
-  /* Simplified Cursor System */
+  /* Optimized Simple Cursor System */
   .simple-cursor {
     position: fixed;
     top: 0;
     left: 0;
     pointer-events: none;
     z-index: 9999;
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--cursor-color, #3b82f6);
     transform: translate3d(-50%, -50%, 0);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.1s ease-out;
     will-change: transform;
-    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
   }
 
   .simple-cursor.hovering {
-    width: 20px;
-    height: 20px;
+    width: 12px;
+    height: 12px;
     background: var(--cursor-hover-color, #2563eb);
-    box-shadow: 0 0 16px rgba(37, 99, 235, 0.6);
   }
 
   /* Legacy Tech Cursor System (keeping for fallback) */
@@ -304,45 +302,37 @@
     height: 20px;
   }
 
-  /* Glass morphism enhanced */
+  /* Optimized Glass morphism - reduced blur for performance */
   .glass {
-    backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-card {
-    backdrop-filter: blur(24px);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.08) 0%,
-      rgba(255, 255, 255, 0.03) 100%
-    );
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   }
 
-  /* Text effects enhanced */
+  /* Optimized text effects */
   .text-shadow {
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 
   .text-glow {
-    text-shadow:
-      0 0 10px rgba(59, 130, 246, 0.6),
-      0 0 20px rgba(59, 130, 246, 0.4),
-      0 0 30px rgba(59, 130, 246, 0.2);
+    text-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
   }
 
-  /* Interactive elements with GPU acceleration */
+  /* Optimized interactive elements */
   .interactive-element {
-    @apply transition-all duration-300;
-    will-change: transform, filter;
+    @apply transition-transform duration-200;
+    will-change: transform;
   }
 
   .interactive-element:hover {
-    transform: translate3d(0, -1px, 0) scale(1.02);
-    filter: brightness(1.1);
+    transform: translate3d(0, -1px, 0);
   }
 
   /* Ripple effect for clicks */
