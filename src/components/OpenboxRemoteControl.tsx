@@ -11,36 +11,27 @@ import {
   FaStepForward,
   FaSquare,
   FaCircle,
+  FaVolumeUp,
+  FaVolumeMute,
 } from "react-icons/fa";
 import { useTVControl } from "../context/TVControlContext";
+
+interface RemoteProps {
+  onButtonClick?: (key: string) => void;
+  highlight?: { key?: string };
+  width?: number;
+  height?: number;
+}
 
 export default function OpenboxRemoteControl({
   onButtonClick,
   highlight,
-}: {
-  onButtonClick?: (key: string) => void;
-  highlight?: { key?: string };
-}) {
+  width = 320,
+  height = 650,
+}: RemoteProps) {
   const [pressed, setPressed] = useState<string | null>(null);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
-  const [tvResponse, setTvResponse] = useState<any>(null);
   const { sendCommand } = useTVControl();
-
-  // Слушаем ответы от ТВ интерфейса для создания обратной связи
-  useEffect(() => {
-    const handleTvResponse = (event: CustomEvent) => {
-      setTvResponse(event.detail);
-    };
-
-    window.addEventListener("tv-response", handleTvResponse as EventListener);
-
-    return () => {
-      window.removeEventListener(
-        "tv-response",
-        handleTvResponse as EventListener,
-      );
-    };
-  }, []);
 
   const handlePress = (key: string) => {
     setPressed(key);
@@ -79,13 +70,6 @@ export default function OpenboxRemoteControl({
       case "menu":
         sendCommand("menu");
         break;
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-        sendCommand(key as "1" | "2" | "3" | "4" | "5");
-        break;
       default:
         break;
     }
@@ -93,447 +77,420 @@ export default function OpenboxRemoteControl({
     setTimeout(() => setPressed(null), 150);
   };
 
-  // Стили для разных типов кнопок - строго по референсу
+  // Стили кнопок точно по референсу
   const getButtonStyle = (
-    type: string,
+    type: "power" | "number" | "nav" | "color" | "media" | "text",
+    isPressed: boolean = false,
     color?: string,
-    isPressed?: boolean,
-    isHovered?: boolean,
   ) => {
     const baseStyle = {
       border: "none",
+      borderRadius: "6px",
       cursor: "pointer",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontWeight: "bold" as const,
-      fontSize: "10px",
-      transition: "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
-      position: "relative" as const,
-      outline: "none",
-      transform: isPressed
-        ? "scale(0.92)"
-        : isHovered
-          ? "scale(1.02)"
-          : "scale(1)",
+      fontFamily: "Arial, sans-serif",
+      fontWeight: "600",
+      fontSize: "12px",
+      transition: "all 0.1s ease",
+      boxShadow: isPressed
+        ? "inset 0 2px 4px rgba(0,0,0,0.3)"
+        : "0 2px 4px rgba(0,0,0,0.3)",
+      transform: isPressed ? "translateY(1px)" : "translateY(0)",
     };
 
     switch (type) {
       case "power":
         return {
           ...baseStyle,
-          width: "32px",
-          height: "16px",
-          background: isPressed
-            ? "linear-gradient(145deg, #c62828, #e53935)"
-            : "#d32f2f",
-          color: "#fff",
-          borderRadius: "8px",
-          boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.4)"
-            : "0 1px 3px rgba(0,0,0,0.3)",
-          fontSize: "8px",
+          background: "#DC143C",
+          color: "white",
+          width: "40px",
+          height: "25px",
+          fontSize: "14px",
         };
-
       case "number":
         return {
           ...baseStyle,
-          width: "24px",
-          height: "24px",
-          background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
-          color: "#fff",
-          borderRadius: "50%",
-          boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 1px 4px rgba(0,0,0,0.4)",
-          fontSize: "11px",
-          fontWeight: "600" as const,
+          background: "#2C2C2C",
+          color: "white",
+          width: "35px",
+          height: "35px",
+          fontSize: "14px",
         };
-
-      case "colored":
+      case "nav":
         return {
           ...baseStyle,
-          width: "18px",
-          height: "14px",
-          background: color,
-          color: "#fff",
-          borderRadius: "3px",
-          boxShadow: isPressed
-            ? `inset 0 1px 3px rgba(0,0,0,0.4)`
-            : "0 1px 2px rgba(0,0,0,0.3)",
-          fontSize: "6px",
+          background: "#2C2C2C",
+          color: "white",
+          width: "30px",
+          height: "30px",
         };
-
-      case "navigation":
+      case "color":
         return {
           ...baseStyle,
-          width: "28px",
-          height: "28px",
-          background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
-          color: "#fff",
-          borderRadius: "50%",
-          boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 1px 4px rgba(0,0,0,0.4)",
+          background: color || "#2C2C2C",
+          width: "25px",
+          height: "25px",
         };
-
-      case "ok":
-        return {
-          ...baseStyle,
-          width: "40px",
-          height: "40px",
-          background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
-          color: "#fff",
-          borderRadius: "50%",
-          boxShadow: isPressed
-            ? "inset 0 3px 6px rgba(0,0,0,0.5)"
-            : "0 2px 6px rgba(0,0,0,0.4)",
-          fontSize: "11px",
-          fontWeight: "bold" as const,
-        };
-
       case "media":
         return {
           ...baseStyle,
-          width: "18px",
-          height: "18px",
-          background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
-          color: "#fff",
-          borderRadius: "3px",
-          boxShadow: isPressed
-            ? "inset 0 1px 3px rgba(0,0,0,0.5)"
-            : "0 1px 3px rgba(0,0,0,0.4)",
-          fontSize: "8px",
+          background: "#2C2C2C",
+          color: "white",
+          width: "30px",
+          height: "25px",
         };
-
-      default:
+      case "text":
         return {
           ...baseStyle,
-          width: "28px",
-          height: "16px",
-          background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
-          color: "#fff",
-          borderRadius: "6px",
-          boxShadow: isPressed
-            ? "inset 0 1px 3px rgba(0,0,0,0.5)"
-            : "0 1px 3px rgba(0,0,0,0.4)",
-          fontSize: "7px",
+          background: "#2C2C2C",
+          color: "white",
+          fontSize: "9px",
+          padding: "4px 8px",
+          height: "22px",
         };
     }
   };
 
-  const Button = ({
-    children,
-    onClick,
-    type,
-    color,
-    keyName,
-  }: {
-    children: React.ReactNode;
-    onClick: () => void;
-    type: string;
-    color?: string;
-    keyName: string;
-  }) => (
-    <button
-      onClick={onClick}
-      onMouseEnter={() => setHoveredButton(keyName)}
-      onMouseLeave={() => setHoveredButton(null)}
-      style={getButtonStyle(
-        type,
-        color,
-        pressed === keyName,
-        hoveredButton === keyName,
-      )}
-    >
-      {children}
-    </button>
-  );
-
   return (
     <div
+      className="openbox-remote"
       style={{
-        width: "160px",
-        height: "520px",
-        background:
-          "linear-gradient(145deg, #2d2d2d 0%, #1a1a1a 50%, #000000 100%)",
-        borderRadius: "28px",
-        padding: "16px 12px",
+        width: `${width}px`,
+        height: `${height}px`,
+        background: "linear-gradient(145deg, #1a1a1a 0%, #000000 100%)",
+        borderRadius: "25px",
+        padding: "20px 15px",
+        boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "6px",
-        boxShadow:
-          "0 8px 24px rgba(0,0,0,0.6), 0 4px 12px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
-        border: "1px solid #404040",
+        gap: "15px",
         position: "relative",
-        overflow: "hidden",
+        userSelect: "none",
       }}
     >
       {/* Кнопка питания */}
-      <Button onClick={() => handlePress("power")} type="power" keyName="power">
-        <FaPowerOff size={8} />
-      </Button>
+      <button
+        style={getButtonStyle("power", pressed === "power")}
+        onMouseDown={() => handlePress("power")}
+        onMouseEnter={() => setHoveredButton("power")}
+        onMouseLeave={() => setHoveredButton(null)}
+      >
+        <FaPowerOff size={12} />
+      </button>
 
-      <div style={{ height: "2px" }} />
-
-      {/* Кнопка MUTE */}
-      <Button onClick={() => handlePress("mute")} type="default" keyName="mute">
+      <div style={{ fontSize: "10px", color: "#888", marginTop: "-10px" }}>
         MUTE
-      </Button>
+      </div>
 
-      <div style={{ height: "4px" }} />
-
-      {/* Цифровые кнопки 1-3 */}
-      <div style={{ display: "flex", gap: "8px" }}>
-        {["1", "2", "3"].map((num) => (
-          <Button
+      {/* Цифровые кнопки 1-9 */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "8px",
+          width: "130px",
+        }}
+      >
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
+          <button
             key={num}
-            onClick={() => handlePress(num)}
-            type="number"
-            keyName={num}
+            style={getButtonStyle("number", pressed === num.toString())}
+            onMouseDown={() => handlePress(num.toString())}
           >
             {num}
-          </Button>
+          </button>
         ))}
       </div>
 
-      {/* Цифровые кнопки 4-6 */}
-      <div style={{ display: "flex", gap: "8px" }}>
-        {["4", "5", "6"].map((num) => (
-          <Button
-            key={num}
-            onClick={() => handlePress(num)}
-            type="number"
-            keyName={num}
-          >
-            {num}
-          </Button>
-        ))}
-      </div>
-
-      {/* Цифровые кнопки 7-9 */}
-      <div style={{ display: "flex", gap: "8px" }}>
-        {["7", "8", "9"].map((num) => (
-          <Button
-            key={num}
-            onClick={() => handlePress(num)}
-            type="number"
-            keyName={num}
-          >
-            {num}
-          </Button>
-        ))}
-      </div>
-
-      {/* LANG, 0, LIST */}
-      <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-        <Button
-          onClick={() => handlePress("lang")}
-          type="default"
-          keyName="lang"
-        >
-          LANG
-        </Button>
-        <Button onClick={() => handlePress("0")} type="number" keyName="0">
-          0
-        </Button>
-        <Button
-          onClick={() => handlePress("list")}
-          type="default"
-          keyName="list"
-        >
-          LIST
-        </Button>
-      </div>
-
-      <div style={{ height: "8px" }} />
-
-      {/* MENU, BACK, INFO */}
-      <div style={{ display: "flex", gap: "6px" }}>
-        <Button
-          onClick={() => handlePress("menu")}
-          type="default"
-          keyName="menu"
-        >
-          MENU
-        </Button>
-        <Button
-          onClick={() => handlePress("back")}
-          type="default"
-          keyName="back"
-        >
-          BACK
-        </Button>
-        <Button
-          onClick={() => handlePress("info")}
-          type="default"
-          keyName="info"
-        >
-          INFO
-        </Button>
-      </div>
-
-      {/* EXIT */}
-      <Button onClick={() => handlePress("exit")} type="default" keyName="exit">
-        EXIT
-      </Button>
-
-      <div style={{ height: "8px" }} />
-
-      {/* Навигационный блок */}
+      {/* Кнопки LANG, 0, LIST */}
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
-          gap: "4px",
+          gap: "8px",
+          width: "130px",
+          justifyContent: "space-between",
         }}
       >
-        {/* Верхняя стрелка */}
-        <Button
-          onClick={() => handlePress("up")}
-          type="navigation"
-          keyName="up"
+        <button
+          style={getButtonStyle("text", pressed === "lang")}
+          onMouseDown={() => handlePress("lang")}
         >
-          <FaChevronUp size={10} />
-        </Button>
-
-        {/* Средний ряд: Left, OK, Right */}
-        <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-          <Button
-            onClick={() => handlePress("left")}
-            type="navigation"
-            keyName="left"
-          >
-            <FaChevronLeft size={10} />
-          </Button>
-
-          <Button onClick={() => handlePress("ok")} type="ok" keyName="ok">
-            OK
-          </Button>
-
-          <Button
-            onClick={() => handlePress("right")}
-            type="navigation"
-            keyName="right"
-          >
-            <FaChevronRight size={10} />
-          </Button>
-        </div>
-
-        {/* Нижняя стрелка */}
-        <Button
-          onClick={() => handlePress("down")}
-          type="navigation"
-          keyName="down"
+          LANG
+        </button>
+        <button
+          style={getButtonStyle("number", pressed === "0")}
+          onMouseDown={() => handlePress("0")}
         >
-          <FaChevronDown size={10} />
-        </Button>
+          0
+        </button>
+        <button
+          style={getButtonStyle("text", pressed === "list")}
+          onMouseDown={() => handlePress("list")}
+        >
+          LIST
+        </button>
       </div>
 
-      <div style={{ height: "8px" }} />
-
-      {/* Цветные кнопки строго по референсу */}
-      <div style={{ display: "flex", gap: "6px" }}>
-        <Button
-          onClick={() => handlePress("red")}
-          type="colored"
-          color="#e53935"
-          keyName="red"
-        >
-          <></>
-        </Button>
-        <Button
-          onClick={() => handlePress("green")}
-          type="colored"
-          color="#43a047"
-          keyName="green"
-        >
-          <></>
-        </Button>
-        <Button
-          onClick={() => handlePress("yellow")}
-          type="colored"
-          color="#fbc02d"
-          keyName="yellow"
-        >
-          <></>
-        </Button>
-        <Button
-          onClick={() => handlePress("blue")}
-          type="colored"
-          color="#1e88e5"
-          keyName="blue"
-        >
-          <></>
-        </Button>
-      </div>
-
-      <div style={{ height: "6px" }} />
-
-      {/* Медиа кнопки - верхний ряд */}
-      <div style={{ display: "flex", gap: "6px" }}>
-        <Button onClick={() => handlePress("prev")} type="media" keyName="prev">
-          <FaStepBackward size={6} />
-        </Button>
-        <Button onClick={() => handlePress("play")} type="media" keyName="play">
-          <FaPlay size={6} />
-        </Button>
-        <Button
-          onClick={() => handlePress("pause")}
-          type="media"
-          keyName="pause"
-        >
-          <FaPause size={6} />
-        </Button>
-        <Button onClick={() => handlePress("next")} type="media" keyName="next">
-          <FaStepForward size={6} />
-        </Button>
-      </div>
-
-      {/* Медиа кнопки - нижний ряд */}
-      <div style={{ display: "flex", gap: "6px" }}>
-        <Button onClick={() => handlePress("ff")} type="media" keyName="ff">
-          ▶▶
-        </Button>
-        <Button onClick={() => handlePress("rec")} type="media" keyName="rec">
-          <FaCircle size={6} color="#e53935" />
-        </Button>
-        <Button onClick={() => handlePress("stop")} type="media" keyName="stop">
-          <FaSquare size={6} />
-        </Button>
-        <Button onClick={() => handlePress("rw")} type="media" keyName="rw">
-          ◀◀
-        </Button>
-      </div>
-
-      <div style={{ flex: 1 }} />
-
-      {/* Логотип OPENBOX строго по референсу */}
+      {/* Кнопки MUTE, INFO, BACK */}
       <div
         style={{
-          color: "#fff",
-          fontWeight: "900",
-          fontSize: "9px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          width: "130px",
+          justifyContent: "space-between",
+        }}
+      >
+        <button
+          style={getButtonStyle("text", pressed === "mute")}
+          onMouseDown={() => handlePress("mute")}
+        >
+          MUTE
+        </button>
+        <button
+          style={getButtonStyle("text", pressed === "info")}
+          onMouseDown={() => handlePress("info")}
+        >
+          INFO
+        </button>
+        <button
+          style={getButtonStyle("text", pressed === "back")}
+          onMouseDown={() => handlePress("back")}
+        >
+          BACK
+        </button>
+      </div>
+
+      {/* Кнопки MENU, EPG, EXIT */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          width: "130px",
+          justifyContent: "space-between",
+        }}
+      >
+        <button
+          style={getButtonStyle("text", pressed === "menu")}
+          onMouseDown={() => handlePress("menu")}
+        >
+          MENU
+        </button>
+        <button
+          style={getButtonStyle("text", pressed === "epg")}
+          onMouseDown={() => handlePress("epg")}
+        >
+          EPG
+        </button>
+        <button
+          style={getButtonStyle("text", pressed === "exit")}
+          onMouseDown={() => handlePress("exit")}
+        >
+          EXIT
+        </button>
+      </div>
+
+      {/* Навигационный круг с OK */}
+      <div
+        style={{
+          position: "relative",
+          width: "120px",
+          height: "120px",
+          margin: "10px 0",
+        }}
+      >
+        {/* Центральная кнопка OK */}
+        <button
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "50px",
+            height: "50px",
+            borderRadius: "50%",
+            background: "#2C2C2C",
+            color: "white",
+            border: "none",
+            fontSize: "12px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            boxShadow:
+              pressed === "ok"
+                ? "inset 0 2px 4px rgba(0,0,0,0.5)"
+                : "0 2px 6px rgba(0,0,0,0.3)",
+            transform: `translate(-50%, -50%) ${pressed === "ok" ? "scale(0.95)" : "scale(1)"}`,
+            transition: "all 0.1s ease",
+          }}
+          onMouseDown={() => handlePress("ok")}
+        >
+          OK
+        </button>
+
+        {/* Стрелки навигации */}
+        <button
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "50%",
+            transform: "translateX(-50%)",
+            ...getButtonStyle("nav", pressed === "up"),
+          }}
+          onMouseDown={() => handlePress("up")}
+        >
+          <FaChevronUp size={14} />
+        </button>
+
+        <button
+          style={{
+            position: "absolute",
+            bottom: "0",
+            left: "50%",
+            transform: "translateX(-50%)",
+            ...getButtonStyle("nav", pressed === "down"),
+          }}
+          onMouseDown={() => handlePress("down")}
+        >
+          <FaChevronDown size={14} />
+        </button>
+
+        <button
+          style={{
+            position: "absolute",
+            left: "0",
+            top: "50%",
+            transform: "translateY(-50%)",
+            ...getButtonStyle("nav", pressed === "left"),
+          }}
+          onMouseDown={() => handlePress("left")}
+        >
+          <FaChevronLeft size={14} />
+        </button>
+
+        <button
+          style={{
+            position: "absolute",
+            right: "0",
+            top: "50%",
+            transform: "translateY(-50%)",
+            ...getButtonStyle("nav", pressed === "right"),
+          }}
+          onMouseDown={() => handlePress("right")}
+        >
+          <FaChevronRight size={14} />
+        </button>
+      </div>
+
+      {/* Цветные кнопки */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "12px",
+          margin: "10px 0",
+        }}
+      >
+        <button
+          style={getButtonStyle("color", pressed === "red", "#DC143C")}
+          onMouseDown={() => handlePress("red")}
+        />
+        <button
+          style={getButtonStyle("color", pressed === "green", "#228B22")}
+          onMouseDown={() => handlePress("green")}
+        />
+        <button
+          style={getButtonStyle("color", pressed === "yellow", "#FFD700")}
+          onMouseDown={() => handlePress("yellow")}
+        />
+        <button
+          style={getButtonStyle("color", pressed === "blue", "#1E90FF")}
+          onMouseDown={() => handlePress("blue")}
+        />
+      </div>
+
+      {/* Кнопки управления воспроизведением */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "8px",
+          width: "140px",
+          marginTop: "10px",
+        }}
+      >
+        <button
+          style={getButtonStyle("media", pressed === "prev")}
+          onMouseDown={() => handlePress("prev")}
+        >
+          <FaStepBackward size={10} />
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "pause")}
+          onMouseDown={() => handlePress("pause")}
+        >
+          <FaPause size={10} />
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "play")}
+          onMouseDown={() => handlePress("play")}
+        >
+          <FaPlay size={10} />
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "next")}
+          onMouseDown={() => handlePress("next")}
+        >
+          <FaStepForward size={10} />
+        </button>
+      </div>
+
+      {/* Вторая строка медиа кнопок */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "8px",
+          width: "140px",
+          marginTop: "-5px",
+        }}
+      >
+        <button
+          style={getButtonStyle("media", pressed === "rec")}
+          onMouseDown={() => handlePress("rec")}
+        >
+          <FaCircle size={8} style={{ color: "#DC143C" }} />
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "stop")}
+          onMouseDown={() => handlePress("stop")}
+        >
+          <FaSquare size={10} />
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "replay")}
+          onMouseDown={() => handlePress("replay")}
+        >
+          ↺
+        </button>
+        <button
+          style={getButtonStyle("media", pressed === "skip")}
+          onMouseDown={() => handlePress("skip")}
+        >
+          ↻
+        </button>
+      </div>
+
+      {/* Лого OPENBOX */}
+      <div
+        style={{
+          marginTop: "15px",
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#888",
           letterSpacing: "1px",
-          textAlign: "center",
-          textShadow: "0 1px 2px rgba(0,0,0,0.8)",
-          marginTop: "auto",
-          background: "rgba(0,0,0,0.2)",
-          padding: "4px 8px",
-          borderRadius: "8px",
-          border: "1px solid rgba(255,255,255,0.1)",
         }}
       >
         OPENBOX
