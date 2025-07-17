@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { IconSprite } from "@/components/IconSprite";
 import { PerformanceDisplay } from "@/components/PerformanceMonitor";
+import { useAdaptivePerformance } from "@/lib/resourcePreloader";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -30,8 +31,9 @@ export default function App() {
   const [panelBtnFromRemote, setPanelBtnFromRemote] = useState<number | null>(
     null,
   );
+  const { isLowPerformance, featureFlags } = useAdaptivePerformance();
 
-  // Global initialization
+  // Global initialization with performance optimizations
   useEffect(() => {
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
@@ -40,10 +42,25 @@ export default function App() {
 
     document.addEventListener("contextmenu", handleContextMenu);
 
+    // Register Service Worker for PWA
+    if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    }
+
+    // Apply performance-based CSS classes
+    document.body.classList.toggle("low-performance", isLowPerformance);
+
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu);
     };
-  }, []);
+  }, [isLowPerformance]);
 
   // Virtual remote control handler
   function handleRemoteButton(key: string) {
