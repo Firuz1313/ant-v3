@@ -772,7 +772,7 @@
 .stagger-fade-in {
   opacity: 0;
   transform: translate3d(0, 20px, 0);
-  animation: stagger-fade-in 0.6s ease-out forwards;
+  animation: stagger-fade-in 0.3s ease-out forwards;
 }
 
 @keyframes stagger-fade-in {
