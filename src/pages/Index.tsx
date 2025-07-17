@@ -23,7 +23,7 @@ const Index = () => {
 
   const stats = [
     { label: "Поддерживаемых устройств", value: "15+", icon: Tv },
-    { label: "Диагностических сценариев", value: "200+", icon: Zap },
+    { label: "Диагности��еских сценариев", value: "200+", icon: Zap },
     { label: "Активных пользователей", value: "50K+", icon: Users },
     { label: "Решённых проблем", value: "95%", icon: Shield },
   ];
@@ -74,14 +74,16 @@ const Index = () => {
             </motion.div>
 
             <motion.div
+              className="flex items-center space-x-2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
             >
+              <ThemeToggle />
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/10 interactive-element"
+                className="text-foreground hover:bg-accent interactive-element"
                 onClick={() => navigate("/admin")}
               >
                 <Settings className="h-5 w-5" />
