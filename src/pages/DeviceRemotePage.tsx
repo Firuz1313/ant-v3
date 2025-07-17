@@ -29,6 +29,8 @@ import TVScreen from "@/components/TVScreen";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import NotFound from "@/pages/NotFound";
+import { SmartRender } from "@/hooks/useSmartRender";
+import { useThrottle } from "@/hooks/useSmartRender";
 
 const devices = [
   {
@@ -311,20 +313,22 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - 70% width */}
+            {/* TV Screen - 70% width with smart rendering */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[70%] order-1"}`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[70%] order-1"} perf-critical`}
               whileHover={{ scale: 1.01 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <div className="glass rounded-2xl p-6 mb-4">
-                <div className="tv-screen">
-                  <TVScreen
-                    panelBtnFromRemote={localPanelBtn}
-                    width={tvWidth}
-                    height={tvHeight}
-                    deviceId={selectedDevice.id}
-                  />
+              <div className="glass rounded-2xl p-6 mb-4 contain-content">
+                <div className="tv-screen layer-promote">
+                  <SmartRender>
+                    <TVScreen
+                      panelBtnFromRemote={localPanelBtn}
+                      width={tvWidth}
+                      height={tvHeight}
+                      deviceId={selectedDevice.id}
+                    />
+                  </SmartRender>
                 </div>
               </div>
 
@@ -346,12 +350,12 @@ export default function DeviceRemotePage({
             {/* Remote Control Panel - 30% width, centered vertically with TV */}
             {!isMobile && (
               <motion.div
-                className="w-[30%] order-2 flex-shrink-0"
+                className="w-[30%] order-2 flex-shrink-0 perf-isolate"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                <div className="glass rounded-2xl p-4 sticky top-6 h-fit">
+                <div className="glass rounded-2xl p-4 sticky top-6 h-fit contain-layout">
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-bold text-white mb-2">
                       Виртуальный пульт
