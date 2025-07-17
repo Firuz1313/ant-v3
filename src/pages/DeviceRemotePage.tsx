@@ -151,12 +151,6 @@ export default function DeviceRemotePage({
     return "text-red-400";
   };
 
-  const getTemperatureColor = (temp: number) => {
-    if (temp <= 40) return "text-green-400";
-    if (temp <= 50) return "text-yellow-400";
-    return "text-red-400";
-  };
-
   if (!selectedDevice) return <NotFound />;
 
   return (
