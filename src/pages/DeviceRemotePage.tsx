@@ -19,6 +19,9 @@ import {
   Info,
   PlayCircle,
   MoreHorizontal,
+  Headphones,
+  History,
+  Video,
 } from "lucide-react";
 import RemoteControl from "../components/RemoteControl";
 import TVScreen from "../components/TVScreen";
@@ -56,7 +59,7 @@ const devices = [
     id: "uclan",
     name: "Uclan",
     model: "Denys H.265",
-    description: "Профессиональная приставка для IPTV",
+    description: "Профессиональ��ая приставка для IPTV",
     status: "Подключено",
     signalStrength: 78,
     temperature: 44,
