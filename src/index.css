@@ -12,8 +12,8 @@
    * HSL values are used to maintain compatibility with Tailwind CSS
    */
   :root {
-    /* ANT-V3 Light Theme (Secondary) */
-    --background: 210 40% 98%;
+    /* ANT-V3 Light Theme (Primary) */
+    --background: 0 0% 100%;
     --foreground: 215 25% 15%;
 
     --card: 0 0% 100%;
