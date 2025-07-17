@@ -23,11 +23,35 @@ export default function OpenboxRemoteControl({
 }) {
   const [pressed, setPressed] = useState<string | null>(null);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [tvResponse, setTvResponse] = useState<any>(null);
   const { sendCommand } = useTVControl();
+
+  // Слушаем ответы от ТВ интерфейса для создания обратной связи
+  useEffect(() => {
+    const handleTvResponse = (event: CustomEvent) => {
+      setTvResponse(event.detail);
+    };
+
+    window.addEventListener("tv-response", handleTvResponse as EventListener);
+
+    return () => {
+      window.removeEventListener(
+        "tv-response",
+        handleTvResponse as EventListener,
+      );
+    };
+  }, []);
 
   const handlePress = (key: string) => {
     setPressed(key);
     if (onButtonClick) onButtonClick(key);
+
+    // Отправляем событие для синхронизации с ТВ интерфейсом
+    window.dispatchEvent(
+      new CustomEvent("remote-command", {
+        detail: { type: "button-press", key },
+      }),
+    );
 
     // Управление ТВ с пульта
     switch (key) {
