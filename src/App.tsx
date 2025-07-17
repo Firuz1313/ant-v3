@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SimpleCursor } from "@/components/SimpleCursor";
 import { NavigationMenu } from "@/components/NavigationMenu";
+import { FeedbackButton } from "@/components/FeedbackButton";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Index from "./pages/Index";
