@@ -107,8 +107,8 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // WOW Effect - Massive TV and Remote (30% larger, equal heights)
-  let tvWidth = 1200;
+  // Optimized TV and Remote sizes (TV width reduced by 30%)
+  let tvWidth = 840;
   let tvHeight = 650;
   let remoteWidth = 320;
   let remoteHeight = 650; // Same height as TV for visual balance
@@ -120,8 +120,8 @@ export default function DeviceRemotePage({
       remoteWidth = 280;
       remoteHeight = tvHeight;
     } else {
-      // Massive sizes for WOW effect - 30% larger than before
-      tvWidth = Math.min(1200, window.innerWidth * 0.68);
+      // TV width reduced by 30% from previous size
+      tvWidth = Math.min(840, window.innerWidth * 0.48);
       tvHeight = 650; // Fixed height for visual balance
       remoteWidth = 320;
       remoteHeight = 650; // Same height as TV
