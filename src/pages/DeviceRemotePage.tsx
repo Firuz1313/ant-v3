@@ -107,26 +107,26 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Maximum TV size - covers nearly entire screen like reference
-  let tvWidth = 1600;
-  let tvHeight = 900;
-  let remoteWidth = 55;
-  let remoteHeight = 240;
+  // Perfect reference proportions - massive TV, tiny remote
+  let tvWidth = 1700;
+  let tvHeight = 950;
+  let remoteWidth = 50;
+  let remoteHeight = 220;
 
   if (typeof window !== "undefined") {
     if (isMobile) {
       tvWidth = Math.min(window.innerWidth * 0.9, 350);
       tvHeight = tvWidth * (9 / 16);
-      remoteWidth = 50;
-      remoteHeight = Math.min(window.innerHeight * 0.5, 140);
+      remoteWidth = 45;
+      remoteHeight = Math.min(window.innerHeight * 0.5, 120);
     } else {
-      // TV covers almost entire screen width like in reference
+      // TV dominates entire screen like in reference
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      tvWidth = Math.min(1600, screenWidth * 0.95);
-      tvHeight = Math.min(900, screenHeight * 0.65);
-      remoteWidth = 55; // Absolute minimal remote
-      remoteHeight = Math.min(240, screenHeight * 0.28);
+      tvWidth = Math.min(1700, screenWidth * 0.96);
+      tvHeight = Math.min(950, screenHeight * 0.7);
+      remoteWidth = Math.max(50, screenWidth * 0.03); // Tiny but visible
+      remoteHeight = Math.min(220, screenHeight * 0.25);
     }
   }
 
@@ -322,9 +322,9 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - Maximum screen coverage like reference */}
+            {/* TV Screen - Covers nearly entire screen like reference */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[97%] order-1"} perf-critical`}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[98%] order-1"} perf-critical`}
               whileHover={{ scale: 1.001 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
@@ -344,10 +344,10 @@ export default function DeviceRemotePage({
               {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel - Absolute minimal space */}
+            {/* Remote Control Panel - Tiny sliver like reference */}
             {!isMobile && (
               <motion.div
-                className="w-[3%] order-2 flex-shrink-0 perf-isolate"
+                className="w-[2%] min-w-[60px] order-2 flex-shrink-0 perf-isolate"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
