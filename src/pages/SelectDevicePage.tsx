@@ -32,7 +32,6 @@ const devices = [
     users: "2.3M+",
     rating: 4.2,
     status: "Стабильная",
-    price: "от 3,500 ₽",
     supported: true,
   },
   {
@@ -90,7 +89,7 @@ const categories = [
     count: devices.filter((d) => d.supported).length,
   },
   { id: "popular", name: "Популярные", count: 3 },
-  { id: "new", name: "Новинки", count: 1 },
+  { id: "new", name: "Нови��ки", count: 1 },
 ];
 
 export default function SelectDevicePage() {
