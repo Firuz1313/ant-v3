@@ -78,7 +78,7 @@ const Index = () => {
             </motion.div>
 
             <motion.div
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-1 md:space-x-2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.6 }}
