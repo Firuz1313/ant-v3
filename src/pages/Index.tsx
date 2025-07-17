@@ -128,17 +128,17 @@ const Index = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              <MagicButton
+              <Button
                 onClick={handleGetStarted}
-                className="px-12 py-6 text-lg font-semibold rounded-xl cursor-pointer group"
-                variant="primary"
+                size="lg"
+                className="relative overflow-hidden bg-primary hover:bg-primary/90 text-primary-foreground px-12 py-6 text-lg font-semibold rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-primary/25 group"
               >
                 <span className="relative z-10 flex items-center">
                   <Tv className="mr-3 h-5 w-5" />
                   {t("main.button")}
                   <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
-              </MagicButton>
+              </Button>
             </motion.div>
           </motion.div>
 
