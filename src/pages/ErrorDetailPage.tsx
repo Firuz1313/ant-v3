@@ -142,18 +142,7 @@ export default function ErrorDetailPage() {
           .tv-remote-container {
             gap: 60px;
           }
-          align-items: center;
-          justify-content: center;
-          gap: 32px;
-          margin-top: 60px;
-        }
-        @media (max-width: 768px) {
-          .tv-remote-container {
-            flex-direction: column;
-            gap: 16px;
-            transform: scale(1);
-          }
-        }
+                  }
       `}</style>
       <div
         className="relative w-full max-w-3xl mx-auto flex flex-col items-center"
