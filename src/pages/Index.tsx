@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
+import { LazyComponent } from "@/components/LazyComponent";
 import { useLanguage } from "@/context/LanguageContext";
 
 const Index = () => {
