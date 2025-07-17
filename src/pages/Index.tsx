@@ -215,10 +215,17 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Floating элементы декорации */}
-      <div className="absolute top-20 right-20 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-30" />
-      <div className="absolute bottom-32 left-20 w-3 h-3 bg-purple-400 rounded-full animate-pulse opacity-40" />
-      <div className="absolute top-1/2 right-32 w-2 h-2 bg-cyan-400 rounded-full animate-bounce opacity-50" />
+      {/* Enhanced floating decoration elements */}
+      <div className="absolute top-20 right-20 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-30 shadow-lg" />
+      <div className="absolute bottom-32 left-20 w-3 h-3 bg-purple-400 rounded-full animate-pulse opacity-40 shadow-lg" />
+      <div className="absolute top-1/2 right-32 w-2 h-2 bg-cyan-400 rounded-full animate-bounce opacity-50 shadow-lg" />
+      <div className="absolute top-1/3 left-32 w-1 h-1 bg-green-400 rounded-full animate-pulse opacity-60 shadow-lg" />
+      <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-35 shadow-lg" />
+
+      {/* Gradient orbs */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-full blur-3xl animate-float-slow" />
+      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-full blur-3xl animate-pulse" />
     </div>
   );
 };
