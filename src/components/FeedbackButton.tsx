@@ -87,7 +87,7 @@ export function FeedbackButton() {
 
             {/* Modal Content */}
             <motion.div
-              className="fixed bottom-24 right-6 z-40 w-96 max-w-[90vw]"
+              className="fixed bottom-20 left-4 right-4 md:bottom-24 md:right-6 md:left-auto z-40 w-full md:w-96 max-w-[90vw]"
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.8, y: 20 }}
