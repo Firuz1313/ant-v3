@@ -23,3 +23,5 @@ function LanguageToggleComponent() {
     </Button>
   );
 }
+
+export const LanguageToggle = memo(LanguageToggleComponent);
