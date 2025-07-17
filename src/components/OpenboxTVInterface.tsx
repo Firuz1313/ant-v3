@@ -227,13 +227,13 @@ export default function OpenboxTVInterface() {
         </div>
       )}
 
-      {/* Меню строго по референсу - левый нижний угол */}
+      {/* Точное меню OpenBox по референсу - левый верхний угол */}
       {showMenu && isPoweredOn && (
         <div
           style={{
             position: "absolute",
-            left: 24,
-            bottom: 24,
+            left: 30,
+            top: 50,
             zIndex: 10,
             display: "flex",
             flexDirection: "column",
@@ -241,60 +241,53 @@ export default function OpenboxTVInterface() {
             animation: "slideInFromLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {/* Иконка шестеренки строго над меню */}
+          {/* Желтая иконка с шестеренкой */}
           <div
             style={{
-              alignSelf: "center",
-              marginBottom: 2,
-              marginLeft: 2,
+              position: "absolute",
+              left: -5,
+              top: 85,
+              zIndex: 15,
               pointerEvents: "auto",
             }}
           >
             <div
               style={{
-                background: "#fff",
-                border: "2.5px solid #b0b0b0",
-                borderRadius: "50%",
-                width: 48,
-                height: 48,
+                background: "#FFD700",
+                border: "2px solid #E6C200",
+                borderRadius: "8px",
+                width: 32,
+                height: 32,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                boxShadow: "0 2px 8px #0001",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
               }}
             >
-              <FaTools size={24} stroke={1.7} color="#174080" />
+              <FaTools size={16} color="#8B4513" />
             </div>
           </div>
 
-          {/* Модалка меню с особой формой строго по референсу */}
+          {/* Голубое меню точно по референсу */}
           <div
             style={{
-              background: "#fffbe6",
-              border: "2.5px solid #b0b0b0",
-              // Скругления: справа полукруг, слева срезано и чуть скруглено
-              borderTopLeftRadius: 12,
-              borderBottomLeftRadius: 18,
-              borderTopRightRadius: 36,
-              borderBottomRightRadius: 36,
-              boxShadow: "0 2px 8px #0002",
-              minWidth: 200,
-              maxWidth: 240,
-              padding: "8px 0 10px 0",
+              background: "linear-gradient(135deg, #5DADE2 0%, #3498DB 100%)",
+              border: "2px solid #2980B9",
+              borderRadius: "8px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+              width: 180,
+              padding: "12px 0",
               display: "flex",
               flexDirection: "column",
               alignItems: "stretch",
               pointerEvents: "auto",
-              // clip-path для плавного среза слева
-              clipPath:
-                "polygon(12% 0, 100% 0, 100% 100%, 12% 100%, 0 90%, 0 10%)",
             }}
           >
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: 0,
+                gap: 1,
               }}
             >
               {menuItems.map((item, idx) => (
@@ -302,20 +295,23 @@ export default function OpenboxTVInterface() {
                   key={item.label}
                   style={{
                     background:
-                      idx === selectedIndex ? "#3386ff" : "transparent",
-                    color: idx === selectedIndex ? "#fff" : "#222",
-                    fontWeight: idx === selectedIndex ? 700 : 500,
-                    fontSize: 15.5,
-                    padding: "7px 18px 7px 18px",
-                    borderRadius: 4,
-                    margin: idx === 0 ? "0 10px 2px 10px" : "2px 10px",
-                    border:
-                      idx === selectedIndex ? "2px solid #3386ff" : "none",
-                    boxShadow:
-                      idx === selectedIndex ? "0 0 0 2px #17408022" : undefined,
-                    transition: "all 0.18s",
+                      idx === selectedIndex
+                        ? "rgba(255,255,255,0.9)"
+                        : "transparent",
+                    color: idx === selectedIndex ? "#2C3E50" : "#FFFFFF",
+                    fontWeight: idx === selectedIndex ? 600 : 500,
+                    fontSize: 13,
+                    fontFamily: "Arial, sans-serif",
+                    padding: "6px 16px",
+                    margin: "1px 8px",
+                    borderRadius: idx === selectedIndex ? "4px" : "0",
+                    transition: "all 0.2s ease",
                     textAlign: "left",
                     cursor: "pointer",
+                    textShadow:
+                      idx === selectedIndex
+                        ? "none"
+                        : "0 1px 2px rgba(0,0,0,0.3)",
                   }}
                   onClick={() => {
                     setSelectedIndex(idx);

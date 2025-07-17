@@ -4,9 +4,11 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { IconSprite } from "@/components/IconSprite";
+import { PerformanceDisplay } from "@/components/PerformanceMonitor";
+import { useAdaptivePerformance } from "@/lib/resourcePreloader";
+import { MagicCursor } from "@/components/MagicCursor";
 
-import { NavigationMenu } from "@/components/NavigationMenu";
-import { FeedbackButton } from "@/components/FeedbackButton";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
 import Index from "./pages/Index";
@@ -14,11 +16,13 @@ import NotFound from "./pages/NotFound";
 
 // Lazy load heavy components for better performance
 const SelectDevicePage = lazy(() => import("./pages/SelectDevicePage"));
-// DeviceRemotePage temporarily using regular import due to dynamic import issue
-import DeviceRemotePage from "./pages/DeviceRemotePage";
+const DeviceRemotePage = lazy(() => import("./pages/DeviceRemotePage"));
 const ErrorSelectionPage = lazy(() => import("./pages/ErrorSelectionPage"));
 const ErrorDetailPage = lazy(() => import("./pages/ErrorDetailPage"));
 const AdminPanel = lazy(() => import("./pages/AdminPanel"));
+// Import non-heavy components normally to avoid export issues
+import { NavigationMenu } from "@/components/NavigationMenu";
+import { FeedbackButton } from "@/components/FeedbackButton";
 import { TVControlProvider } from "./context/TVControlContext";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
@@ -28,8 +32,9 @@ export default function App() {
   const [panelBtnFromRemote, setPanelBtnFromRemote] = useState<number | null>(
     null,
   );
+  const { isLowPerformance, featureFlags } = useAdaptivePerformance();
 
-  // Global initialization
+  // Global initialization with performance optimizations
   useEffect(() => {
     // Disable context menu on right click for more immersive experience
     const handleContextMenu = (e: MouseEvent) => {
@@ -38,10 +43,25 @@ export default function App() {
 
     document.addEventListener("contextmenu", handleContextMenu);
 
+    // Register Service Worker for PWA
+    if ("serviceWorker" in navigator && process.env.NODE_ENV === "production") {
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          console.log("SW registered: ", registration);
+        })
+        .catch((registrationError) => {
+          console.log("SW registration failed: ", registrationError);
+        });
+    }
+
+    // Apply performance-based CSS classes
+    document.body.classList.toggle("low-performance", isLowPerformance);
+
     return () => {
       document.removeEventListener("contextmenu", handleContextMenu);
     };
-  }, []);
+  }, [isLowPerformance]);
 
   // Virtual remote control handler
   function handleRemoteButton(key: string) {
@@ -63,6 +83,9 @@ export default function App() {
             <TooltipProvider>
               <BrowserRouter>
                 <div className="relative">
+                  {/* SVG Icon Sprite for performance */}
+                  <IconSprite />
+
                   {/* Navigation Menu */}
                   <NavigationMenu />
 
@@ -72,6 +95,11 @@ export default function App() {
                   {/* Toast Notifications */}
                   <Toaster />
                   <Sonner />
+
+                  {/* Performance Monitor (dev only) */}
+                  <PerformanceDisplay />
+
+                  {/* Magic Cursor disabled */}
 
                   {/* Main Application Routes */}
                   <Suspense fallback={<LoadingSpinner />}>

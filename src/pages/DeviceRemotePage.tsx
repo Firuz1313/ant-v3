@@ -29,6 +29,8 @@ import TVScreen from "@/components/TVScreen";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import NotFound from "@/pages/NotFound";
+import { SmartRender } from "@/hooks/useSmartRender";
+import { useThrottle } from "@/hooks/useSmartRender";
 
 const devices = [
   {
@@ -105,16 +107,26 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Responsive TV dimensions
-  let tvWidth = 900;
-  let tvHeight = 500;
+  // Perfect reference proportions - massive TV, tiny remote
+  let tvWidth = 1700;
+  let tvHeight = 950;
+  let remoteWidth = 50;
+  let remoteHeight = 220;
+
   if (typeof window !== "undefined") {
     if (isMobile) {
-      tvWidth = Math.min(window.innerWidth * 0.95, 400);
+      tvWidth = Math.min(window.innerWidth * 0.9, 350);
       tvHeight = tvWidth * (9 / 16);
+      remoteWidth = 45;
+      remoteHeight = Math.min(window.innerHeight * 0.5, 120);
     } else {
-      tvWidth = Math.min(900, window.innerWidth * 0.55);
-      tvHeight = tvWidth * (9 / 16);
+      // TV dominates entire screen like in reference
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      tvWidth = Math.min(1700, screenWidth * 0.96);
+      tvHeight = Math.min(950, screenHeight * 0.7);
+      remoteWidth = Math.max(50, screenWidth * 0.03); // Tiny but visible
+      remoteHeight = Math.min(220, screenHeight * 0.25);
     }
   }
 
@@ -304,53 +316,46 @@ export default function DeviceRemotePage({
             </div>
           </div>
 
-          {/* TV Screen and Controls Layout */}
+          {/* TV Screen and Controls Layout - Horizontal alignment with equal heights */}
           <div
-            className={`grid gap-8 ${
-              isMobile ? "grid-cols-1" : "grid-cols-1 xl:grid-cols-12"
-            } items-start`}
+            className={`flex gap-6 ${
+              isMobile ? "flex-col" : "flex-row items-start"
+            }`}
           >
-            {/* TV Screen */}
+            {/* TV Screen - Covers nearly entire screen like reference */}
             <motion.div
-              className={`${isMobile ? "order-1" : "xl:col-span-8 order-1"}`}
-              whileHover={{ scale: 1.01 }}
-              transition={{ type: "spring", stiffness: 300 }}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[98%] order-1"} perf-critical`}
+              whileHover={{ scale: 1.001 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
-              <div className="glass rounded-2xl p-6 mb-4">
-                <div className="tv-screen">
-                  <TVScreen
-                    panelBtnFromRemote={localPanelBtn}
-                    width={tvWidth}
-                    height={tvHeight}
-                    deviceId={selectedDevice.id}
-                  />
+              <div className="glass rounded-2xl p-6 mb-4 contain-content">
+                <div className="tv-screen layer-promote">
+                  <SmartRender>
+                    <TVScreen
+                      panelBtnFromRemote={localPanelBtn}
+                      width={tvWidth}
+                      height={tvHeight}
+                      deviceId={selectedDevice.id}
+                    />
+                  </SmartRender>
                 </div>
               </div>
 
-              {/* Quick Actions */}
-              <div className="grid grid-cols-4 gap-3">
-                {quickActions.map((action) => (
-                  <Button
-                    key={action.id}
-                    variant="ghost"
-                    className="h-16 flex flex-col items-center justify-center space-y-1 text-gray-400 hover:text-white hover:bg-white/10 interactive-element"
-                  >
-                    <action.icon className="h-5 w-5" />
-                    <span className="text-xs">{action.label}</span>
-                  </Button>
-                ))}
-              </div>
+              {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel */}
+            {/* Remote Control Panel - Tiny sliver like reference */}
             {!isMobile && (
               <motion.div
-                className="xl:col-span-4 order-2"
+                className="w-[2%] min-w-[60px] order-2 flex-shrink-0 perf-isolate"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
-                <div className="glass rounded-2xl p-6 sticky top-6">
+                <div
+                  className="bg-transparent p-1 sticky top-6 flex justify-center"
+                  style={{ height: `${remoteHeight}px` }}
+                >
                   <div className="text-center mb-6">
                     <h3 className="text-lg font-bold text-white mb-2">
                       Виртуальный пульт
@@ -360,14 +365,20 @@ export default function DeviceRemotePage({
                     </p>
                   </div>
 
-                  <div className="flex justify-center">
-                    <div className="scale-90 origin-center">
+                  <div className="flex justify-center h-full">
+                    <div className="w-full h-full flex justify-center items-center">
                       {selectedDevice.id === "openbox" ? (
                         <OpenboxRemoteControl
                           onButtonClick={handleRemoteButton}
+                          width={remoteWidth}
+                          height={remoteHeight}
                         />
                       ) : (
-                        <RemoteControl onButtonClick={handleRemoteButton} />
+                        <RemoteControl
+                          onButtonClick={handleRemoteButton}
+                          width={remoteWidth}
+                          height={remoteHeight}
+                        />
                       )}
                     </div>
                   </div>
