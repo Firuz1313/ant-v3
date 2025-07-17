@@ -24,6 +24,7 @@ import {
   Video,
 } from "lucide-react";
 import RemoteControl from "@/components/RemoteControl";
+import OpenboxRemoteControl from "@/components/OpenboxRemoteControl";
 import TVScreen from "@/components/TVScreen";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Breadcrumb } from "@/components/Breadcrumb";
