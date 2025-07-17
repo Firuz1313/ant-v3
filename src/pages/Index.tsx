@@ -34,17 +34,10 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Анимированный фон с частицами */}
+      {/* Simplified background - reduced GPU load */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float" />
-        <div
-          className="absolute top-3/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl animate-float-slow"
-          style={{ animationDelay: "2s" }}
-        />
-        <div
-          className="absolute bottom-1/4 left-1/2 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "4s" }}
-        />
+        <div className="absolute top-1/4 left-1/4 w-48 h-48 bg-blue-500/5 rounded-full blur-2xl opacity-50" />
+        <div className="absolute top-3/4 right-1/4 w-40 h-40 bg-purple-500/5 rounded-full blur-2xl opacity-40" />
       </div>
 
       {/* Минималистичный хедер */}
@@ -110,10 +103,6 @@ const Index = () => {
           >
             <motion.h2
               className="text-4xl md:text-5xl xl:text-6xl font-bold text-foreground mb-8 leading-tight"
-              style={{
-                textShadow: "0 2px 4px rgba(0,0,0,0.1)",
-                filter: "drop-shadow(0 0 8px rgba(0, 123, 255, 0.3))",
-              }}
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, duration: 1, type: "spring" }}
@@ -169,10 +158,10 @@ const Index = () => {
                   transition={{ delay: 1.1 + index * 0.1, duration: 0.6 }}
                   whileHover={{ y: -8 }}
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform shadow-lg">
-                    <stat.icon className="h-8 w-8 text-white" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4 mx-auto">
+                    <stat.icon className="h-6 w-6 text-white" />
                   </div>
-                  <div className="text-3xl font-bold text-white mb-2 text-glow">
+                  <div className="text-2xl font-bold text-white mb-2">
                     {stat.value}
                   </div>
                   <div className="text-sm text-gray-400 font-medium">
@@ -218,17 +207,10 @@ const Index = () => {
         </div>
       </main>
 
-      {/* Enhanced floating decoration elements */}
-      <div className="absolute top-20 right-20 w-4 h-4 bg-blue-400 rounded-full animate-ping opacity-30 shadow-lg" />
-      <div className="absolute bottom-32 left-20 w-3 h-3 bg-purple-400 rounded-full animate-pulse opacity-40 shadow-lg" />
-      <div className="absolute top-1/2 right-32 w-2 h-2 bg-cyan-400 rounded-full animate-bounce opacity-50 shadow-lg" />
-      <div className="absolute top-1/3 left-32 w-1 h-1 bg-green-400 rounded-full animate-pulse opacity-60 shadow-lg" />
-      <div className="absolute bottom-1/3 right-1/4 w-2 h-2 bg-yellow-400 rounded-full animate-ping opacity-35 shadow-lg" />
-
-      {/* Gradient orbs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-full blur-3xl animate-float-slow" />
-      <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-full blur-3xl animate-pulse" />
+      {/* Minimal decoration elements - performance optimized */}
+      <div className="absolute top-20 right-20 w-2 h-2 bg-blue-400 rounded-full opacity-20" />
+      <div className="absolute bottom-32 left-20 w-2 h-2 bg-purple-400 rounded-full opacity-20" />
+      <div className="absolute top-1/3 left-32 w-1 h-1 bg-cyan-400 rounded-full opacity-30" />
     </div>
   );
 };
