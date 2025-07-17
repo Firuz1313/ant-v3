@@ -12,97 +12,103 @@
    * HSL values are used to maintain compatibility with Tailwind CSS
    */
   :root {
-    /* ANT-V3 Light Theme (Primary) */
-    --background: 0 0% 100%;
-    --foreground: 215 25% 15%;
+    /* WOW Light Theme - Pure with subtle gradients */
+    --background: 210 40% 99%;
+    --foreground: 220 25% 8%;
 
     --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card-foreground: 220 25% 8%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover-foreground: 220 25% 8%;
 
-    --primary: 214 100% 50%; /* #007bff */
+    --primary: 214 100% 55%; /* Rich blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 214 100% 95%; /* Light blue background */
-    --secondary-foreground: 214 100% 20%; /* Dark blue text */
+    --secondary: 214 50% 96%; /* Very light blue */
+    --secondary-foreground: 214 100% 25%;
 
-    --muted: 215 15% 95%;
-    --muted-foreground: 215 10% 40%;
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 15% 45%;
 
-    --accent: 214 100% 92%; /* Bright blue accent */
-    --accent-foreground: 214 100% 25%; /* Dark blue on accent */
+    --accent: 214 100% 94%; /* Soft blue accent */
+    --accent-foreground: 214 100% 30%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 15% 88%;
-    --input: 215 15% 88%;
-    --ring: 215 100% 50%;
+    --border: 215 20% 90%;
+    --input: 215 20% 90%;
+    --ring: 214 100% 55%;
 
     --radius: 0.75rem;
 
-    /* ANT-V3 Brand Colors */
-    --ant-blue: 215 100% 50%;
-    --ant-blue-light: 215 100% 70%;
-    --ant-blue-dark: 215 100% 35%;
-    --ant-success: 120 100% 40%;
+    /* Premium Brand Colors */
+    --ant-blue: 214 100% 55%;
+    --ant-blue-light: 214 100% 75%;
+    --ant-blue-dark: 214 100% 40%;
+    --ant-success: 120 100% 45%;
+    --premium-gradient-start: 214 100% 55%;
+    --premium-gradient-end: 280 100% 65%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 210 40% 99%;
+    --sidebar-foreground: 220 25% 8%;
+    --sidebar-primary: 214 100% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 214 50% 96%;
+    --sidebar-accent-foreground: 214 100% 25%;
+    --sidebar-border: 215 20% 90%;
+    --sidebar-ring: 214 100% 55%;
   }
 
   .dark {
-    /* ANT-V3 Dark Theme (Primary) */
-    --background: 222 47% 4%;
-    --foreground: 215 20% 95%;
+    /* WOW Dark Theme - Deep space with neon accents */
+    --background: 220 50% 3%;
+    --foreground: 210 40% 98%;
 
-    --card: 222 47% 6%;
-    --card-foreground: 215 20% 95%;
+    --card: 220 50% 4%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 222 47% 6%;
-    --popover-foreground: 215 20% 95%;
+    --popover: 220 50% 4%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 214 85% 65%; /* Soft bright blue for dark theme */
-    --primary-foreground: 222 47% 4%;
+    --primary: 195 100% 70%; /* Bright cyan-blue */
+    --primary-foreground: 220 50% 3%;
 
-    --secondary: 215 25% 12%;
-    --secondary-foreground: 215 20% 85%;
+    --secondary: 220 25% 8%;
+    --secondary-foreground: 195 80% 80%;
 
-    --muted: 215 25% 10%;
-    --muted-foreground: 215 10% 60%;
+    --muted: 220 25% 6%;
+    --muted-foreground: 210 15% 65%;
 
-    --accent: 215 25% 12%;
-    --accent-foreground: 215 20% 85%;
+    --accent: 280 100% 70%; /* Neon purple */
+    --accent-foreground: 220 50% 3%;
 
-    --destructive: 0 70% 55%;
+    --destructive: 0 100% 65%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 215 25% 15%;
-    --input: 215 25% 15%;
-    --ring: 215 100% 60%;
+    --border: 220 25% 12%;
+    --input: 220 25% 12%;
+    --ring: 195 100% 70%;
 
-    /* ANT-V3 Dark Brand Colors */
-    --ant-blue: 215 100% 60%;
-    --ant-blue-light: 215 100% 75%;
-    --ant-blue-dark: 215 100% 45%;
-    --ant-success: 120 100% 50%;
+    /* Neon Brand Colors */
+    --ant-blue: 195 100% 70%;
+    --ant-blue-light: 195 100% 85%;
+    --ant-blue-dark: 195 100% 55%;
+    --ant-success: 120 100% 60%;
+    --neon-cyan: 195 100% 70%;
+    --neon-purple: 280 100% 70%;
+    --neon-pink: 330 100% 70%;
+    --neon-green: 120 100% 60%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 220 50% 4%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 195 100% 70%;
+    --sidebar-primary-foreground: 220 50% 3%;
+    --sidebar-accent: 220 25% 8%;
+    --sidebar-accent-foreground: 195 80% 80%;
+    --sidebar-border: 220 25% 12%;
+    --sidebar-ring: 195 100% 70%;
   }
 
   * {
