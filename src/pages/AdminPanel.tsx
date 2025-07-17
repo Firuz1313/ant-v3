@@ -404,7 +404,7 @@ const AdminPanel = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <motion.header
-        className="relative z-10 backdrop-blur-md bg-black/30 border-b border-white/10"
+        className="relative z-10 backdrop-blur-md bg-background/80 border-b border-border"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -460,7 +460,7 @@ const AdminPanel = () => {
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
-            { id: "errors", label: "Ош��бки", icon: AlertTriangle },
+            { id: "errors", label: "Ошибки", icon: AlertTriangle },
             { id: "settings", label: "Настройки", icon: Settings },
           ].map((tab) => (
             <Button
