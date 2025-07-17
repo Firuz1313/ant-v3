@@ -210,6 +210,50 @@
     will-change: auto;
     transform: none;
   }
+
+  /* Responsive images */
+  .responsive-image {
+    background-image: image-set(
+      url("placeholder.webp") 1x,
+      url("placeholder@2x.webp") 2x
+    );
+  }
+
+  /* Low performance device optimizations */
+  .low-performance {
+    /* Disable expensive effects */
+    --blur-amount: 0px;
+    --shadow-intensity: 0;
+    --animation-duration: 150ms;
+    --particle-count: 0;
+  }
+
+  .low-performance .glass,
+  .low-performance .glass-card {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .low-performance .text-glow {
+    text-shadow: none;
+  }
+
+  .low-performance [class*="animate-"] {
+    animation-duration: 150ms;
+    animation-iteration-count: 1;
+  }
+
+  .low-performance .interactive-element {
+    transition-duration: 100ms;
+  }
+
+  /* High performance device enhancements */
+  .high-performance {
+    --blur-amount: 12px;
+    --shadow-intensity: 1;
+    --animation-duration: 300ms;
+    --particle-count: 10;
+  }
   /* Optimized Simple Cursor System */
   .simple-cursor {
     position: fixed;
@@ -536,6 +580,32 @@
 .optimize-performance {
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Adaptive performance classes */
+.perf-critical {
+  contain: layout style paint;
+  will-change: transform;
+}
+
+.perf-isolate {
+  contain: layout style;
+}
+
+.perf-paint-isolate {
+  contain: paint;
+}
+
+/* GPU layer promotion for animations */
+.gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* Remove layer promotion when not needed */
+.cpu-fallback {
+  transform: none;
+  will-change: auto;
 }
 
 /* Fast transitions */
