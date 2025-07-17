@@ -24,7 +24,7 @@ export function FeedbackButton() {
   const { t, language } = useLanguage();
 
   const handleSubmit = async () => {
-    // Здес�� можно добавить отправку на сервер
+    // Здесь можно добавить отправку на сервер
     console.log("Feedback submitted:", { rating, message, email });
     setIsSubmitted(true);
     setTimeout(() => {
@@ -52,7 +52,7 @@ export function FeedbackButton() {
     <>
       {/* Feedback Toggle Button */}
       <motion.div
-        className="fixed bottom-6 right-6 z-40"
+        className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-40"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 1 }}
@@ -178,7 +178,7 @@ export function FeedbackButton() {
                       <div>
                         <label className="text-sm font-medium text-foreground block mb-2">
                           {language === "ru"
-                            ? "Email (необ��зательно)"
+                            ? "Email (необязательно)"
                             : "Email (optional)"}
                         </label>
                         <Input
