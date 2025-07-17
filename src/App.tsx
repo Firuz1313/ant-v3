@@ -99,10 +99,7 @@ export default function App() {
                   {/* Performance Monitor (dev only) */}
                   <PerformanceDisplay />
 
-                  {/* Magic Cursor (only on high performance devices) */}
-                  {!isLowPerformance && featureFlags.enableCursor && (
-                    <MagicCursor />
-                  )}
+                  {/* Magic Cursor disabled */}
 
                   {/* Main Application Routes */}
                   <Suspense fallback={<LoadingSpinner />}>
