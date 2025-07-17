@@ -122,6 +122,8 @@
     /* Hide default cursor */
     cursor: none !important;
     transition: background 0.3s ease;
+    /* Fallback background */
+    background: #ffffff;
   }
 
   [data-theme="light"] body {
