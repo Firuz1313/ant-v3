@@ -59,7 +59,7 @@ const devices = [
     id: "uclan",
     name: "Uclan",
     model: "Denys H.265",
-    description: "Профессиональ��ая приставка для IPTV",
+    description: "Профессиональная приставка для IPTV",
     status: "Подключено",
     signalStrength: 78,
     temperature: 44,
@@ -453,31 +453,47 @@ export default function DeviceRemotePage({
           </motion.div>
         )}
 
-        {/* Side Status Panel (Desktop only) */}
+        {/* Quick Navigation Panel (Desktop only) */}
         {!isMobile && (
           <motion.div
-            className="fixed left-6 top-1/2 transform -translate-y-1/2 z-10"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            className="fixed right-6 bottom-6 z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1, duration: 0.6 }}
           >
-            <div className="glass rounded-xl p-4 w-16 flex flex-col items-center space-y-4">
-              <div className="text-center">
-                <Home className="h-6 w-6 text-blue-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Главная</div>
-              </div>
-              <div className="text-center">
-                <Volume2 className="h-6 w-6 text-white mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Звук</div>
-              </div>
-              <div className="text-center">
-                <PlayCircle className="h-6 w-6 text-green-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Запись</div>
-              </div>
-              <div className="text-center">
-                <Monitor className="h-6 w-6 text-purple-400 mx-auto mb-1" />
-                <div className="text-xs text-gray-400">Экран</div>
-              </div>
+            <div className="bg-background/95 backdrop-blur-md border border-border rounded-xl p-3 w-14 flex flex-col items-center space-y-3 shadow-lg">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate("/")}
+              >
+                <Home className="h-5 w-5 text-primary" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate(`/${deviceId}/error-select`)}
+              >
+                <Headphones className="h-5 w-5 text-muted-foreground" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => navigate("/select-device")}
+              >
+                <History className="h-5 w-5 text-muted-foreground" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-10 w-10 hover:bg-primary/10"
+                onClick={() => window.location.reload()}
+              >
+                <Video className="h-5 w-5 text-muted-foreground" />
+              </Button>
             </div>
           </motion.div>
         )}
