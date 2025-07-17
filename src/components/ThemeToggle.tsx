@@ -33,3 +33,5 @@ function ThemeToggleComponent() {
     </Button>
   );
 }
+
+export const ThemeToggle = memo(ThemeToggleComponent);
