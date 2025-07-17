@@ -791,6 +791,29 @@
   transition: box-shadow 0.15s ease-in-out;
 }
 
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-auto {
+  will-change: auto;
+}
+
+.optimize-performance {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Fast transitions */
+.transition-fast {
+  transition: all 0.15s ease-in-out;
+}
+
+.transition-medium {
+  transition: all 0.2s ease-in-out;
+}
+
 /* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
