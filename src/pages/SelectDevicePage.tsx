@@ -18,6 +18,7 @@ import {
   Settings,
   CheckCircle,
 } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const devices = [
   {
@@ -371,7 +372,7 @@ export default function SelectDevicePage() {
               Не нашли своё устройство?
             </h3>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Мы постоянно добавляем поддержку новых моделей. Свяжитесь с нашей
+              Мы постоя��но добавляем поддержку новых моделей. Свяжитесь с нашей
               службой поддержки, и мы поможем вам настроить диагностику для
               вашего устройства.
             </p>
