@@ -384,7 +384,13 @@ export default function DeviceRemotePage({
 
                   <div className="flex justify-center">
                     <div className="scale-90 origin-center">
-                      <RemoteControl onButtonClick={handleRemoteButton} />
+                      {selectedDevice.id === "openbox" ? (
+                        <OpenboxRemoteControl
+                          onButtonClick={handleRemoteButton}
+                        />
+                      ) : (
+                        <RemoteControl onButtonClick={handleRemoteButton} />
+                      )}
                     </div>
                   </div>
 
@@ -453,7 +459,11 @@ export default function DeviceRemotePage({
               </div>
               <div className="flex justify-center">
                 <div className="scale-75 origin-center">
-                  <RemoteControl onButtonClick={handleRemoteButton} />
+                  {selectedDevice.id === "openbox" ? (
+                    <OpenboxRemoteControl onButtonClick={handleRemoteButton} />
+                  ) : (
+                    <RemoteControl onButtonClick={handleRemoteButton} />
+                  )}
                 </div>
               </div>
             </motion.div>
