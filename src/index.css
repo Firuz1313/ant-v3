@@ -111,8 +111,8 @@
 
   html {
     scroll-behavior: smooth;
-    /* Hide default cursor */
-    cursor: none !important;
+    /* Hide default cursor - disabled for debugging */
+    /* cursor: none !important; */
   }
 
   body {
