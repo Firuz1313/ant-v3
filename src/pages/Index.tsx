@@ -128,7 +128,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-            >
+                        >
               {t("main.description")}
             </motion.p>
 
@@ -145,20 +145,21 @@ const Index = () => {
               >
                 <span className="relative z-10 flex items-center">
                   <Tv className="mr-3 h-5 w-5" />
-                  {t("main.button")}
+                                    {t("main.button")}
                   <ArrowRight className="ml-3 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </span>
               </Button>
             </motion.div>
           </motion.div>
 
-          {/* Статистика */}
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-          >
+                    {/* Статистика */}
+          <LazyComponent rootMargin="50px">
+            <motion.div
+              className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+            >
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
