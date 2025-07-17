@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { IconSprite } from "@/components/IconSprite";
+import { PerformanceDisplay } from "@/components/PerformanceMonitor";
 
 import { ThemeProvider } from "@/context/ThemeContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -80,6 +81,9 @@ export default function App() {
                   {/* Toast Notifications */}
                   <Toaster />
                   <Sonner />
+
+                  {/* Performance Monitor (dev only) */}
+                  <PerformanceDisplay />
 
                   {/* Main Application Routes */}
                   <Suspense fallback={<LoadingSpinner />}>
