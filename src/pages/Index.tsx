@@ -25,10 +25,10 @@ const Index = () => {
   };
 
   const stats = [
-    { label: "��оддерживаемых устройств", value: "15+", icon: Tv },
-    { label: "Диагностических сценариев", value: "200+", icon: Zap },
-    { label: "Активных пользователей", value: "50K+", icon: Users },
-    { label: "Решённых проблем", value: "95%", icon: Shield },
+    { label: t("stats.devices"), value: "15+", icon: Tv },
+    { label: t("stats.scenarios"), value: "200+", icon: Zap },
+    { label: t("stats.users"), value: "50K+", icon: Users },
+    { label: t("stats.solved"), value: "95%", icon: Shield },
   ];
 
   return (
