@@ -25,8 +25,8 @@
     --primary: 214 100% 50%; /* #007bff */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 215 15% 90%;
-    --secondary-foreground: 215 25% 15%;
+    --secondary: 214 100% 95%; /* Light blue background */
+    --secondary-foreground: 214 100% 20%; /* Dark blue text */
 
     --muted: 215 15% 95%;
     --muted-foreground: 215 10% 40%;
