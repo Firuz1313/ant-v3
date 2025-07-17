@@ -51,14 +51,15 @@ export default function App() {
     }
   }
 
-  return (
-    <TVControlProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <BrowserRouter>
-            <div className="relative">
-              {/* Custom Tech Cursor */}
-              <TechCursor />
+    return (
+    <ThemeProvider>
+      <TVControlProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <BrowserRouter>
+              <div className="relative">
+                {/* Simplified Cursor */}
+                <SimpleCursor />
 
               {/* Toast Notifications */}
               <Toaster />
