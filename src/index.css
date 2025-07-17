@@ -136,10 +136,10 @@
   [data-theme="dark"] body {
     background: linear-gradient(
       135deg,
-      #0f172a 0%,
-      #1e293b 25%,
-      #334155 60%,
-      #475569 100%
+      #1a1a1a 0%,
+      #2d2d2d 25%,
+      #404040 60%,
+      #4a4a4a 100%
     );
   }
 
