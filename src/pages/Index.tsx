@@ -18,6 +18,7 @@ import { useLanguage } from "@/context/LanguageContext";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleGetStarted = () => {
     navigate("/select-device");
