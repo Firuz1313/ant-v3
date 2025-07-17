@@ -23,13 +23,13 @@ const Index = () => {
 
   const stats = [
     { label: "Поддерживаемых устройств", value: "15+", icon: Tv },
-    { label: "Диагности��еских сценариев", value: "200+", icon: Zap },
+    { label: "Диагностических сценариев", value: "200+", icon: Zap },
     { label: "Активных пользователей", value: "50K+", icon: Users },
     { label: "Решённых проблем", value: "95%", icon: Shield },
   ];
 
   return (
-    <div className="min-h-screen tech-bg relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Анимированный фон с частицами */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-float" />
