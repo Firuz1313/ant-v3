@@ -164,6 +164,11 @@ export default function DeviceRemotePage({
 
   return (
     <div className="min-h-screen tech-bg">
+      {/* Breadcrumb */}
+      <div className="container mx-auto px-6 pt-4">
+        <Breadcrumb />
+      </div>
+
       {/* Minimalist Header */}
       <motion.header
         className="relative z-20 backdrop-blur-sm bg-black/40 border-b border-white/5"
