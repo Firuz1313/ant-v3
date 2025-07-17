@@ -107,24 +107,24 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Optimized TV and Remote sizes (TV width reduced by 30%)
+  // Optimized TV and Remote sizes (smaller remote, positioned right)
   let tvWidth = 840;
   let tvHeight = 650;
-  let remoteWidth = 320;
-  let remoteHeight = 650; // Same height as TV for visual balance
+  let remoteWidth = 280; // Reduced from 320
+  let remoteHeight = 580; // Reduced from 650
 
   if (typeof window !== "undefined") {
     if (isMobile) {
       tvWidth = Math.min(window.innerWidth * 0.95, 450);
       tvHeight = tvWidth * (9 / 16);
-      remoteWidth = 280;
+      remoteWidth = 250;
       remoteHeight = tvHeight;
     } else {
       // TV width reduced by 30% from previous size
       tvWidth = Math.min(840, window.innerWidth * 0.48);
       tvHeight = 650; // Fixed height for visual balance
-      remoteWidth = 320;
-      remoteHeight = 650; // Same height as TV
+      remoteWidth = 280; // Smaller remote
+      remoteHeight = 580; // Shorter height
     }
   }
 
@@ -342,10 +342,10 @@ export default function DeviceRemotePage({
               {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel - Adjusted for smaller TV */}
+            {/* Remote Control Panel - Smaller and positioned more to the right */}
             {!isMobile && (
               <motion.div
-                className="w-[40%] order-2 flex-shrink-0 perf-isolate ml-4"
+                className="w-[35%] order-2 flex-shrink-0 perf-isolate ml-8"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
