@@ -210,3 +210,5 @@ function NavigationMenuComponent() {
     </>
   );
 }
+
+export const NavigationMenu = memo(NavigationMenuComponent);
