@@ -23,11 +23,11 @@ import {
   History,
   Video,
 } from "lucide-react";
-import RemoteControl from "../components/RemoteControl";
-import TVScreen from "../components/TVScreen";
-import { useIsMobile } from "../hooks/use-mobile";
-import { Breadcrumb } from "../components/Breadcrumb";
-import NotFound from "./NotFound";
+import RemoteControl from "@/components/RemoteControl";
+import TVScreen from "@/components/TVScreen";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Breadcrumb } from "@/components/Breadcrumb";
+import NotFound from "@/pages/NotFound";
 
 const devices = [
   {
