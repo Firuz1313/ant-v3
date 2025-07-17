@@ -126,7 +126,7 @@ const AdminPanel = () => {
       } else {
         toast({
           title: "Ошибка входа",
-          description: "Неверный пароль",
+          description: "Неверн��й пароль",
           variant: "destructive",
         });
       }
@@ -266,7 +266,7 @@ const AdminPanel = () => {
         };
         setDevices((prev) => [...prev, newDevice]);
         toast({
-          title: "Устройство создано",
+          title: "Ус��ройство создано",
           description: `${deviceForm.name} успешно добавлено`,
         });
       }
@@ -460,7 +460,7 @@ const AdminPanel = () => {
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
-            { id: "errors", label: "Ошиб��и", icon: AlertTriangle },
+            { id: "errors", label: "Ошибки", icon: AlertTriangle },
             { id: "settings", label: "Настройки", icon: Settings },
           ].map((tab) => (
             <Button
@@ -772,80 +772,7 @@ const AdminPanel = () => {
             </Card>
           )}
 
-          {activeTab === "settings" && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="glass-card border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">
-                    Системные настройки
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h4 className="text-white font-medium mb-2">Внешний вид</h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Настройка темы интерфейса
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-white interactive-element"
-                    >
-                      Настроить тему
-                    </Button>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-medium mb-2">
-                      Эффекты курсора
-                    </h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Управление кастомными эффектами курсора
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white interactive-element"
-                    >
-                      Настройки курсора
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="glass-card border-white/10">
-                <CardHeader>
-                  <CardTitle className="text-white">Интеграции</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h4 className="text-white font-medium mb-2">
-                      Внешние проекты
-                    </h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Настройка интеграции с внешними репозиториями
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-green-400 text-green-400 hover:bg-green-400 hover:text-white interactive-element"
-                    >
-                      Управление импортами
-                    </Button>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-medium mb-2">База данных</h4>
-                    <p className="text-gray-400 text-sm mb-4">
-                      Операции с базой данных
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white interactive-element"
-                    >
-                      <Database className="mr-2 h-4 w-4" />
-                      Наст��ойки БД
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          )}
+          {activeTab === "settings" && <AdminSettings />}
         </motion.div>
       </div>
 
