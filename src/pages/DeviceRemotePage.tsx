@@ -107,24 +107,25 @@ export default function DeviceRemotePage({
   const [currentTime, setCurrentTime] = useState(new Date());
   const isMobile = useIsMobile();
 
-  // Optimized TV and Remote sizes (smaller remote, positioned right)
-  let tvWidth = 840;
-  let tvHeight = 650;
-  let remoteWidth = 280; // Reduced from 320
-  let remoteHeight = 580; // Reduced from 650
+  // Full visibility sizes - both TV and remote completely visible on screen
+  let tvWidth = 700;
+  let tvHeight = 420;
+  let remoteWidth = 200;
+  let remoteHeight = 450;
 
   if (typeof window !== "undefined") {
     if (isMobile) {
-      tvWidth = Math.min(window.innerWidth * 0.95, 450);
-      tvHeight = tvWidth * (9 / 16);
-      remoteWidth = 250;
-      remoteHeight = tvHeight;
+      tvWidth = Math.min(window.innerWidth * 0.9, 350);
+      tvHeight = tvWidth * 0.6; // 3:5 ratio like in reference
+      remoteWidth = 120;
+      remoteHeight = Math.min(window.innerHeight * 0.5, 300);
     } else {
-      // TV width reduced by 30% from previous size
-      tvWidth = Math.min(840, window.innerWidth * 0.48);
-      tvHeight = 650; // Fixed height for visual balance
-      remoteWidth = 280; // Smaller remote
-      remoteHeight = 580; // Shorter height
+      // Ensure both TV and remote fit completely on screen
+      const maxHeight = window.innerHeight * 0.7; // Leave 30% for header/padding
+      tvWidth = Math.min(700, window.innerWidth * 0.45);
+      tvHeight = Math.min(420, maxHeight);
+      remoteWidth = 200;
+      remoteHeight = Math.min(450, maxHeight);
     }
   }
 
@@ -320,10 +321,10 @@ export default function DeviceRemotePage({
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
           >
-            {/* TV Screen - Balanced with smaller remote */}
+            {/* TV Screen - Full visibility optimized */}
             <motion.div
-              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[65%] order-1"} perf-critical`}
-              whileHover={{ scale: 1.005 }}
+              className={`${isMobile ? "order-1 w-full" : "flex-1 w-[70%] order-1"} perf-critical`}
+              whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
               <div className="glass rounded-2xl p-6 mb-4 contain-content">
@@ -342,16 +343,16 @@ export default function DeviceRemotePage({
               {/* Quick Actions removed - control integrated into TV interface */}
             </motion.div>
 
-            {/* Remote Control Panel - Smaller and positioned more to the right */}
+            {/* Remote Control Panel - Proportioned for full visibility */}
             {!isMobile && (
               <motion.div
-                className="w-[35%] order-2 flex-shrink-0 perf-isolate ml-8"
+                className="w-[30%] order-2 flex-shrink-0 perf-isolate ml-6"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
                 <div
-                  className="bg-transparent p-2 sticky top-6"
+                  className="bg-transparent p-2 sticky top-6 flex justify-center"
                   style={{ height: `${remoteHeight}px` }}
                 >
                   <div className="text-center mb-6">
