@@ -401,7 +401,7 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className="min-h-screen tech-bg">
+    <div className="min-h-screen bg-background">
       {/* Header */}
       <motion.header
         className="relative z-10 backdrop-blur-md bg-black/30 border-b border-white/10"
@@ -460,7 +460,7 @@ const AdminPanel = () => {
           {[
             { id: "dashboard", label: "Панель управления", icon: BarChart3 },
             { id: "devices", label: "Устройства", icon: Tv },
-            { id: "errors", label: "Ошибки", icon: AlertTriangle },
+            { id: "errors", label: "Ош��бки", icon: AlertTriangle },
             { id: "settings", label: "Настройки", icon: Settings },
           ].map((tab) => (
             <Button
