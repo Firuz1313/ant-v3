@@ -184,123 +184,7 @@
     background: var(--cursor-hover-color, #2563eb);
   }
 
-  /* Legacy Tech Cursor System (keeping for fallback) */
-  .tech-cursor-main {
-    position: fixed;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate3d(-50%, -50%, 0);
-    transition: all 0.1s ease-out;
-    will-change: transform;
-  }
-
-  .tech-cursor-core {
-    width: 8px;
-    height: 8px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
-    will-change: transform, width, height;
-  }
-
-  .tech-cursor-ring {
-    width: 24px;
-    height: 24px;
-    border: 2px solid rgba(59, 130, 246, 0.4);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    animation: cursor-ring-pulse 2s ease-in-out infinite;
-    will-change: transform, width, height;
-  }
-
-  .tech-cursor-glow {
-    width: 40px;
-    height: 40px;
-    background: radial-gradient(
-      circle,
-      rgba(59, 130, 246, 0.2) 0%,
-      rgba(139, 92, 246, 0.1) 40%,
-      transparent 70%
-    );
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    animation: cursor-glow-pulse 3s ease-in-out infinite;
-    will-change: transform, width, height;
-  }
-
-  .tech-cursor-trail {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 6px;
-    height: 6px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.3s ease-out;
-    will-change: transform, opacity;
-    transform: translate3d(0, 0, 0);
-  }
-
-  .tech-cursor-ripple {
-    width: 60px;
-    height: 60px;
-    border: 2px solid rgba(59, 130, 246, 0.6);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate3d(-50%, -50%, 0);
-    animation: cursor-ripple 0.6s ease-out forwards;
-    will-change: transform, opacity;
-  }
-
-  /* Cursor hover states */
-  .tech-cursor-main.hovering .tech-cursor-core {
-    width: 12px;
-    height: 12px;
-    box-shadow: 0 0 20px rgba(59, 130, 246, 1);
-  }
-
-  .tech-cursor-main.hovering .tech-cursor-ring {
-    width: 32px;
-    height: 32px;
-    border-color: rgba(59, 130, 246, 0.8);
-  }
-
-  .tech-cursor-main.hovering .tech-cursor-glow {
-    width: 60px;
-    height: 60px;
-    background: radial-gradient(
-      circle,
-      rgba(59, 130, 246, 0.3) 0%,
-      rgba(139, 92, 246, 0.2) 40%,
-      transparent 70%
-    );
-  }
-
-  .tech-cursor-main.clicking .tech-cursor-core {
-    width: 6px;
-    height: 6px;
-  }
-
-  .tech-cursor-main.clicking .tech-cursor-ring {
-    width: 20px;
-    height: 20px;
-  }
+  /* Removed heavy cursor system for performance */
 
   /* Optimized Glass morphism - reduced blur for performance */
   .glass {
@@ -335,58 +219,25 @@
     transform: translate3d(0, -1px, 0);
   }
 
-  /* Ripple effect for clicks */
+  /* Simplified ripple effect */
   .ripple-effect {
     position: relative;
     overflow: hidden;
-    transform: translate3d(0, 0, 0);
   }
 
-  .ripple-effect::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate3d(-50%, -50%, 0);
-    transition:
-      width 0.6s ease-out,
-      height 0.6s ease-out;
-    z-index: 1;
-    pointer-events: none;
+  .ripple-effect:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
   }
 
-  .ripple-effect:active::before {
-    width: 300px;
-    height: 300px;
-  }
-
-  /* Enhanced glow ring */
+  /* Simplified glow ring */
   .glow-ring {
     position: relative;
-    overflow: hidden;
+    transition: box-shadow 0.3s ease;
   }
 
-  .glow-ring::after {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, #3b82f6, #8b5cf6, #06b6d4, #3b82f6);
-    border-radius: inherit;
-    z-index: -1;
-    animation: glow-rotate 3s linear infinite;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .glow-ring:hover::after {
-    opacity: 0.8;
+  .glow-ring:hover {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
   }
 
   /* Tech background enhanced */
@@ -427,38 +278,13 @@
     animation: tech-ambient 6s ease-in-out infinite;
   }
 
-  /* Device cards enhanced */
+  /* Optimized device cards */
   .device-card {
-    @apply glass-card rounded-2xl p-8 transition-all duration-500 hover:scale-105;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .device-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.08),
-      transparent
-    );
-    transition: left 0.8s ease-in-out;
-  }
-
-  .device-card:hover::before {
-    left: 100%;
+    @apply glass-card rounded-2xl p-6 transition-transform duration-300;
   }
 
   .device-card:hover {
-    box-shadow:
-      0 20px 60px rgba(59, 130, 246, 0.12),
-      0 0 0 1px rgba(59, 130, 246, 0.16);
-    transform: translate3d(0, -8px, 0) scale(1.02);
+    transform: translate3d(0, -4px, 0);
   }
 
   /* Navigation buttons enhanced */
