@@ -445,6 +445,7 @@
   .nav-button {
     @apply relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-medium transition-all duration-300;
     position: relative;
+    will-change: transform, box-shadow;
   }
 
   .nav-button::before {
@@ -461,6 +462,7 @@
       transparent
     );
     transition: left 0.5s ease-in-out;
+    will-change: left;
   }
 
   .nav-button:hover::before {
@@ -470,6 +472,11 @@
   .nav-button:hover {
     transform: translate3d(0, -2px, 0);
     box-shadow: 0 12px 30px rgba(59, 130, 246, 0.3);
+  }
+
+  .nav-button:active {
+    transform: translate3d(0, 0, 0);
+    transition: transform 0.1s ease;
   }
 
   /* TV Screen enhanced */
