@@ -1,15 +1,21 @@
 {
-  "name": "ANT Support - Виртуальная ТВ диагностика",
-  "short_name": "ANT Support",
-  "description": "Быстрое решение проблем с цифровыми ТВ-приставками",
-  "theme_color": "#007bff",
-  "background_color": "#ffffff",
+  "name": "ANT-V3 Support - Виртуальная ТВ диагностика",
+  "short_name": "ANT-V3",
+  "description": "Быстрое решение проблем с цифровыми ТВ-приставками OpenBox, Uclan, HDBox",
+  "theme_color": "#3b82f6",
+  "background_color": "#0f172a",
   "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "any",
   "scope": "/",
   "start_url": "/",
   "lang": "ru",
-  "categories": ["utilities", "productivity"],
+  "dir": "ltr",
+  "categories": ["utilities", "productivity", "entertainment"],
+  "prefer_related_applications": false,
+  "id": "ant-v3-support",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "icons": [
     {
       "src": "/icon-192.png",
@@ -22,6 +28,41 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/placeholder.svg",
+      "sizes": "48x48 72x72 96x96 144x144 256x256 384x384",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "OpenBox Диагностика",
+      "short_name": "OpenBox",
+      "description": "Быстрый доступ к диагностике OpenBox",
+      "url": "/device/openbox",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Выбор ошибки",
+      "short_name": "Ошибки",
+      "description": "Поиск решений для ошибок ТВ",
+      "url": "/openbox/error-select",
+      "icons": [
+        {
+          "src": "/placeholder.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "related_applications": []
 }
