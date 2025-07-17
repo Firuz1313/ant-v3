@@ -22,6 +22,7 @@ export default function OpenboxRemoteControl({
   highlight?: { key?: string };
 }) {
   const [pressed, setPressed] = useState<string | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const { sendCommand } = useTVControl();
 
   const handlePress = (key: string) => {
@@ -73,6 +74,7 @@ export default function OpenboxRemoteControl({
     type: string,
     color?: string,
     isPressed?: boolean,
+    isHovered?: boolean,
   ) => {
     const baseStyle = {
       border: "none",
@@ -82,9 +84,14 @@ export default function OpenboxRemoteControl({
       justifyContent: "center",
       fontWeight: "bold" as const,
       fontSize: "11px",
-      transition: "all 0.15s ease",
+      transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
       position: "relative" as const,
       outline: "none",
+      transform: isPressed
+        ? "scale(0.9)"
+        : isHovered
+          ? "scale(1.05)"
+          : "scale(1)",
     };
 
     switch (type) {
@@ -95,12 +102,16 @@ export default function OpenboxRemoteControl({
           height: "20px",
           background: isPressed
             ? "linear-gradient(145deg, #c62828, #e53935)"
-            : "linear-gradient(145deg, #e53935, #d32f2f)",
+            : isHovered
+              ? "linear-gradient(145deg, #f44336, #e53935)"
+              : "linear-gradient(145deg, #e53935, #d32f2f)",
           color: "#fff",
           borderRadius: "10px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.3)"
-            : "0 2px 4px rgba(0,0,0,0.3)",
+            ? "inset 0 3px 6px rgba(0,0,0,0.4), 0 0 15px rgba(229,57,53,0.4)"
+            : isHovered
+              ? "0 4px 12px rgba(0,0,0,0.4), 0 0 20px rgba(229,57,53,0.5)"
+              : "0 2px 6px rgba(0,0,0,0.3), 0 0 10px rgba(229,57,53,0.2)",
         };
 
       case "number":
@@ -109,13 +120,17 @@ export default function OpenboxRemoteControl({
           width: "28px",
           height: "28px",
           background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
+            : isHovered
+              ? "linear-gradient(145deg, #404040, #2d2d2d)"
+              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 2px 6px rgba(0,0,0,0.4)",
+            ? "inset 0 3px 6px rgba(0,0,0,0.6)"
+            : isHovered
+              ? "0 4px 12px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.1)"
+              : "0 2px 6px rgba(0,0,0,0.4)",
           fontSize: "12px",
         };
 
@@ -125,13 +140,17 @@ export default function OpenboxRemoteControl({
           width: "24px",
           height: "18px",
           background: isPressed
-            ? `linear-gradient(145deg, ${color}cc, ${color})`
-            : `linear-gradient(145deg, ${color}, ${color}dd)`,
+            ? `linear-gradient(145deg, ${color}99, ${color}cc)`
+            : isHovered
+              ? `linear-gradient(145deg, ${color}ee, ${color})`
+              : `linear-gradient(145deg, ${color}, ${color}dd)`,
           color: "#fff",
           borderRadius: "6px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.3)"
-            : "0 2px 4px rgba(0,0,0,0.3)",
+            ? `inset 0 2px 4px rgba(0,0,0,0.4)`
+            : isHovered
+              ? `0 4px 12px rgba(0,0,0,0.4), 0 0 15px ${color}66`
+              : "0 2px 4px rgba(0,0,0,0.3)",
           fontSize: "8px",
         };
 
@@ -141,13 +160,17 @@ export default function OpenboxRemoteControl({
           width: "32px",
           height: "32px",
           background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
+            : isHovered
+              ? "linear-gradient(145deg, #404040, #2d2d2d)"
+              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 2px 6px rgba(0,0,0,0.4)",
+            ? "inset 0 3px 6px rgba(0,0,0,0.6)"
+            : isHovered
+              ? "0 4px 12px rgba(0,0,0,0.5), 0 0 15px rgba(0,234,255,0.3)"
+              : "0 2px 6px rgba(0,0,0,0.4)",
         };
 
       case "ok":
@@ -156,13 +179,17 @@ export default function OpenboxRemoteControl({
           width: "48px",
           height: "48px",
           background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
+            : isHovered
+              ? "linear-gradient(145deg, #404040, #2d2d2d)"
+              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "50%",
           boxShadow: isPressed
-            ? "inset 0 3px 6px rgba(0,0,0,0.5)"
-            : "0 3px 8px rgba(0,0,0,0.4)",
+            ? "inset 0 4px 8px rgba(0,0,0,0.6)"
+            : isHovered
+              ? "0 6px 20px rgba(0,0,0,0.5), 0 0 25px rgba(0,234,255,0.4)"
+              : "0 3px 8px rgba(0,0,0,0.4)",
           fontSize: "14px",
           fontWeight: "bold" as const,
         };
@@ -173,13 +200,17 @@ export default function OpenboxRemoteControl({
           width: "22px",
           height: "22px",
           background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
+            : isHovered
+              ? "linear-gradient(145deg, #404040, #2d2d2d)"
+              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "4px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 2px 4px rgba(0,0,0,0.4)",
+            ? "inset 0 2px 4px rgba(0,0,0,0.6)"
+            : isHovered
+              ? "0 3px 8px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.1)"
+              : "0 2px 4px rgba(0,0,0,0.4)",
           fontSize: "10px",
         };
 
@@ -189,17 +220,49 @@ export default function OpenboxRemoteControl({
           width: "35px",
           height: "20px",
           background: isPressed
-            ? "linear-gradient(145deg, #1a1a1a, #2d2d2d)"
-            : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
+            ? "linear-gradient(145deg, #0d0d0d, #1a1a1a)"
+            : isHovered
+              ? "linear-gradient(145deg, #404040, #2d2d2d)"
+              : "linear-gradient(145deg, #2d2d2d, #1a1a1a)",
           color: "#fff",
           borderRadius: "8px",
           boxShadow: isPressed
-            ? "inset 0 2px 4px rgba(0,0,0,0.5)"
-            : "0 2px 4px rgba(0,0,0,0.4)",
+            ? "inset 0 2px 4px rgba(0,0,0,0.6)"
+            : isHovered
+              ? "0 3px 8px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.1)"
+              : "0 2px 4px rgba(0,0,0,0.4)",
           fontSize: "9px",
         };
     }
   };
+
+  const Button = ({
+    children,
+    onClick,
+    type,
+    color,
+    keyName,
+  }: {
+    children: React.ReactNode;
+    onClick: () => void;
+    type: string;
+    color?: string;
+    keyName: string;
+  }) => (
+    <button
+      onClick={onClick}
+      onMouseEnter={() => setHoveredButton(keyName)}
+      onMouseLeave={() => setHoveredButton(null)}
+      style={getButtonStyle(
+        type,
+        color,
+        pressed === keyName,
+        hoveredButton === keyName,
+      )}
+    >
+      {children}
+    </button>
+  );
 
   return (
     <div
@@ -214,114 +277,129 @@ export default function OpenboxRemoteControl({
         flexDirection: "column",
         alignItems: "center",
         gap: "8px",
-        boxShadow: "0 8px 32px rgba(0,0,0,0.6), 0 4px 16px rgba(0,0,0,0.4)",
+        boxShadow:
+          "0 12px 40px rgba(0,0,0,0.7), 0 6px 20px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)",
         border: "2px solid #404040",
         position: "relative",
         overflow: "hidden",
       }}
     >
+      {/* Эффект подсветки по краям */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderRadius: "32px",
+          background:
+            "linear-gradient(45deg, transparent 30%, rgba(0,234,255,0.03) 50%, transparent 70%)",
+          pointerEvents: "none",
+        }}
+      />
+
       {/* Кнопка питания */}
-      <button
-        onClick={() => handlePress("power")}
-        style={getButtonStyle("power", undefined, pressed === "power")}
-      >
+      <Button onClick={() => handlePress("power")} type="power" keyName="power">
         <FaPowerOff size={12} />
-      </button>
+      </Button>
 
       <div style={{ height: "4px" }} />
 
       {/* Цифровые кнопки 1-3 */}
       <div style={{ display: "flex", gap: "12px" }}>
         {["1", "2", "3"].map((num) => (
-          <button
+          <Button
             key={num}
             onClick={() => handlePress(num)}
-            style={getButtonStyle("number", undefined, pressed === num)}
+            type="number"
+            keyName={num}
           >
             {num}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* Цифровые кнопки 4-6 */}
       <div style={{ display: "flex", gap: "12px" }}>
         {["4", "5", "6"].map((num) => (
-          <button
+          <Button
             key={num}
             onClick={() => handlePress(num)}
-            style={getButtonStyle("number", undefined, pressed === num)}
+            type="number"
+            keyName={num}
           >
             {num}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* Цифровые кнопки 7-9 */}
       <div style={{ display: "flex", gap: "12px" }}>
         {["7", "8", "9"].map((num) => (
-          <button
+          <Button
             key={num}
             onClick={() => handlePress(num)}
-            style={getButtonStyle("number", undefined, pressed === num)}
+            type="number"
+            keyName={num}
           >
             {num}
-          </button>
+          </Button>
         ))}
       </div>
 
       {/* LANG, 0, LIST */}
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-        <button
+        <Button
           onClick={() => handlePress("lang")}
-          style={getButtonStyle("default", undefined, pressed === "lang")}
+          type="default"
+          keyName="lang"
         >
           LANG
-        </button>
-        <button
-          onClick={() => handlePress("0")}
-          style={getButtonStyle("number", undefined, pressed === "0")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("0")} type="number" keyName="0">
           0
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handlePress("list")}
-          style={getButtonStyle("default", undefined, pressed === "list")}
+          type="default"
+          keyName="list"
         >
           LIST
-        </button>
+        </Button>
       </div>
 
       <div style={{ height: "8px" }} />
 
       {/* MENU, BACK, INFO */}
       <div style={{ display: "flex", gap: "10px" }}>
-        <button
+        <Button
           onClick={() => handlePress("menu")}
-          style={getButtonStyle("default", undefined, pressed === "menu")}
+          type="default"
+          keyName="menu"
         >
           MENU
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handlePress("back")}
-          style={getButtonStyle("default", undefined, pressed === "back")}
+          type="default"
+          keyName="back"
         >
           BACK
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handlePress("info")}
-          style={getButtonStyle("default", undefined, pressed === "info")}
+          type="default"
+          keyName="info"
         >
           INFO
-        </button>
+        </Button>
       </div>
 
       {/* EXIT */}
-      <button
-        onClick={() => handlePress("exit")}
-        style={getButtonStyle("default", undefined, pressed === "exit")}
-      >
+      <Button onClick={() => handlePress("exit")} type="default" keyName="exit">
         EXIT
-      </button>
+      </Button>
 
       <div style={{ height: "12px" }} />
 
@@ -335,129 +413,118 @@ export default function OpenboxRemoteControl({
         }}
       >
         {/* Верхняя стрелка */}
-        <button
+        <Button
           onClick={() => handlePress("up")}
-          style={getButtonStyle("navigation", undefined, pressed === "up")}
+          type="navigation"
+          keyName="up"
         >
           <FaChevronUp size={14} />
-        </button>
+        </Button>
 
         {/* Средний ряд: Left, OK, Right */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-          <button
+          <Button
             onClick={() => handlePress("left")}
-            style={getButtonStyle("navigation", undefined, pressed === "left")}
+            type="navigation"
+            keyName="left"
           >
             <FaChevronLeft size={14} />
-          </button>
+          </Button>
 
-          <button
-            onClick={() => handlePress("ok")}
-            style={getButtonStyle("ok", undefined, pressed === "ok")}
-          >
+          <Button onClick={() => handlePress("ok")} type="ok" keyName="ok">
             OK
-          </button>
+          </Button>
 
-          <button
+          <Button
             onClick={() => handlePress("right")}
-            style={getButtonStyle("navigation", undefined, pressed === "right")}
+            type="navigation"
+            keyName="right"
           >
             <FaChevronRight size={14} />
-          </button>
+          </Button>
         </div>
 
         {/* Нижняя стрелка */}
-        <button
+        <Button
           onClick={() => handlePress("down")}
-          style={getButtonStyle("navigation", undefined, pressed === "down")}
+          type="navigation"
+          keyName="down"
         >
           <FaChevronDown size={14} />
-        </button>
+        </Button>
       </div>
 
       <div style={{ height: "12px" }} />
 
       {/* Цветные кнопки */}
       <div style={{ display: "flex", gap: "8px" }}>
-        <button
+        <Button
           onClick={() => handlePress("red")}
-          style={getButtonStyle("colored", "#e53935", pressed === "red")}
-        ></button>
-        <button
+          type="colored"
+          color="#e53935"
+          keyName="red"
+        />
+        <Button
           onClick={() => handlePress("green")}
-          style={getButtonStyle("colored", "#43a047", pressed === "green")}
-        ></button>
-        <button
+          type="colored"
+          color="#43a047"
+          keyName="green"
+        />
+        <Button
           onClick={() => handlePress("yellow")}
-          style={getButtonStyle("colored", "#fbc02d", pressed === "yellow")}
-        ></button>
-        <button
+          type="colored"
+          color="#fbc02d"
+          keyName="yellow"
+        />
+        <Button
           onClick={() => handlePress("blue")}
-          style={getButtonStyle("colored", "#1e88e5", pressed === "blue")}
-        ></button>
+          type="colored"
+          color="#1e88e5"
+          keyName="blue"
+        />
       </div>
 
       <div style={{ height: "8px" }} />
 
       {/* Медиа кнопки - верхний ряд */}
       <div style={{ display: "flex", gap: "8px" }}>
-        <button
-          onClick={() => handlePress("prev")}
-          style={getButtonStyle("media", undefined, pressed === "prev")}
-        >
+        <Button onClick={() => handlePress("prev")} type="media" keyName="prev">
           <FaStepBackward size={8} />
-        </button>
-        <button
-          onClick={() => handlePress("play")}
-          style={getButtonStyle("media", undefined, pressed === "play")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("play")} type="media" keyName="play">
           <FaPlay size={8} />
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => handlePress("pause")}
-          style={getButtonStyle("media", undefined, pressed === "pause")}
+          type="media"
+          keyName="pause"
         >
           <FaPause size={8} />
-        </button>
-        <button
-          onClick={() => handlePress("next")}
-          style={getButtonStyle("media", undefined, pressed === "next")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("next")} type="media" keyName="next">
           <FaStepForward size={8} />
-        </button>
+        </Button>
       </div>
 
       {/* Медиа кнопки - нижний ряд */}
       <div style={{ display: "flex", gap: "8px" }}>
-        <button
-          onClick={() => handlePress("ff")}
-          style={getButtonStyle("media", undefined, pressed === "ff")}
-        >
+        <Button onClick={() => handlePress("ff")} type="media" keyName="ff">
           &gt;&gt;
-        </button>
-        <button
-          onClick={() => handlePress("rec")}
-          style={getButtonStyle("media", undefined, pressed === "rec")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("rec")} type="media" keyName="rec">
           <FaCircle size={8} color="#e53935" />
-        </button>
-        <button
-          onClick={() => handlePress("stop")}
-          style={getButtonStyle("media", undefined, pressed === "stop")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("stop")} type="media" keyName="stop">
           <FaSquare size={8} />
-        </button>
-        <button
-          onClick={() => handlePress("rw")}
-          style={getButtonStyle("media", undefined, pressed === "rw")}
-        >
+        </Button>
+        <Button onClick={() => handlePress("rw")} type="media" keyName="rw">
           &lt;&lt;
-        </button>
+        </Button>
       </div>
 
       <div style={{ flex: 1 }} />
 
-      {/* Логотип OPENBOX */}
+      {/* Логотип OPENBOX с эффектом свечения */}
       <div
         style={{
           color: "#fff",
@@ -465,8 +532,14 @@ export default function OpenboxRemoteControl({
           fontSize: "12px",
           letterSpacing: "1.5px",
           textAlign: "center",
-          textShadow: "0 2px 4px rgba(0,0,0,0.8)",
+          textShadow:
+            "0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255,255,255,0.3)",
           marginTop: "auto",
+          background:
+            "linear-gradient(145deg, rgba(0,0,0,0.3) 0%, rgba(255,255,255,0.05) 100%)",
+          padding: "8px 16px",
+          borderRadius: "12px",
+          border: "1px solid rgba(255,255,255,0.1)",
         }}
       >
         OPENBOX
