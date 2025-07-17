@@ -463,9 +463,9 @@ const AdminPanel = () => {
             <Button
               key={tab.id}
               variant={activeTab === tab.id ? "default" : "ghost"}
-              className={`interactive-element ${
+              className={`interactive-element ripple-effect ${
                 activeTab === tab.id
-                  ? "bg-blue-600 text-white"
+                  ? "bg-gradient-to-r from-blue-600 to-purple-600 text-white glow-ring"
                   : "text-gray-400 hover:text-white hover:bg-white/10"
               }`}
               onClick={() => setActiveTab(tab.id)}
