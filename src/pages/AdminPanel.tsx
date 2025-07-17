@@ -126,7 +126,7 @@ const AdminPanel = () => {
       } else {
         toast({
           title: "Ошибка входа",
-          description: "Неверн��й пароль",
+          description: "Неверный пароль",
           variant: "destructive",
         });
       }
@@ -266,7 +266,7 @@ const AdminPanel = () => {
         };
         setDevices((prev) => [...prev, newDevice]);
         toast({
-          title: "Ус��ройство создано",
+          title: "Устройство создано",
           description: `${deviceForm.name} успешно добавлено`,
         });
       }
@@ -336,7 +336,7 @@ const AdminPanel = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen tech-bg flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
           className="glass-card rounded-2xl p-8 w-full max-w-md"
           initial={{ opacity: 0, scale: 0.9 }}
