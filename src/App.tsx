@@ -59,6 +59,9 @@ export default function App() {
                 {/* Simplified Cursor */}
                 <SimpleCursor />
 
+                {/* Navigation Menu */}
+                <NavigationMenu />
+
                 {/* Toast Notifications */}
                 <Toaster />
                 <Sonner />
