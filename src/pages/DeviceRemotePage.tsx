@@ -318,9 +318,10 @@ export default function DeviceRemotePage({
 
           {/* TV Screen and Controls Layout - Horizontal alignment with equal heights */}
           <div
-            className={`flex gap-6 ${
+            className={`flex gap-6 mb-3 pr-20 pt-3 ${
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
+            style={{ gap: "26px" }}
           >
             {/* TV Screen - Covers nearly entire screen like reference */}
             <motion.div
@@ -357,12 +358,7 @@ export default function DeviceRemotePage({
                   style={{ height: `${remoteHeight}px` }}
                 >
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-bold text-white mb-2">
-                      Виртуальный пульт
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Управление {selectedDevice.name}
-                    </p>
+                    <p className="text-sm text-gray-400"></p>
                   </div>
 
                   <div className="flex justify-center h-full">
