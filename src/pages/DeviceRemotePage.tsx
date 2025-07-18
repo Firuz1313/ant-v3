@@ -108,7 +108,7 @@ export default function DeviceRemotePage({
   const isMobile = useIsMobile();
 
   // Perfect reference proportions - massive TV, tiny remote
-  let tvWidth = 1700;
+  let tvWidth = 1530; // Уменьшено на 10% с 1700
   let tvHeight = 950;
   let remoteWidth = 50;
   let remoteHeight = 220;
@@ -123,7 +123,7 @@ export default function DeviceRemotePage({
       // TV dominates entire screen like in reference
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      tvWidth = Math.min(1700, screenWidth * 0.96);
+      tvWidth = Math.min(1530, screenWidth * 0.86); // Уменьшено на 10%
       tvHeight = Math.min(950, screenHeight * 0.7);
       remoteWidth = Math.max(50, screenWidth * 0.03); // Tiny but visible
       remoteHeight = Math.min(220, screenHeight * 0.25);
