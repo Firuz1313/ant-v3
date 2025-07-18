@@ -204,7 +204,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("power")}
             transform={pressed === "power" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="50 35"
+            style={{ transformOrigin: "50 35" }}
           />
           <text
             x="50"
@@ -259,7 +259,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("mute")}
             transform={pressed === "mute" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="130 35"
+            style={{ transformOrigin: "130 35" }}
           />
           <text x="130" y="40" textAnchor="middle" fill="white" fontSize="12">
             🔇
@@ -348,7 +348,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("0")}
             transform={pressed === "0" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="80 151"
+            style={{ transformOrigin: "80 151" }}
           />
           <text
             x="80"
@@ -458,7 +458,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("menu")}
             transform={pressed === "menu" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="48 200"
+            style={{ transformOrigin: "48 200" }}
           />
           <text
             x="48"
@@ -484,7 +484,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("exit")}
             transform={pressed === "exit" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="132 200"
+            style={{ transformOrigin: "132 200" }}
           />
           <text
             x="132"
@@ -522,7 +522,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("up")}
             transform={pressed === "up" ? "scale(0.9)" : "scale(1)"}
-            transformOrigin="90 210"
+            style={{ transformOrigin: "90 210" }}
           />
           <text x="90" y="218" textAnchor="middle" fill="white" fontSize="8">
             ▲
@@ -540,7 +540,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("down")}
             transform={pressed === "down" ? "scale(0.9)" : "scale(1)"}
-            transformOrigin="90 270"
+            style={{ transformOrigin: "90 270" }}
           />
           <text x="90" y="268" textAnchor="middle" fill="white" fontSize="8">
             ▼
@@ -558,7 +558,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("left")}
             transform={pressed === "left" ? "scale(0.9)" : "scale(1)"}
-            transformOrigin="60 240"
+            style={{ transformOrigin: "60 240" }}
           />
           <text x="68" y="244" textAnchor="middle" fill="white" fontSize="8">
             ◀
@@ -576,7 +576,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("right")}
             transform={pressed === "right" ? "scale(0.9)" : "scale(1)"}
-            transformOrigin="120 240"
+            style={{ transformOrigin: "120 240" }}
           />
           <text x="112" y="244" textAnchor="middle" fill="white" fontSize="8">
             ▶
@@ -597,7 +597,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("ok")}
             transform={pressed === "ok" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="90 240"
+            style={{ transformOrigin: "90 240" }}
           />
           <text
             x="90"
@@ -637,7 +637,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("aspect")}
             transform={pressed === "aspect" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="50 320"
+            style={{ transformOrigin: "50 320" }}
           />
           <text x="50" y="338" textAnchor="middle" fill="white" fontSize="6">
             ASPECT
@@ -657,7 +657,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("epg")}
             transform={pressed === "epg" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="75 320"
+            style={{ transformOrigin: "75 320" }}
           />
           <text x="75" y="338" textAnchor="middle" fill="white" fontSize="6">
             EPG
@@ -677,7 +677,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("option")}
             transform={pressed === "option" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="105 320"
+            style={{ transformOrigin: "105 320" }}
           />
           <text x="105" y="338" textAnchor="middle" fill="white" fontSize="6">
             OPTION
@@ -697,7 +697,7 @@ export default function OpenboxRemoteControl({
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("sleep")}
             transform={pressed === "sleep" ? "scale(0.95)" : "scale(1)"}
-            transformOrigin="130 320"
+            style={{ transformOrigin: "130 320" }}
           />
           <text x="130" y="338" textAnchor="middle" fill="white" fontSize="6">
             SLEEP
@@ -728,7 +728,7 @@ export default function OpenboxRemoteControl({
                 style={{ cursor: "pointer" }}
                 onMouseDown={() => handlePress(key)}
                 transform={pressed === key ? "scale(0.95)" : "scale(1)"}
-                transformOrigin={`${x} 361`}
+                style={{ transformOrigin: `${x} 361` }}
               />
               <text x={x} y="363" textAnchor="middle" fill="white" fontSize="8">
                 {icon}
@@ -761,7 +761,7 @@ export default function OpenboxRemoteControl({
                 style={{ cursor: "pointer" }}
                 onMouseDown={() => handlePress(key)}
                 transform={pressed === key ? "scale(0.95)" : "scale(1)"}
-                transformOrigin={`${x} 381`}
+                style={{ transformOrigin: `${x} 381` }}
               />
               <text x={x} y="383" textAnchor="middle" fill="white" fontSize="8">
                 {icon}
