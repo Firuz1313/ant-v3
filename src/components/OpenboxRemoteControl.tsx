@@ -27,7 +27,7 @@ export default function OpenboxRemoteControl({
   onButtonClick,
   highlight,
   width = 320,
-  height = 650,
+  height = 600,
 }: RemoteProps) {
   const [pressed, setPressed] = useState<string | null>(null);
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -244,10 +244,9 @@ export default function OpenboxRemoteControl({
             }
             stroke="rgba(255,255,255,0.2)"
             strokeWidth="1"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "50 35" }}
             onMouseDown={() => handlePress("power")}
             transform={pressed === "power" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "50 35" }}
           />
           <text
             x="50"
@@ -299,10 +298,9 @@ export default function OpenboxRemoteControl({
                 : "url(#buttonGradient)"
             }
             stroke="rgba(255,255,255,0.1)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "130 35" }}
             onMouseDown={() => handlePress("mute")}
             transform={pressed === "mute" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "130 35" }}
           />
           <text x="130" y="40" textAnchor="middle" fill="white" fontSize="12">
             🔇
@@ -330,12 +328,11 @@ export default function OpenboxRemoteControl({
                 }
                 stroke="rgba(255,255,255,0.1)"
                 strokeWidth="1"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", transformOrigin: `${x} ${y}` }}
                 onMouseDown={() => handlePress(num.toString())}
                 transform={
                   pressed === num.toString() ? "scale(0.95)" : "scale(1)"
                 }
-                style={{ transformOrigin: `${x} ${y}` }}
               />
               <text
                 x={x}
@@ -388,10 +385,9 @@ export default function OpenboxRemoteControl({
               pressed === "0" ? "url(#pressedGradient)" : "url(#buttonGradient)"
             }
             stroke="rgba(255,255,255,0.1)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "80 151" }}
             onMouseDown={() => handlePress("0")}
             transform={pressed === "0" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "80 151" }}
           />
           <text
             x="80"
@@ -498,10 +494,9 @@ export default function OpenboxRemoteControl({
                 : "url(#buttonGradient)"
             }
             stroke="rgba(255,255,255,0.1)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "48 200" }}
             onMouseDown={() => handlePress("menu")}
             transform={pressed === "menu" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "48 200" }}
           />
           <text
             x="48"
@@ -524,10 +519,9 @@ export default function OpenboxRemoteControl({
                 : "url(#buttonGradient)"
             }
             stroke="rgba(255,255,255,0.1)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "132 200" }}
             onMouseDown={() => handlePress("exit")}
             transform={pressed === "exit" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "132 200" }}
           />
           <text
             x="132"
@@ -541,117 +535,79 @@ export default function OpenboxRemoteControl({
           </text>
         </g>
 
-        {/* Навигационный круг с OK */}
+        {/* Навигационный круг с OK — новая разметка с изогнутыми кнопками */}
         <g>
-          {/* Внешний навигационный круг */}
-          <circle
+          {/* Внешний эллипс навигационного круга */}
+          <ellipse
             cx="90"
-            cy="240"
-            r="35"
+            cy="245"
+            rx="36"
+            ry="32"
             fill="url(#buttonGradient)"
-            stroke="rgba(255,255,255,0.1)"
+            stroke="rgba(255,255,255,0.13)"
             strokeWidth="2"
           />
 
-          {/* Стрелка ВВЕРХ */}
+          {/* Кнопка ВВЕРХ (кривая) */}
           <path
-            d="M 85 210 L 90 205 L 95 210 L 90 215 Z"
-            fill={
-              pressed === "up"
-                ? "url(#pressedGradient)"
-                : "url(#buttonGradient)"
-            }
-            stroke="rgba(255,255,255,0.2)"
+            d="M70,225 Q90,210 110,225 Q100,230 80,230 Q70,225 70,225 Z"
+            fill={pressed === "up" ? "url(#pressedGradient)" : "url(#buttonGradient)"}
+            stroke="rgba(255,255,255,0.18)"
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("up")}
-            transform={pressed === "up" ? "scale(0.9)" : "scale(1)"}
-            style={{ transformOrigin: "90 210" }}
           />
-          <text x="90" y="218" textAnchor="middle" fill="white" fontSize="8">
-            ▲
-          </text>
+          <text x="90" y="222" textAnchor="middle" fill="white" fontSize="10">▲</text>
 
-          {/* Стрелка ВНИЗ */}
+          {/* Кнопка ВНИЗ (кривая) */}
           <path
-            d="M 85 270 L 90 275 L 95 270 L 90 265 Z"
-            fill={
-              pressed === "down"
-                ? "url(#pressedGradient)"
-                : "url(#buttonGradient)"
-            }
-            stroke="rgba(255,255,255,0.2)"
+            d="M70,265 Q90,280 110,265 Q100,260 80,260 Q70,265 70,265 Z"
+            fill={pressed === "down" ? "url(#pressedGradient)" : "url(#buttonGradient)"}
+            stroke="rgba(255,255,255,0.18)"
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("down")}
-            transform={pressed === "down" ? "scale(0.9)" : "scale(1)"}
-            style={{ transformOrigin: "90 270" }}
           />
-          <text x="90" y="268" textAnchor="middle" fill="white" fontSize="8">
-            ▼
-          </text>
+          <text x="90" y="278" textAnchor="middle" fill="white" fontSize="10">▼</text>
 
-          {/* Стрелка ВЛЕВО */}
+          {/* Кнопка ВЛЕВО (кривая) */}
           <path
-            d="M 60 235 L 55 240 L 60 245 L 65 240 Z"
-            fill={
-              pressed === "left"
-                ? "url(#pressedGradient)"
-                : "url(#buttonGradient)"
-            }
-            stroke="rgba(255,255,255,0.2)"
+            d="M60,235 Q55,245 60,255 Q70,250 70,240 Q60,235 60,235 Z"
+            fill={pressed === "left" ? "url(#pressedGradient)" : "url(#buttonGradient)"}
+            stroke="rgba(255,255,255,0.18)"
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("left")}
-            transform={pressed === "left" ? "scale(0.9)" : "scale(1)"}
-            style={{ transformOrigin: "60 240" }}
           />
-          <text x="68" y="244" textAnchor="middle" fill="white" fontSize="8">
-            ◀
-          </text>
+          <text x="62" y="247" textAnchor="middle" fill="white" fontSize="10">◀</text>
 
-          {/* Стрелка ВПРАВО */}
+          {/* Кнопка ВПРАВО (кривая) */}
           <path
-            d="M 120 235 L 125 240 L 120 245 L 115 240 Z"
-            fill={
-              pressed === "right"
-                ? "url(#pressedGradient)"
-                : "url(#buttonGradient)"
-            }
-            stroke="rgba(255,255,255,0.2)"
+            d="M120,235 Q125,245 120,255 Q110,250 110,240 Q120,235 120,235 Z"
+            fill={pressed === "right" ? "url(#pressedGradient)" : "url(#buttonGradient)"}
+            stroke="rgba(255,255,255,0.18)"
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("right")}
-            transform={pressed === "right" ? "scale(0.9)" : "scale(1)"}
-            style={{ transformOrigin: "120 240" }}
           />
-          <text x="112" y="244" textAnchor="middle" fill="white" fontSize="8">
-            ▶
-          </text>
+          <text x="118" y="247" textAnchor="middle" fill="white" fontSize="10">▶</text>
 
-          {/* Центральная кнопка OK */}
-          <circle
+          {/* Центральная кнопка OK (овальная) */}
+          <ellipse
             cx="90"
-            cy="240"
-            r="18"
-            fill={
-              pressed === "ok"
-                ? "url(#pressedGradient)"
-                : "url(#buttonGradient)"
-            }
-            stroke="rgba(255,255,255,0.2)"
+            cy="245"
+            rx="18"
+            ry="14"
+            fill={pressed === "ok" ? "url(#pressedGradient)" : "url(#buttonGradient)"}
+            stroke="rgba(255,255,255,0.22)"
             strokeWidth="2"
             style={{ cursor: "pointer" }}
             onMouseDown={() => handlePress("ok")}
-            transform={pressed === "ok" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "90 240" }}
           />
           <text
             x="90"
-            y="245"
+            y="250"
             textAnchor="middle"
             fill="white"
-            fontSize="10"
+            fontSize="12"
             fontWeight="bold"
-          >
-            OK
-          </text>
+          >OK</text>
         </g>
 
         {/* VOL и PAGE кнопки */}
@@ -677,10 +633,9 @@ export default function OpenboxRemoteControl({
                 : "url(#redGradient)"
             }
             stroke="rgba(255,255,255,0.2)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "50 320" }}
             onMouseDown={() => handlePress("aspect")}
             transform={pressed === "aspect" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "50 320" }}
           />
           <text x="50" y="338" textAnchor="middle" fill="white" fontSize="6">
             ASPECT
@@ -697,10 +652,9 @@ export default function OpenboxRemoteControl({
                 : "url(#greenGradient)"
             }
             stroke="rgba(255,255,255,0.2)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "75 320" }}
             onMouseDown={() => handlePress("epg")}
             transform={pressed === "epg" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "75 320" }}
           />
           <text x="75" y="338" textAnchor="middle" fill="white" fontSize="6">
             EPG
@@ -717,10 +671,9 @@ export default function OpenboxRemoteControl({
                 : "url(#yellowGradient)"
             }
             stroke="rgba(255,255,255,0.2)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "105 320" }}
             onMouseDown={() => handlePress("option")}
             transform={pressed === "option" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "105 320" }}
           />
           <text x="105" y="338" textAnchor="middle" fill="white" fontSize="6">
             OPTION
@@ -737,10 +690,9 @@ export default function OpenboxRemoteControl({
                 : "url(#blueGradient)"
             }
             stroke="rgba(255,255,255,0.2)"
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", transformOrigin: "130 320" }}
             onMouseDown={() => handlePress("sleep")}
             transform={pressed === "sleep" ? "scale(0.95)" : "scale(1)"}
-            style={{ transformOrigin: "130 320" }}
           />
           <text x="130" y="338" textAnchor="middle" fill="white" fontSize="6">
             SLEEP
@@ -768,10 +720,9 @@ export default function OpenboxRemoteControl({
                     : "url(#buttonGradient)"
                 }
                 stroke="rgba(255,255,255,0.1)"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", transformOrigin: `${x} 361` }}
                 onMouseDown={() => handlePress(key)}
                 transform={pressed === key ? "scale(0.95)" : "scale(1)"}
-                style={{ transformOrigin: `${x} 361` }}
               />
               <text x={x} y="363" textAnchor="middle" fill="white" fontSize="8">
                 {icon}
@@ -801,10 +752,9 @@ export default function OpenboxRemoteControl({
                     : "url(#buttonGradient)"
                 }
                 stroke="rgba(255,255,255,0.1)"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: "pointer", transformOrigin: `${x} 381` }}
                 onMouseDown={() => handlePress(key)}
                 transform={pressed === key ? "scale(0.95)" : "scale(1)"}
-                style={{ transformOrigin: `${x} 381` }}
               />
               <text x={x} y="383" textAnchor="middle" fill="white" fontSize="8">
                 {icon}

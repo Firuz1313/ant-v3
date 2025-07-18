@@ -319,7 +319,7 @@ export default function DeviceRemotePage({
           {/* TV Screen and Controls Layout - Horizontal alignment with equal heights */}
           <div
             className={`flex gap-6 mb-3 pr-20 pt-3 ${
-              isMobile ? "flex-col" : "flex-row items-start"
+              isMobile ? "flex-col" : "flex-row items-center" // было items-start
             }`}
             style={{ gap: "26px" }}
           >
@@ -329,65 +329,39 @@ export default function DeviceRemotePage({
               whileHover={{ scale: 1.001 }}
               transition={{ type: "spring", stiffness: 400, damping: 30 }}
             >
-              <div className="glass rounded-2xl p-6 mb-4 contain-content">
-                <div className="tv-screen layer-promote">
-                  <SmartRender>
-                    <TVScreen
-                      panelBtnFromRemote={localPanelBtn}
-                      width={tvWidth}
-                      height={tvHeight}
-                      deviceId={selectedDevice.id}
-                    />
-                  </SmartRender>
-                </div>
-              </div>
-
-              {/* Quick Actions removed - control integrated into TV interface */}
+              <SmartRender>
+                <TVScreen
+                  panelBtnFromRemote={localPanelBtn}
+                  width={tvWidth}
+                  height={tvHeight}
+                  deviceId={selectedDevice.id}
+                />
+              </SmartRender>
             </motion.div>
 
-            {/* Remote Control Panel - Tiny sliver like reference */}
+            {/* Remote Control Panel - теперь выравниваем по правому центру */}
             {!isMobile && (
               <motion.div
-                className="w-[2%] min-w-[60px] order-2 flex-shrink-0 perf-isolate"
+                className="order-2 flex-shrink-0 perf-isolate flex items-center justify-end h-full"
+                style={{ minWidth: 60, width: '2%', height: '100%' }}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4, duration: 0.6 }}
               >
                 <div
-                  className="bg-transparent p-1 sticky top-6 flex justify-center"
+                  className="bg-transparent p-1 flex items-center justify-end w-full h-full"
                   style={{ height: `${remoteHeight}px` }}
                 >
-                  <div className="text-center mb-6">
-                    <p className="text-sm text-gray-400"></p>
-                  </div>
-
-                  <div className="flex justify-center h-full">
-                    <div className="w-full h-full flex justify-center items-center">
-                      {selectedDevice.id === "openbox" ? (
-                        <OpenboxRemoteControl
-                          onButtonClick={handleRemoteButton}
-                          width={remoteWidth}
-                          height={remoteHeight}
-                        />
-                      ) : (
-                        <RemoteControl
-                          onButtonClick={handleRemoteButton}
-                          width={remoteWidth}
-                          height={remoteHeight}
-                        />
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Remote Status */}
-                  <div className="mt-6 p-4 rounded-lg bg-black/20 border border-white/10">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-400">Состояние пульта:</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-400">Подключен</span>
-                      </div>
-                    </div>
+                  <div className="flex justify-center items-center w-full h-full">
+                    {selectedDevice.id === "openbox" ? (
+                      <OpenboxRemoteControl
+                        onButtonClick={handleRemoteButton}
+                      />
+                    ) : (
+                      <RemoteControl
+                        onButtonClick={handleRemoteButton}
+                      />
+                    )}
                   </div>
                 </div>
               </motion.div>

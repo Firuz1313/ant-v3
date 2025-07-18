@@ -191,7 +191,7 @@ const getButtonStyles = (btn: any, pressed: boolean) => {
   let width = 38,
     height = 22;
   let fontSize = 8;
-  let background = baseStyles.background;
+  let background = undefined;
 
   // Круглые кнопки: Menu, Exit, Audio, Info, Sat, Recall
   const roundLabels = ["Menu", "Exit", "Audio", "INFO", "SAT", "RECALL"];
@@ -250,7 +250,7 @@ const getButtonStyles = (btn: any, pressed: boolean) => {
 };
 
 const REMOTE_WIDTH = 180;
-const REMOTE_HEIGHT = 580;
+const REMOTE_HEIGHT = 530;
 const ICON_SIZE = 12;
 const BUTTON_SIZE = 20;
 
