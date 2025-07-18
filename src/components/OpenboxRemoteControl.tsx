@@ -106,7 +106,7 @@ export default function OpenboxRemoteControl({
             <stop offset="100%" stopColor="#0a0f15" />
           </linearGradient>
 
-          {/* Градиент для кнопок */}
+          {/* Улучшенный градиент для кнопок - более объемный */}
           <linearGradient
             id="buttonGradient"
             x1="0%"
@@ -114,22 +114,24 @@ export default function OpenboxRemoteControl({
             x2="100%"
             y2="100%"
           >
-            <stop offset="0%" stopColor="#4a5568" />
-            <stop offset="50%" stopColor="#2d3748" />
+            <stop offset="0%" stopColor="#5a6b7d" />
+            <stop offset="20%" stopColor="#4a5568" />
+            <stop offset="60%" stopColor="#2d3748" />
             <stop offset="100%" stopColor="#1a202c" />
           </linearGradient>
 
-          {/* Градиент для нажатых кнопок */}
+          {/* Градиент для нажатых кнопок - более глубокий */}
           <linearGradient
             id="pressedGradient"
             x1="0%"
-            y1="0%"
+            y1="100%"
             x2="100%"
-            y2="100%"
+            y2="0%"
           >
-            <stop offset="0%" stopColor="#1a202c" />
-            <stop offset="50%" stopColor="#2d3748" />
-            <stop offset="100%" stopColor="#4a5568" />
+            <stop offset="0%" stopColor="#0f172a" />
+            <stop offset="40%" stopColor="#1e293b" />
+            <stop offset="80%" stopColor="#334155" />
+            <stop offset="100%" stopColor="#475569" />
           </linearGradient>
 
           {/* Градиент для красной кнопки питания */}
@@ -166,6 +168,47 @@ export default function OpenboxRemoteControl({
             <feGaussianBlur stdDeviation="2" result="offset-blur" />
             <feFlood floodColor="#000000" floodOpacity="0.3" />
             <feComposite in2="offset-blur" operator="in" />
+          </filter>
+
+          {/* Фильтр для объемности кнопок */}
+          <filter
+            id="buttonShadow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="2"
+              stdDeviation="2"
+              floodColor="#000000"
+              floodOpacity="0.4"
+            />
+            <feDropShadow
+              dx="0"
+              dy="1"
+              stdDeviation="1"
+              floodColor="#ffffff"
+              floodOpacity="0.1"
+            />
+          </filter>
+
+          {/* Фильтр для нажатых кнопок */}
+          <filter
+            id="pressedShadow"
+            x="-50%"
+            y="-50%"
+            width="200%"
+            height="200%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="1"
+              stdDeviation="1"
+              floodColor="#000000"
+              floodOpacity="0.6"
+            />
           </filter>
         </defs>
 
