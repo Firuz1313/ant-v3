@@ -108,7 +108,7 @@ export default function DeviceRemotePage({
   const isMobile = useIsMobile();
 
   // Perfect reference proportions - massive TV, tiny remote
-  let tvWidth = 1700;
+  let tvWidth = 1530; // Уменьшено на 10% с 1700
   let tvHeight = 950;
   let remoteWidth = 50;
   let remoteHeight = 220;
@@ -123,7 +123,7 @@ export default function DeviceRemotePage({
       // TV dominates entire screen like in reference
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
-      tvWidth = Math.min(1700, screenWidth * 0.96);
+      tvWidth = Math.min(1530, screenWidth * 0.86); // Уменьшено на 10%
       tvHeight = Math.min(950, screenHeight * 0.7);
       remoteWidth = Math.max(50, screenWidth * 0.03); // Tiny but visible
       remoteHeight = Math.min(220, screenHeight * 0.25);
@@ -318,9 +318,10 @@ export default function DeviceRemotePage({
 
           {/* TV Screen and Controls Layout - Horizontal alignment with equal heights */}
           <div
-            className={`flex gap-6 ${
+            className={`flex gap-6 mb-3 pr-20 pt-3 ${
               isMobile ? "flex-col" : "flex-row items-start"
             }`}
+            style={{ gap: "26px" }}
           >
             {/* TV Screen - Covers nearly entire screen like reference */}
             <motion.div
@@ -357,12 +358,7 @@ export default function DeviceRemotePage({
                   style={{ height: `${remoteHeight}px` }}
                 >
                   <div className="text-center mb-6">
-                    <h3 className="text-lg font-bold text-white mb-2">
-                      Виртуальный пульт
-                    </h3>
-                    <p className="text-sm text-gray-400">
-                      Управление {selectedDevice.name}
-                    </p>
+                    <p className="text-sm text-gray-400"></p>
                   </div>
 
                   <div className="flex justify-center h-full">
