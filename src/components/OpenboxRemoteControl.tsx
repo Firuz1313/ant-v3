@@ -292,7 +292,7 @@ export default function OpenboxRemoteControl({
                 transform={
                   pressed === num.toString() ? "scale(0.95)" : "scale(1)"
                 }
-                transformOrigin={`${x} ${y}`}
+                style={{ transformOrigin: `${x} ${y}` }}
               />
               <text
                 x={x}
